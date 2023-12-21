@@ -24,7 +24,7 @@
   xml:lang="en"
   version="3">
   <front>
-<title abbrev="6mops">IPv6-Mostly Enterprise and Public Networks: Deployment and Operations Considerations</title>
+<title abbrev="6mops">IPv6-Mostly Networks: Deployment and Operations Considerations</title>
     <seriesInfo name="Internet-Draft" value="draft-link-v6ops-6mops"/>
     <author fullname="Jen Linkova" initials="J" surname="Linkova">
       <organization>Google</organization>
@@ -56,6 +56,7 @@
 
     <abstract>
  <t>
+This document discusses an deployment scenario called "an IPv6-Mostly network", when IPv6-only and IPv4-enabled endpoints coexist on the same network (network segment, VLAN, SSID etc).
 </t>
 
     </abstract>
@@ -67,6 +68,7 @@
     <section>
       <name>Introduction</name>
 <t>
+
 </t>
     </section>
       
@@ -85,15 +87,76 @@
 Terminology
 </name>
 <t>
-To be added
+This document reuses most of Terminology section from <xref target="RFC8925"/>.
 </t>
 </section>
+
+<section anchor="overview">
+<name>Solution Overview</name>
+<t>
+</t>
+</section>
+
+<section anchor="benefits">
+<name>Solution Benefits</name>
+
+<section anchor="vsds">
+<name>Benefits Compared to Dual-Stack</name>
+<t>
+[note from furry@]: IPv4 saving, operation simplicity.
+</t>
+</section>
+
+
+<section anchor="vsv6only">
+<name>Benefits Compared to a Dedicated IPv6-Only Network</name>
+<t>
+[note from furry@]: scalability, easy for users, incrememntal migration
+</t>
+</section>
+
+
+</section>
+
+<section anchor="rollout">
+<name>Incremental Rollout Considerations</name>
+<t>
+
+[note from furry@]:
+- no safety net of HE, so many issues which have been hidden will become very much visible now
+
+</t>
+
+<section anchor="optin">
+<name>Opt-In and Opt-Out Approach</name>
+<t>
+</t>
+</section>
+
+</section>
+
+<section anchor="ops">
+<name>Operational Considerations</name>
+<t>
+[note from furry@] 1) SLAAC is mandatory currently 2) Extension headeers filtering
+</t>
+
+<section anchor="issues">
+<name>Typical Issues</name>
+<t>
+[note from furry@]  Descriobe here: 1) hosts with IPv6 disabled 2)Network extension 3) Multiple addresses 4) tarceroute  6) fragmentation 7) renumbering
+</t>
+</section>
+
+
+</section>
+
     <section anchor="Security">
       <!-- All drafts are required to have a security considerations section. See RFC 3552 for a guide. -->
       <name>Security Considerations</name>
 <t>
 </t>
-    </section>
+</section>
 
     <section anchor="privacy">
       <name>Privacy Considerations</name>
