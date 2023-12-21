@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-model href="rfc7991bis.rnc"?>  <!-- Required for schema validation and schema-aware editing -->
+<!-- <?xml-stylesheet type="text/xsl" href="rfc2629.xslt" ?> -->
+<!-- This third-party XSLT can be enabled for direct transformations in XML processors, including most browsers -->
+
+
+<!DOCTYPE rfc [
+  <!ENTITY nbsp    "&#160;">
+  <!ENTITY zwsp   "&#8203;">
+  <!ENTITY nbhy   "&#8209;">
+  <!ENTITY wj     "&#8288;">
+]>
+<!-- If further character entities are required then they should be added to the DOCTYPE above.
+     Use of an external entity file is not recommended. -->
+
+<rfc
+  xmlns:xi="http://www.w3.org/2001/XInclude"
+  category="info"
+  docName="draft-link-v6ops-6mops.xml"
+  ipr="trust200902"
+  obsoletes=""
+  updates="8585"
+  submissionType="IETF"
+  xml:lang="en"
+  version="3">
+  <front>
+<title abbrev="6mops">IPv6-Mostly Enterprise and Public Networks: Deployment and Operations Considerations</title>
+    <seriesInfo name="Internet-Draft" value="draft-link-v6ops-6mops"/>
+    <author fullname="Jen Linkova" initials="J" surname="Linkova">
+      <organization>Google</organization>
+      <address>
+        <postal>
+          <!-- Reorder these if your country does things differently -->
+          <street>1 Darling Island Rd</street>
+          <city>Pyrmont</city>
+          <region>NSW</region>
+          <code>2009</code>
+          <country>AU</country>
+        </postal>        
+        <email>furry13@gmail.com</email>  
+        <email>furry@google.com</email>  
+      </address>
+    </author>
+    <date year="2023"/>
+<area>Ops</area>
+    <workgroup>IPv6 operations</workgroup>
+    <keyword>ipv6</keyword>
+    <keyword>slaac</keyword>
+    <keyword>464xlat</keyword>
+    <keyword>clat</keyword>
+    <keyword>nat64</keyword>
+    <keyword>pref64</keyword>
+    <keyword>ipv6-only</keyword>
+    <keyword>ipv6-mostly</keyword>
+
+
+    <abstract>
+ <t>
+</t>
+
+    </abstract>
+ 
+  </front>
+
+  <middle>
+    
+    <section>
+      <name>Introduction</name>
+<t>
+</t>
+    </section>
+      
+      <section>
+        <name>Requirements Language</name>
+        <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL",
+          "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT
+          RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
+          interpreted as described in BCP 14 <xref target="RFC2119"/>
+          <xref target="RFC8174"/> when, and only when, they appear in
+          all capitals, as shown here.</t>
+      </section>
+
+<section anchor="term">
+<name>
+Terminology
+</name>
+<t>
+To be added
+</t>
+</section>
+    <section anchor="Security">
+      <!-- All drafts are required to have a security considerations section. See RFC 3552 for a guide. -->
+      <name>Security Considerations</name>
+<t>
+</t>
+    </section>
+
+    <section anchor="privacy">
+      <name>Privacy Considerations</name>
+      <t>
+This document does not introduce any privacy considerations.
+      </t>
+    </section>
+    
+    <section anchor="IANA">
+    <!-- All drafts are required to have an IANA considerations section. See RFC 8126 for a guide.-->
+      <name>IANA Considerations</name>
+      <t>This memo does not introduce any requests to IANA.</t>
+    </section>
+    
+    <!-- NOTE: The Acknowledgements and Contributors sections are at the end of this template -->
+  </middle>
+
+  <back>
+    <references>
+      <name>References</name>
+      <references>
+        <name>Normative References</name>
+        
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.2119.xml"/>
+	<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6333.xml"/>
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6877.xml"/>
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7050.xml"/>
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7335.xml"/>
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8174.xml"/>
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8781.xml"/>
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8585.xml"/>
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8925.xml"/>
+        <!-- The recommended and simplest way to include a well known reference -->
+        
+      </references>
+ 
+      <references>
+	      <name>Informative References</name>
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.1918.xml"/>
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4861.xml"/>
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4862.xml"/>
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6145.xml"/>
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7225.xml"/>
+
+      </references>
+    </references>
+    
+    <section anchor="Acknowledgements" numbered="false">
+      <name>Acknowledgements</name>
+<t>
+Thanks to  for the discussions, the input and all contribution.
+</t>
+    </section>
+    
+ </back>
+</rfc>
