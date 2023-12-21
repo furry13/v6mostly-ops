@@ -95,6 +95,30 @@ This document reuses most of Terminology section from <xref target="RFC8925"/>.
 <name>Solution Overview</name>
 <t>
 </t>
+
+<section anchor="capable">
+<name>IPv6-Only Capable Hosts</name>
+<t>
+</t>
+
+</section>
+
+<section anchor="v4only">
+<name>464XLAT</name>
+<t>
+
+</t>
+
+</section>
+
+<section anchor="dns">
+<name>Using DNS versus DNS64</name>
+<t>
+</t>
+
+</section>
+
+
 </section>
 
 <section anchor="benefits">
