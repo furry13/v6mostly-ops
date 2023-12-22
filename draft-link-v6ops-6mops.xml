@@ -161,18 +161,71 @@ This document reuses most of Terminology section from <xref target="RFC8925"/>.
 
 <section anchor="ops">
 <name>Operational Considerations</name>
+
+<section anchor="slaac">
+<name>Address Assignment Policy</name>
 <t>
-[note from furry@] 1) SLAAC is mandatory currently 2) Extension headeers filtering
+[note from furry@] explian why SLAAC is mandatory currently
 </t>
+</section>
+
+<section anchor="eh">
+<name>Extension Headers</name>
+<t>
+[note from furry@] EH issue: permit at least ESP and Fragments
+</t>
+</section>
 
 <section anchor="issues">
 <name>Typical Issues</name>
 <t>
-[note from furry@]  Descriobe here: 1) hosts with IPv6 disabled 2)Network extension 3) Multiple addresses 4) tarceroute  6) fragmentation 7) renumbering
+This section discusses some typical issues which might be observed in IPv6-mostly networks.
+Without safety net of IPv4 to fallback if IPv6 is broken, all potential network issues and IPv6 bugs become much more visible and impactful.
+However implememtation bugs are mostly out of scope of this document, as such bugs would vary from network to network, depending on equipment and software used.
+Instead this section focuses on issues caused by configuration, topology or design choices.
+It should be noted that most of those issues usually pre-exist in dual-stack networks, but, as devices can fall back to IPv6, those problems are often remain unnoticed until IPv4 is taken away. 
+The network administrators are advised to audit and monitor for the scenarios described below prior to migrate an existing network to IPv6-mostly mode.
+</t>
+
+<section anchor="nov6">
+<name>Hosts with Disabled or Misfunctional IPv6</name>
+<t>
+</t>
+
+</section>
+
+<section anchor="ext">
+<name>Network Extension</name>
+<t>
+</t>
+</section>
+
+<section anchor="multip">
+<name>Multiple Addresses per Device</name>
+<t>
+</t>
+</section>
+
+<section anchor="gulla">
+<name>Host Mobility and Renumbering</name>
+<t>
+</t>
+</section>
+
+<section anchor="frag">
+<name>Fragmentation</name>
+<t>
+</t>
+</section>
+
+<section anchor="traceroute">
+<name>Representing IPv6 Addresses by CLAT</name>
+<t>
 </t>
 </section>
 
 
+</section>
 </section>
 
     <section anchor="Security">
