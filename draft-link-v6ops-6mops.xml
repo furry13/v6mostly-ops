@@ -103,6 +103,28 @@ This document reuses most of Terminology section from <xref target="RFC8925"/>.
 
 </section>
 
+<section>
+<name>Coexistence of IPv6-Only and IPv4-enabled Hosts</name>
+<t>
+
+</t>
+</section>
+
+<section>
+
+<name>Access to IPv4-only Destinations</name>
+<t>
+</t>
+
+<section>
+
+<name>NAT64</name>
+<t>
+</t>
+
+</section>
+
+
 <section anchor="v4only">
 <name>464XLAT</name>
 <t>
@@ -112,12 +134,30 @@ This document reuses most of Terminology section from <xref target="RFC8925"/>.
 </section>
 
 <section anchor="dns">
-<name>Using DNS versus DNS64</name>
+<name>Signalling NAT64 Prefix to Hosts</name>
+<t>
+Hosts running 464XLAT need to discover the PREF64 (the IPv6 prefix used by NAT64).
+The network administrator SHOULD configure the first-hop routers to include PREF64 information in Router Advertisements as per (<xref target="RFC8781"/>) even if the network provides DNS64 (so hosts can use DNS64-based prefix discovery, <xref target="RFC7050"/>).
+This is required as hosts or individual applications might have custom DNS configuration (or even run a local DNS server) and ignore DNS64 information provided by the network, so they can not use <xref target="RFC7050"/> method to detect PREF64.
+In the absense of PREF64 information in Router Advertisements such systems would not be able to run clat, which would cause connectivity issues for all IPv4-only applications running on the affected device. 
+As such device wouldn't be able to use the network-provided DNS64, access to IPv4-only destination would be impacted as well.
+At the time of writing all major OSes supporting DHCPv4 option 108 and enabling clat automatically also support <xref target="RFC8781"/>.
+Therefore providing PREF64 information in RAs can reliably mitigate the impact of custom DNS configuration on those systems.
+</t>
+<t>
+Receiving PREF64 information in RAs also speeds up the clat start up time, so an IPv4 address and default route become available for applications much faster.
+</t>
+
+</section>
+
+<section anchor="dns64">
+<name>DNS vs DNS64</name>
 <t>
 </t>
 
 </section>
 
+</section>
 
 </section>
 
