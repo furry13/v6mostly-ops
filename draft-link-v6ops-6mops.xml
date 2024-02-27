@@ -134,7 +134,7 @@ Network segment: a link (VLAN, a broadcast domain etc) where hosts share the sam
 <section anchor="overview">
 <name>Solution Overview</name>
 <t>
-In a nutshell, an IPv6-mostly network is very much similar to a dual-stack one with two key differences:
+In a nutshell, an IPv6-mostly network is very much similar to a dual-stack one with two additional key elements:
 </t>
 <ul>
 <li>
@@ -144,7 +144,7 @@ The network provides NAT64 (<xref target="RFC6146"/>)  functionality ([RFC6146])
 </li>
 <li>
 <t>
-The DHCPv4 infrastructure processes DHCPv4 Option 108 as per <xref target="RFC8925"/>.
+The DHCPv4 infrastructure processing DHCPv4 Option 108 as per <xref target="RFC8925"/>.
 </t>
 </li>
 </ul>
@@ -172,20 +172,50 @@ IPv6-only capable endpoint configures its IPv6 addresses and, while performing D
 <t>
 An IPv6-mostly network segment can support a mix of IPv4-only, dual-stack, and IPv6-only devices.  IPv6-only endpoints utilize the network-provided NAT64 to reach IPv4-only destinations.
 </t>
-
-<section anchor="capable">
-<name>IPv6-Only Capable Hosts</name>
 <t>
-In general sense, "IPv6-only capable device" is a loosely-defined term, describing device which can perform its functions and provide the same user experience with or without IPv4
+The following sections discussed the various solution elements in more details.
 </t>
 
+<section anchor="capable">
+<name>IPv6-Only Capable Endpoints</name>
+<t>
+The term "IPv6-only capable endpoint" lacks a strict technical definition. It broadly describes a device that can function without native IPv4 connectivity/IPv4 addresses, providing the same user experience. The most common way to achieve this is by implementing a customer-side translator (CLAT) as specified in 464XLAT (<xref target="RFC6877"/>). Devices which support CLAT (such as mobile phones) are known to operate without issues in IPv6-only mode.
+In some cases, however, a network administrator may consider a device IPv6-only capable even without CLAT implementation. 
+For example, if all applications run on the device have been tested and confirmed to operate in NAT64 envinronment without any IPv4 dependencies.
+</t>
 </section>
 
 <section>
-<name>Coexistence of IPv6-Only and IPv4-enabled Hosts</name>
+<name>IPv6-Only and IPv4-enabled Endpoints Coexistence</name>
 <t>
-
+One effective way to restrict IPv4 addresses solely to devices that require them is to enable support for the IPv6-Only Preferred DHCPv4 option (Option 108, <xref target="RFC8925"/>) on the network's DHCP infrastructure. 
+Most CLAT-enabled systems also support Option 108.  By recognizing this option, the network can configure those devices as IPv6-only, allowing them to use CLAT fo
+providing IPv4 address to the local endpoint's network stack. 
 </t>
+<t>
+Certain devices, such as resource-constrained embedded systems, may operate in IPv6-only mode without CLAT if their communication is limited to IPv6-enabled destinations. Since these systems often lack Option 108 support, administrators may need alternative methods to prevent IPv4 address assignment.
+
+One approach is to block IPv4 traffic at the switchport level. This could involve:
+</t>
+
+<ul>
+<li>
+<t>
+Static ACL: Applying a static filter with a "deny ip any any" rule.
+</t>
+</li>
+<li>
+<t>
+Dynamic ACL via RADIUS: If 802.1x authentication is in use, RADIUS can provide an ACL blocking all IPv4 traffic.
+</t>
+</li>
+</ul>
+
+<t>
+The ACL-based approach has some scalability implications and increases operational complexity, therefore it could only be recommended as a stopgap solution. 
+</t>
+
+
 </section>
 
 <section>
@@ -266,6 +296,7 @@ Receiving PREF64 information in RAs also speeds up the clat start up time, so an
 
 [note from furry@]:
 - no safety net of HE, so many issues which have been hidden will become very much visible now
+- option 108 wvalue (300 and thenincreas)
 
 </t>
 
@@ -344,6 +375,10 @@ It is also recommended to decrease PIO lifetimes
 </t>
 </section>
 
+<section>
+<name>Custom DNS Configuration on Endpoints</name>
+</section>
+
 
 </section>
 </section>
@@ -398,6 +433,9 @@ This document does not introduce any privacy considerations.
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4862.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6145.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7225.xml"/>
+        <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-v6ops-dhcp-pd-per-device.xml"/>
+        <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.link-v6ops-claton.xml"/>
+        <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.link-v6ops-gulla.xml"/>
 
       </references>
     </references>
