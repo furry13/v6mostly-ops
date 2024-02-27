@@ -110,19 +110,73 @@ Terminology
 This document reuses most of Terminology section from <xref target="RFC8925"/>.
 </t>
 <t>
+Endpoint: A device connected to a network and considered a host From the operator's perspective. However, some endpoint can also extend the network to other physical or logical systems, thereby assuming routing functions. Examples include:
+</t>
+
+<ul>
+<li>
+<t>
+Corporate laptop: While primarily a host, it might run virtual systems and route traffic to them, extending the network and acting as a router.
+</t>
+</li>
+<li>
+<t>
+Mobile phone with tethering enabled: Acts as a host on the WiFi network, but also as a router for tethered devices, potentially without the operator's knowledge or consent.
+</t>
+</li>
+</ul>
+<t>
 Network segment: a link (VLAN, a broadcast domain etc) where hosts share the same IP subnet.
 </t>
+
 </section>
 
 <section anchor="overview">
 <name>Solution Overview</name>
 <t>
+In a nutshell, an IPv6-mostly network is very much similar to a dual-stack one with two key differences:
+</t>
+<ul>
+<li>
+<t>
+The network provides NAT64 (<xref target="RFC6146"/>)  functionality ([RFC6146]), enabling IPv6-only clients to communicate with IPv4-only destinations.
+</t>
+</li>
+<li>
+<t>
+The DHCPv4 infrastructure processes DHCPv4 Option 108 as per <xref target="RFC8925"/>.
+</t>
+</li>
+</ul>
+<t>
+Upon connecting to an IPv6-mostly network segment, an endpoint configures its IP stack based on its capabilities:
+</t>
+<ul>
+<li>
+<t>
+IPv4-Only Endpoint: Acquires an IPv4 address through DHCPv4.
+</t>
+</li>
+<li>
+<t>
+Dual-Stack Endpoint (Not IPv6-Only Capable): Configures IPv6 addresses via Stateless Address Autoconfiguration (SLAAC) and, optionally, DHCPv6. Additionally, it obtains an IPv4 address via DHCPv4.
+</t>
+</li>
+<li>
+<t>
+IPv6-only capable endpoint configures its IPv6 addresses and, while performing DHCPv4, includes option 108 (<xref target="RFC8925"/>) into the Parameter Request List. The DHCP server returns the option and, as per <xref target="RFC8925"/>, the endpoint forgoes requesting an IPv4 address, remaining in IPv6-only mode.
+</t>
+</li>
+</ul>
 
+<t>
+An IPv6-mostly network segment can support a mix of IPv4-only, dual-stack, and IPv6-only devices.  IPv6-only endpoints utilize the network-provided NAT64 to reach IPv4-only destinations.
 </t>
 
 <section anchor="capable">
 <name>IPv6-Only Capable Hosts</name>
 <t>
+In general sense, "IPv6-only capable device" is a loosely-defined term, describing device which can perform its functions and provide the same user experience with or without IPv4
 </t>
 
 </section>
@@ -324,6 +378,7 @@ This document does not introduce any privacy considerations.
         <name>Normative References</name>
         
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.2119.xml"/>
+	<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6146.xml"/>
 	<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6333.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6877.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7050.xml"/>
