@@ -68,7 +68,27 @@ This document discusses an deployment scenario called "an IPv6-Mostly network", 
     <section>
       <name>Introduction</name>
 <t>
+While most network operators initially deploy IPv6 alongside their existing IPv4 infrastructure, pure IPv6-only networks remain uncommon outside of the mobile carrier space. This dual-stack approach is seen as a necessary transition phase, allowing operators to gain experience with IPv6 while minimizing disruption.
+</t>
 
+<t>
+However, dual-stack networks don't address the core problem driving IPv6 adoption: IPv4 address exhaustion. They still require the same amount of IPv4 resources as IPv4-only networks.  Even worse, this dual-stack approach often becomes a long-term crutch. Many applications still rely on IPv4, creating a chicken-and-egg problem: IPv6-only networks seem impractical with so many incompatible applications, yet applications continue to rely on IPv4 because IPv6-only networks are rare.
+</t>
+
+<t>
+The less control a network operator has over devices and applications, the more difficult it is to break IPv4 dependencies and move to IPv6-only. This is particularly challenging in enterprise networks with legacy IPv4-dependent applications and public WiFi networks where operators cannot guarantee device compatibility.
+</t>
+
+<t>
+To enable a gradual migration, operators need to identify which devices can function in IPv6-only mode and which cannot. Creating separate network segments for each type introduces complexity and scalability issues – a major hurdle to IPv6-only adoption.
+</t>
+
+<t>
+A more desirable approach is to deploy so-called "IPv6-mostly" network that provides IPv4 on demand. This allows IPv6-capable devices to remain IPv6-only while seamlessly supplying IPv4 to those that require it.
+</t>
+
+<t>
+This document explores the requirements, recommendations, and challenges associated with deploying IPv6-mostly networks in enterprise and public WiFi environments. While the principles discussed may be applicable to other network types, this document's focus remains on these specific use cases.
 </t>
     </section>
       
@@ -89,11 +109,15 @@ Terminology
 <t>
 This document reuses most of Terminology section from <xref target="RFC8925"/>.
 </t>
+<t>
+Network segment: a link (VLAN, a broadcast domain etc) where hosts share the same IP subnet.
+</t>
 </section>
 
 <section anchor="overview">
 <name>Solution Overview</name>
 <t>
+
 </t>
 
 <section anchor="capable">
@@ -249,6 +273,8 @@ The network administrators are advised to audit and monitor for the scenarios de
 <section anchor="gulla">
 <name>Host Mobility and Renumbering</name>
 <t>
+If devices can move between network segments (VLANs) (e.g. if 802.1x with RADIUS-based VLAN assignment is used), it is recommended to reduce min and max Router Advertisement intervals to ensure that unsolicited RAs are sent as often as possible.
+It is also recommended to decrease PIO lifetimes
 </t>
 </section>
 
