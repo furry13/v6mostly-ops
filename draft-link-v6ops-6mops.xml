@@ -170,7 +170,7 @@ IPv6-only capable endpoint configures its IPv6 addresses and, while performing D
 </ul>
 
 <t>
-An IPv6-mostly network segment can support a mix of IPv4-only, dual-stack, and IPv6-only devices.  IPv6-only endpoints utilize the network-provided NAT64 to reach IPv4-only destinations.
+An IPv6-mostly network segment can support a mix of IPv4-only, dual-stack, and IPv6-only devices.  IPv6-only endpoints utilize the network-provided NAT64 to reach IPv4-only destinations. 
 </t>
 <t>
 The following sections discussed the various solution elements in more details.
@@ -228,20 +228,39 @@ The ACL-based approach has some scalability implications and increases operation
 
 <name>NAT64</name>
 <t>
+IPv6-only endpoints require NAT64 to access IPv4-only destinations. Quite often operators choose to combine NAT44 and NAT64 functions.
+However, if not all internal services are IPv6-enabled, then NAT64 might need to be performed closer to the clients. If IPv4-only internal destinations are using <xref target="RFC1918"/> address space, then the operator MUST NOT use the well-known prefix 64:ff9b::/96 for NAT64 (see section 3.1 of <xref target="RFC6052"/>).
 </t>
 
 </section>
-
 
 <section anchor="v4only">
 <name>464XLAT</name>
 <t>
-
+Enabling CLAT (Customer-side translator) on endpoints is essential for seamless operation of IPv4-only applications in IPv6-only environments. CLAT provides an <xref target="RFC1918"/> address and IPv4 default route, ensuring functionality even without a native IPv4 address from the network. Without CLAT, IPv4-only applications would fail, negatively impacting user experience and increasing support overhead.
 </t>
-
+<t>
+Recommendations for Network Administrators controlling the endpoints:
+</t>
+<ul>
+<li>
+<t>
+CLAT + DHCPv4 Option 108: If the network administrator can control endpoint configuration, CLAT SHOULD be enabled on endpoints sending DHCPv4 Option 108. This streamlines the transition.
+</t>
+</li>
+<li>
+<t>
+Option 108 Without CLAT MAY be enabled if the administrator is willing to identify and fixIPv4-only systems/applications, or if all applications are confirmed to work in IPv6-only mode.
+</t>
+</li>
+</ul>
+<t>
+One of the benefits of CLAT is does not require DNS64.
+ If CLAT is not enabled, the network MUST provide DNS64 functions unless endpoints are guaranteed to never access IPv4-only destinations. An example of this exception is a specialized network segment with limited, IPv6-capable destinations (see <xref target="dns64"/> for more details).
+</t>
 </section>
 
-<section anchor="dns">
+<section anchor="pref64">
 <name>Signalling NAT64 Prefix to Hosts</name>
 <t>
 Hosts running 464XLAT need to discover the PREF64 (the IPv6 prefix used by NAT64).
@@ -431,6 +450,7 @@ This document does not introduce any privacy considerations.
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.1918.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4861.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4862.xml"/>
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6052.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6145.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7225.xml"/>
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-v6ops-dhcp-pd-per-device.xml"/>
