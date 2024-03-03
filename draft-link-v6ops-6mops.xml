@@ -313,16 +313,56 @@ If the network provides PREF64 in RAs (<xref target="pref64"/>) and all endpoint
 <section anchor="vsds">
 <name>Benefits Compared to Dual-Stack</name>
 <t>
-[note from furry@]: IPv4 saving, operation simplicity.
+IPv6-Mostly networks offer significant advantages over traditional dual-stack models where endpoints have both IPv4 and IPv6 addresses:
 </t>
+<ul>
+<li>
+<t>
+Drastically Reduced IPv4 Consumption: Dual-stack deployments don't solve the core problem of IPv4 address exhaustion. IPv6-Mostly allows to significantly reduce IPv4 consumption, as well as to reclaim IPv4 space. This reduction depends on endpoint capabilities (DHCPv4 Option 108 and CLAT support). In real-world scenarios, like conference Wi-Fi, 60-70% of endpoints may support IPv6-only operation, potentially allowing 2-4 times smaller IPv4 subnets.
+</t>
+</li>
+<li>
+<t>
+Simplified Operations: Managing dual-stack networks means running two network planes simultaneously, increasing complexity, costs, and the potential for errors. IPv6-Mostly allows to phase out IPv4 from many endpoints, streamlining operations and improving overall network reliability.
+</t>
+</li>
+</ul>
 </section>
-
 
 <section anchor="vsv6only">
 <name>Benefits Compared to a Dedicated IPv6-Only Network</name>
 <t>
-[note from furry@]: scalability, easy for users, incrememntal migration
+Traditional IPv6-only adoption involved separate networks alongside dual-stack ones. IPv6-Mostly offers significant improvements:
 </t>
+
+<ul>
+<li>
+<t>
+Enhanced Scalability:  Separate IPv6-only networks double the number of SSIDs in wireless environments, causing channel congestion and degrading performance. IPv6-Mostly doesn't require additional SSIDs. Similarly, it allows IPv4 and IPv6-only devices to coexist on the same wired VLANs, eliminating the need of additional VLANs.
+</t>
+</li>
+<li>
+<t>
+Operational Simplicity: Managing one network segment for all clients (regardless of IPv4 needs) simplifies operations, improves user experience (no more confusing SSID choices), and reduces support tickets related to mismatched connections. Dynamic VLAN assignment becomes easier without device-specific IPv6 capability tracking.
+</t>
+</li>
+<li>
+<t>
+Optimized IPv4 Consumption: User-selected dual-stack networks often lead to unnecessary IPv4 use, as users often connect IPv6-only capable devices to a dual-stack network. IPv6-Mostly network allocates IPv4 addresses 
+only when devices don't advertise IPv6-only capability (DHCPv4 Option 108).
+</t>
+</li>
+<li>
+<t>
+Improved Problem Visibility: User-selected fallback to dual-stack networks can mask issues with IPv6-only operation, hindering problem reporting and resolution. IPv6-Mostly forces users to work through any issues, improving identification and enabling fixes for smoother long-term migration.
+</t>
+</li>
+<li>
+<t>
+Flexible, Incremental Migration: IPv6-Mostly allows for gradual device migration on a per-segment basis. Devices become IPv6-only only when deemed fully compatible with that mode.
+</t>
+</li>
+</ul>
 </section>
 
 
