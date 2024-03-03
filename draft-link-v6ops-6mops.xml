@@ -255,8 +255,6 @@ Option 108 Without CLAT MAY be enabled if the administrator is willing to identi
 </li>
 </ul>
 <t>
-One of the benefits of CLAT is does not require DNS64.
- If CLAT is not enabled, the network MUST provide DNS64 functions unless endpoints are guaranteed to never access IPv4-only destinations. An example of this exception is a specialized network segment with limited, IPv6-capable destinations (see <xref target="dns64"/> for more details).
 </t>
 </section>
 
@@ -280,6 +278,27 @@ Receiving PREF64 information in RAs also speeds up the clat start up time, so an
 <section anchor="dns64">
 <name>DNS vs DNS64</name>
 <t>
+While DNS64 (with NAT64) enables IPv6-only endpoints to access IPv4-only destinations, it has several drawbacks:
+</t>
+<ul>
+<li>
+<t>
+DNSSEC Incompatibility: DNS64 responses fail DNSSEC validation.
+</t>
+</li>
+<li>
+<t>
+Custom Resolvers: Endpoints or applications configured with custom resolvers can not benefit from the DNS64 provided by the network.
+</t>
+</li>
+<li>
+<t>
+Additional requirements for application: to benefit from DNS64, applications need to be IPv6-enabled, use DNS (do not use IPv4 literals). Many applications do not satisfy those requirements and therefore fail if the endpoint does not have an IPv4 address/native IPv4 connectivity.
+</t>
+</li>
+</ul>
+<t>
+If the network provides PREF64 in RAs (<xref target="pref64"/>) and all endpoints are guaranteed to have CLAT enabled, DNS64 is unnecessary and SHOULD NOT be enabled.  However, if some IPv6-only devices might lack CLAT support, the network MUST provide DNS64 unless those endpoints are guaranteed  never to need IPv4-only destinations (for example, in case of a specialized network segment communicating solely with IPv6-capable destinations).
 </t>
 
 </section>
