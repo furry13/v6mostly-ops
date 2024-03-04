@@ -565,8 +565,8 @@ The network administrator SHOULD ensure that the deployed network infastructure 
 <section anchor="gulla">
 <name>Host Mobility and Renumbering</name>
 <t>
-If devices can move between network segments (VLANs) (e.g. if 802.1x with RADIUS-based VLAN assignment is used), it is recommended to reduce min and max Router Advertisement intervals to ensure that unsolicited RAs are sent as often as possible.
-It is also recommended to decrease PIO lifetimes
+Networks employing dynamic VLAN assignment (e.g., based on 802.1x or MAC-based authentication) can cause endpoints to move between VLANs and IPv6 subnets.
+As client operating systems do not always handle changes in link-layer state (e.g., VLAN changes) correctly, this mobility often leads to inconsistent IP stack behavior on operating systems, resulting in the persistence of old subnet addresses and potential connectivity issues due to incorrect source address selection. <xref target="I-D.link-v6ops-gulla"/> provides further analysis and potential solutions.
 </t>
 </section>
 
