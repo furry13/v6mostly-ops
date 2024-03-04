@@ -592,11 +592,30 @@ DISCUSSION: neither <xref target="RFC6145"/> nor <xref target="RFC6146"/> requir
 <section anchor="traceroute">
 <name>Representing IPv6 Addresses by CLAT</name>
 <t>
+Certain CLAT implementations face challenges when translating incoming IPv6 packets with native (non-synthesized) source addresses (e.g. ICMPv6 packets sent by intermediate hops on the path). This lack of standardized translation mechanisms can lead to:
+</t>
+<ul>
+<li>
+<t>
+Incomplete Traceroute: Omission of IPv6-only hops between the endpoint and NAT64 translator, hindering troubleshooting.
+</t>
+</li>
+<li>
+<t>
+Path MTU Discovery Issues: Potential disruptions in the PMTU discovery process.
+</t>
+</li>
+</ul>
+
+<t>
+DISCUSSION: shall the IETF  consider standardizing a translation mechanism for such packets?
 </t>
 </section>
 
 <section>
 <name>Custom DNS Configuration on Endpoints</name>
+<t>
+</t>
 </section>
 
 
