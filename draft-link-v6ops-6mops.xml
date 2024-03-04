@@ -383,7 +383,7 @@ Some rollout considerations are discussed in the following sections.
 </t>
 
 <section anchor="incr">
-<name>Per-Device and Per-Subnet Incremental Rolllout</name>
+<name>Per-Device and Per-Subnet Incremental Rollout</name>
 <t>
 Limited control over endpoint configuration necessitates a per-subnet rollout, incrementally enabling Option 108 processing in DHCP. If endpoint control exists, per-device rollout is possible (at least for OSes with configurable Option 108). Note that some OSes unconditionally enable Option 108 support, becoming IPv6-only the moment it's activated on the server side. The following approach is RECOMMENDED:
 </t>
@@ -439,30 +439,41 @@ Opt-Out Phase: Incrementally enable Option 108. Allow selective disabling for pr
 <section anchor="slaac">
 <name>Address Assignment Policy</name>
 <t>
-[note from furry@] explian why SLAAC is mandatory currently
+As outlined in Section 6.3 of <xref target="RFC6877"/>, CLAT requires either a dedicated IPv6 prefix or, if unavailable, a dedicated IPv6 address. Currently (2024), all implementations use SLAAC for CLAT address acquisition. Therefore, to enable CLAT functionality within IPv6-mostly network segments, first-hop routers must advertise a Prefix Information Option (PIO) containing a globally routable SLAAC-suitable prefix with the 'Autonomous Address-Configuration' (A) flag set to zero.
 </t>
 </section>
 
 <section anchor="eh">
 <name>Extension Headers</name>
 <t>
-[note from furry@] EH issue: permit at least ESP and Fragments
+Being an IPv6-specific concept, IPv6 extension headers are often neglected or even explictly prohibited by security policies in dual-stack networks. The issues caused by blockig extension headers might be masked by the presense of Happy Eyeballs but become highly visible when there is no IPv4 to fallback to.
 </t>
+<t>
+The network SHOULD permit at least the following extension headers:
+</t>
+<ul>
+<li>
+<t>
+Fragment Header (Section 4.5 of <xref target="RFC8200"/>). <xref target="frag"/> discusses the fragmentation in more details.
+</t>
+</li>
+<li>
+<t>
+ESP Header, which is used for IPSec traffic, such as VPN and WiFi Calling.
+</t>
+</li>
+</ul>
 </section>
 
 <section anchor="issues">
 <name>Typical Issues</name>
 <t>
-This section discusses some typical issues which might be observed in IPv6-mostly networks.
-Without safety net of IPv4 to fallback if IPv6 is broken, all potential network issues and IPv6 bugs become much more visible and impactful.
-However implememtation bugs are mostly out of scope of this document, as such bugs would vary from network to network, depending on equipment and software used.
-Instead this section focuses on issues caused by configuration, topology or design choices.
-It should be noted that most of those issues usually pre-exist in dual-stack networks, but, as devices can fall back to IPv6, those problems are often remain unnoticed until IPv4 is taken away. 
-The network administrators are advised to audit and monitor for the scenarios described below prior to migrate an existing network to IPv6-mostly mode.
+IPv6-mostly networks expose hidden issues by removing the IPv4 safety net. While implementation bugs vary greatly and are beyond the scope of this document, this section focus on common problems caused by configuration, topology, or design choices.
+It's crucial to note that these issues likely pre-exist in dual-stack networks, but remain unnoticed due to IPv4 fallback.
 </t>
 
 <section anchor="nov6">
-<name>Hosts with Disabled or Misfunctional IPv6</name>
+<name>Hosts with Disabled or Disfunctional IPv6</name>
 <t>
 </t>
 
@@ -543,6 +554,7 @@ This document does not introduce any privacy considerations.
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6877.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7050.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7335.xml"/>
+        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8200.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8174.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8781.xml"/>
         <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8585.xml"/>
