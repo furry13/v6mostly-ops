@@ -326,6 +326,11 @@ Drastically Reduced IPv4 Consumption: Dual-stack deployments don't solve the cor
 Simplified Operations: Managing dual-stack networks means running two network planes simultaneously, increasing complexity, costs, and the potential for errors. IPv6-Mostly allows to phase out IPv4 from many endpoints, streamlining operations and improving overall network reliability.
 </t>
 </li>
+<li>
+<t>
+Reduced Dependency on DHCPv4: As more devices operate seamlessly in IPv6-only mode, the criticality of DHCPv4 service diminishes significantly. This allows operators to scale down DHCPv4 infrastructure or operate it with less stringent SLOs, optimizing costs and resource allocation.
+</t>
+</li>
 </ul>
 </section>
 
@@ -371,17 +376,59 @@ Flexible, Incremental Migration: IPv6-Mostly allows for gradual device migration
 <section anchor="rollout">
 <name>Incremental Rollout Considerations</name>
 <t>
-
-[note from furry@]:
-- no safety net of HE, so many issues which have been hidden will become very much visible now
-- option 108 wvalue (300 and thenincreas)
-
+Migrating endpoints to IPv6-only fundamentally changes network dynamics by removing the IPv4 safety net. This includes the masking effect of Happy Eyeballs. IPv6 connectivity issues become far more prominent, including those previously hidden within dual-stack environments. Operators should be prepared to discover and troubleshoot issues in both endpoints and network infrastructure, even if the dual-stack network appeared problem-free.
 </t>
+<t>
+Some rollout considerations are discussed in the following sections.
+</t>
+
+<section anchor="incr">
+<name>Per-Device and Per-Subnet Incremental Rolllout</name>
+<t>
+Limited control over endpoint configuration necessitates a per-subnet rollout, incrementally enabling Option 108 processing in DHCP. If endpoint control exists, per-device rollout is possible (at least for OSes with configurable Option 108). Note that some OSes unconditionally enable Option 108 support, becoming IPv6-only the moment it's activated on the server side. The following approach is RECOMMENDED:
+</t>
+<ul>
+<li>
+<t>
+DHCP Server-Side Activation: Enable Option 108 processing. Some OSes automatically switch to IPv6-only. Rollback at this stage affects the entire subnet.
+</t>
+</li>
+<li>
+<t>
+Controlled Endpoint Activation: Enable Option 108 on managed endpoints with per-device rollback possible.
+</t>
+</li>
+</ul>
+</section>
+
+<section anchor="rollback">
+<name>
+Rollback Approach
+</name>
+<t>
+For quick rollback, the administrator SHOULD start with a minimal Option 108 value (300 seconds, Section 3.4 of <xref target="RFC8925"/>) and increase this value as the IPv6-mostly network proves reliable, reducing the likelihood of full-scale rollback.
+</t>
+</section>
 
 <section anchor="optin">
-<name>Opt-In and Opt-Out Approach</name>
+<name>Opt-In and Opt-Out Modes</name>
+
 <t>
+Before user-facing deployment, the administrator SHOULD consider a dedicated IPv6-mostly proof-of-concept network for early adopters. While this temporarily sacrifices some IPv6-mostly benefits (<xref target="vsv6only"/>), it provides valuable operational experience and early issue detection.
 </t>
+<ul>
+<li>
+<t>
+Opt-In Phase: Invite tech-savvy early adopters to enable Option 108 and report issues. While response rates may be low, dedicated participants provide valuable troubleshooting data.
+</t>
+</li>
+<li>
+<t>
+Opt-Out Phase: Incrementally enable Option 108. Allow selective disabling for problematic endpoints. Disabling Option 108 SHOULD NOT be possible without a problem reports to ensure issue tracking and resolution.
+</t>
+</li>
+</ul>
+
 </section>
 
 </section>
