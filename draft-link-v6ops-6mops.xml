@@ -573,6 +573,19 @@ As client operating systems do not always handle changes in link-layer state (e.
 <section anchor="frag">
 <name>Fragmentation</name>
 <t>
+As the basic IPv6 header is 20 bytes longer than the IPv4 header, transating from IPv4 to IPv6 can result in packets exceeding the path MTU on the IPv6 side.
+In that case NAT64 creates IPv6 packets with the Fragment Header (see Section 4 of <xref target="RFC6145"/> for more details.
+As per  <xref target="RFC6145"/>, by default the translator fragments IPv4 packets so that they fit in 1280-byte IPv6 packets. It means that all IPv4 packets larger than 1260 bytes are fragmented (or dropped if the DF bit is set).
+</t>
+<t>
+ Administrators SHOULD maximize the path MTU on the IPv6 side (from the translator to IPv6-only hosts) to minimize fragmentation. NAT64 devices SHOULD be configured to use the actual path MTU on the IPv6 side when fragmenting IPv4 packets.
+</t>
+<t>
+Another common case of IPv6 fragmentation is the use of protocols like DNS and RADIUS, where the server response needs to be sent as a single UDP datagram. 
+Network security policies MUST allow IPv6 fragments for permitted UDP traffic (e.g., DNS, RADIUS) where single-datagram responses are required. Allowing IPv6 fragments for permitted TCP traffic is RECOMMENDED unless the network infrastructure reliably performs TCP MSS clamping.
+</t>
+<t>
+DISCUSSION: neither <xref target="RFC6145"/> nor <xref target="RFC6146"/> requires that NAT64 device performs MSS clamping, reducing MSS by 20 bytes while translating IPv6 to IPv4. Sounds like a useful feature though.
 </t>
 </section>
 
