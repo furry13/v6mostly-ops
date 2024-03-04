@@ -615,9 +615,13 @@ DISCUSSION: shall the IETF  consider standardizing a translation mechanism for s
 <section>
 <name>Custom DNS Configuration on Endpoints</name>
 <t>
+In IPv6-mostly networks without PREF64 in RAs, hosts rely on DNS64 (<xref target="RFC7050"/>) to discover the NAT64 prefix for CLAT operation. Endpoints or applications configured with custom DNS resolvers (e.g., public or corporate DNS) may bypass the network-provided DNS64, preventing NAT64 prefix discovery and hindering CLAT functionality.
+</t>
+<t>
+Where feasible, administrators SHOULD include PREF64 in RAs within IPv6-mostly networks to minimize reliance on DNS64.
+Administrators need to  be aware of the potential for CLAT failures when endpoints use custom resolvers in environments lacking PREF64.
 </t>
 </section>
-
 
 </section>
 </section>
@@ -684,7 +688,7 @@ This document does not introduce any privacy considerations.
     <section anchor="Acknowledgements" numbered="false">
       <name>Acknowledgements</name>
 <t>
-Thanks to  for the discussions, the input and all contribution.
+TBA
 </t>
     </section>
     
