@@ -19,7 +19,6 @@
   docName="draft-link-v6ops-6mops.xml"
   ipr="trust200902"
   obsoletes=""
-  updates="8585"
   submissionType="IETF"
   xml:lang="en"
   version="3">
@@ -415,7 +414,7 @@ For quick rollback, the administrator SHOULD start with a minimal Option 108 val
 
 <t>
 Before user-facing deployment, the administrator SHOULD consider a dedicated IPv6-mostly proof-of-concept network for early adopters. While this temporarily sacrifices some IPv6-mostly benefits (<xref target="vsv6only"/>), it provides valuable operational experience and early issue detection.
-</t>
+  </t>
 <ul>
 <li>
 <t>
@@ -428,6 +427,10 @@ Opt-Out Phase: Incrementally enable Option 108. Allow selective disabling for pr
 </t>
 </li>
 </ul>
+
+<t>
+In some scenarios (see <xref target="nov6"/>) the administrator MAY keep a dual-stack network as a last resort fallback mechanism but SHOULD prevent usesrs from connecting to it accidentially (e.g. it should be a hidden protected SSID).
+</t>
 
 </section>
 
@@ -475,6 +478,13 @@ It's crucial to note that these issues likely pre-exist in dual-stack networks, 
 <section anchor="nov6">
 <name>Hosts with Disabled or Disfunctional IPv6</name>
 <t>
+Historically, tech support often advised disabling IPv6 as a quick workaround, leading to devices with disabled IPv6.
+Similarly, corporate IT may have disabled or filtered IPv6 under the assumption that it's not widely used.
+Such endpoints requesting Option 108 will fail to connect in an IPv6-mostly network, as they won't receive IPv4 addresses and Ipv6 is disabled.
+</t>
+
+<t>
+Administrators controlling endpoints SHOULD ensure those endpoints have IPv6 enabled and operational before migrating the network to IPv6-mostly mode. 
 </t>
 
 </section>
@@ -482,13 +492,74 @@ It's crucial to note that these issues likely pre-exist in dual-stack networks, 
 <section anchor="ext">
 <name>Network Extension</name>
 <t>
+IPv4's NAT44 allows endpoints to extend connectivity to downstream systems without upstream network awareness or permission.
+This creates challenges in IPv6-mostly deployments where endpoints lack IPv4 addresses:
+
 </t>
+<t>
+Solutions and trade-offs:
+</t>
+<ul>
+<li>
+<t>
+Using DHCPv6-PD to allocate prefixes to endpoints (<xref target="I-D.ietf-v6ops-dhcp-pd-per-device"/>).
+Provides downstream systems with IPv6 addresses and native connectivity.
+</t>
+</li>
+<li>
+<t>
+Enabling the CLAT function on the endpoint. This scenario is similar to the Wireline Network Architecture described in Section 4.1 of <xref target="RFC6877"/>. The downstream systems would receive IPv4 addresses and their IPv4 traffic would be translated to IPv6 by the endpoint. However thios approach leads to the downstream systems using IPv4 only and not benefiting from end2end IPv6 connectivity. 
+To enable IPv6 benefits, combine this with IPv6 Prefix Delegation as above.
+</t>
+</li>
+<li>
+<t>
+Bridging and ND Proxy: The endpoint bridges IPv6 traffic and masks downstream devices behind its MAC address.
+This can lead to scalability issues ( <xref target="multip"/>) due to the single MAC being mapped to many IPv6 addresses.
+</t>
+</li>
+</ul>
 </section>
 
 <section anchor="multip">
 <name>Multiple Addresses per Device</name>
 <t>
+Unlike IPv4, where endpoints typically have a single IPv4 address per interface, IPv6 endpoints inherently use multiple addresses:
 </t>
+<ul>
+<li>
+<t>
+Link-local address.
+</t>
+</li>
+<li>
+<t>
+Temporary address (common on mobile devices for privacy)
+</t>
+</li>
+<li>
+<t>
+Stable address (for long-term identification)
+</t>
+</li>
+<li>
+<t>
+CLAT address (in IPv6-mostly/IPv6-only networks)
+</t>
+</li>
+</ul>
+
+<t>
+Endpoints with containers, namespaces, or ND proxy functions can have even more addresses. This poses challenges for network infrastructure devices (SAVI switches, wireless access points etc) that map MAC addresses to IPv6 addresses, often with limits to prevent resource exhaustion or DoS attacks.
+When the number of IPs per MAC limit is exceeded, infastructure devices behavior varies across implementations, leading to inconsistent connectivity loss: while some systems drop new addresses, others delete older entries, causing previously functional addresses to lose connectivity.
+In all those cases Endpoints and applications don't receive explicit signalling about the address becoming unusable.
+</t>
+
+<t>
+While allocating prefixes to endpoints via DHCP-PD (<xref target="I-D.ietf-v6ops-dhcp-pd-per-device"/>) alows to eliminate the issue and corresponding scalability concerns, that solution migth not be supported by all endpoints. 
+The network administrator SHOULD ensure that the deployed network infastructure devices allow sufficient number of IPv6 addresses to be mapped to a client's MAC and SHOULD monitor for events, indicating that the limit has been reached (such as syslog messages etc).
+</t>
+
 </section>
 
 <section anchor="gulla">
