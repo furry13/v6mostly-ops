@@ -1,29 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-model href="rfc7991bis.rnc"?>  <!-- Required for schema validation and schema-aware editing -->
+<?xml-model href="rfc7991bis.rnc"?><!-- Required for schema validation and schema-aware editing -->
 <!-- <?xml-stylesheet type="text/xsl" href="rfc2629.xslt" ?> -->
 <!-- This third-party XSLT can be enabled for direct transformations in XML processors, including most browsers -->
 
 
 <!DOCTYPE rfc [
   <!ENTITY nbsp    "&#160;">
-  <!ENTITY zwsp   "&#8203;">
-  <!ENTITY nbhy   "&#8209;">
-  <!ENTITY wj     "&#8288;">
+<!ENTITY zwsp   "&#8203;">
+<!ENTITY nbhy   "&#8209;">
+<!ENTITY wj     "&#8288;">
 ]>
 <!-- If further character entities are required then they should be added to the DOCTYPE above.
      Use of an external entity file is not recommended. -->
 
-<rfc
-  xmlns:xi="http://www.w3.org/2001/XInclude"
-  category="info"
-  docName="draft-link-v6ops-6mops-00"
-  ipr="trust200902"
-  obsoletes=""
-  submissionType="IETF"
-  xml:lang="en"
-  version="3">
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="info" docName="draft-link-v6ops-6mops-00" ipr="trust200902" obsoletes="" submissionType="IETF" xml:lang="en" version="3">
   <front>
-<title abbrev="6mops">IPv6-Mostly Networks: Deployment and Operations Considerations</title>
+    <title abbrev="6mops">IPv6-Mostly Networks: Deployment and Operations Considerations</title>
     <seriesInfo name="Internet-Draft" value="draft-link-v6ops-6mops"/>
     <author fullname="Jen Linkova" initials="J" surname="Linkova">
       <organization>Google</organization>
@@ -35,13 +27,28 @@
           <region>NSW</region>
           <code>2009</code>
           <country>AU</country>
-        </postal>        
-        <email>furry13@gmail.com</email>  
-        <email>furry@google.com</email>  
+        </postal>
+        <email>furry13@gmail.com</email>
+        <email>furry@google.com</email>
+      </address>
+    </author>
+    <author fullname="Nick Buraglio" initials="N" surname="Buraglio">
+      <organization>Google</organization>
+      <address>
+        <postal>
+          <!-- Reorder these if your country does things differently -->
+          <street></street>
+          <city></city>
+          <region>IL</region>
+          <code></code>
+          <country>US</country>
+        </postal>
+        <email>buraglio@forwardingplane.net</email>
+        <email>buraglio@es.net</email>
       </address>
     </author>
     <date year="2024"/>
-<area>Ops</area>
+    <area>Ops</area>
     <workgroup>IPv6 operations</workgroup>
     <keyword>ipv6</keyword>
     <keyword>slaac</keyword>
@@ -54,218 +61,232 @@
 
 
     <abstract>
- <t>
+      <t>
 This document discusses an deployment scenario called "an IPv6-Mostly network", when IPv6-only and IPv4-enabled endpoints coexist on the same network (network segment, VLAN, SSID etc).
-</t>
+      </t>
 
     </abstract>
- 
+
   </front>
 
   <middle>
-    
+
     <section>
       <name>Introduction</name>
-<t>
+      <t>
 While most network operators initially deploy IPv6 alongside their existing IPv4 infrastructure, pure IPv6-only networks remain uncommon outside of the mobile carrier space. This dual-stack approach is seen as a necessary transition phase, allowing operators to gain experience with IPv6 while minimizing disruption.
-</t>
+      </t>
 
-<t>
-However, dual-stack networks don't address the core problem driving IPv6 adoption: IPv4 address exhaustion. They still require the same amount of IPv4 resources as IPv4-only networks.  Even worse, this dual-stack approach often becomes a long-term crutch. Many applications still rely on IPv4, creating a chicken-and-egg problem: IPv6-only networks seem impractical with so many incompatible applications, yet applications continue to rely on IPv4 because IPv6-only networks are rare.
-</t>
+      <t>
+However, dual-stack networks don not address the core problem driving IPv6 adoption: IPv4 address exhaustion. They still require the same amount of IPv4 resources as IPv4-only networks.  Even worse, this dual-stack approach has been demonstrated to be a long-term crutch, frequently masking problems that would otherwise be exposed and remedied as normal operational workflows. Many applications still rely on IPv4, creating a chicken-and-egg problem: IPv6-only networks seem impractical with so many incompatible applications, yet applications continue to rely on IPv4 because IPv6-only networks are rare.
+      </t>
 
-<t>
-The less control a network operator has over devices and applications, the more difficult it is to break IPv4 dependencies and move to IPv6-only. This is particularly challenging in enterprise networks with legacy IPv4-dependent applications and public WiFi networks where operators cannot guarantee device compatibility.
-</t>
+      <t>
+The less control a network operator has over devices and applications, the more difficult it is to break IPv4 dependencies and move to IPv6-only. This is particularly challenging in enterprise networks with legacy IPv4-dependent applications and public Wi-Fi networks where operators cannot guarantee device compatibility.
+      </t>
 
-<t>
+      <t>
 To enable a gradual migration, operators need to identify which devices can function in IPv6-only mode and which cannot. Creating separate network segments for each type introduces complexity and scalability issues – a major hurdle to IPv6-only adoption.
-</t>
+      </t>
 
-<t>
-A more desirable approach is to deploy so-called "IPv6-mostly" network that provides IPv4 on demand. This allows IPv6-capable devices to remain IPv6-only while seamlessly supplying IPv4 to those that require it.
-</t>
+      <t>
+A more desirable approach is to deploy an "IPv6-mostly" network that provides IPv4 on demand. This allows IPv6-capable devices to remain IPv6-only while seamlessly supplying IPv4 to those that require it. An IPv6-mostly network allows Endpoints to operate at the highest level of their network stack evolution, on demand, while still allowing for legacy compatibility. 
+      </t>
 
-<t>
-This document explores the requirements, recommendations, and challenges associated with deploying IPv6-mostly networks in enterprise and public WiFi environments. While the principles discussed may be applicable to other network types, this document's focus remains on these specific use cases.
-</t>
+      <t>
+This document explores the requirements, recommendations, and challenges associated with deploying IPv6-mostly networks in enterprise and public Wi-Fi environments. While the principles discussed may be applicable to other network types, this document's focus remains on these specific use cases.
+      </t>
     </section>
-      
-      <section>
-        <name>Requirements Language</name>
-        <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL",
+
+    <section>
+      <name>Requirements Language</name>
+      <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL",
           "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT
           RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
           interpreted as described in BCP 14 <xref target="RFC2119"/>
-          <xref target="RFC8174"/> when, and only when, they appear in
+      <xref target="RFC8174"/>
+ when, and only when, they appear in
           all capitals, as shown here.</t>
-      </section>
+  </section>
 
-<section anchor="term">
-<name>
+  <section anchor="term">
+    <name>
 Terminology
-</name>
-<t>
-This document reuses most of Terminology section from <xref target="RFC8925"/>.
-</t>
-<t>
+    </name>
+    <t>
+This document reuses most of Terminology section from <xref target="RFC8925"/>
+.
+    </t>
+    <t>
 Endpoint: A device connected to a network and considered a host From the operator's perspective. However, some endpoint can also extend the network to other physical or logical systems, thereby assuming routing functions. Examples include:
-</t>
+    </t>
 
-<ul>
-<li>
-<t>
+    <ul>
+      <li>
+        <t>
 Corporate laptop: While primarily a host, it might run virtual systems and route traffic to them, extending the network and acting as a router.
-</t>
-</li>
-<li>
-<t>
-Mobile phone with tethering enabled: Acts as a host on the WiFi network, but also as a router for tethered devices, potentially without the operator's knowledge or consent.
-</t>
-</li>
-</ul>
-<t>
+        </t>
+      </li>
+      <li>
+        <t>
+Mobile phone with tethering enabled: Acts as a host on the Wi-Fi network, but also as a router for tethered devices, potentially without the operator's knowledge or consent.
+        </t>
+      </li>
+    </ul>
+    <t>
 Network segment: a link (VLAN, a broadcast domain etc) where hosts share the same IP subnet.
-</t>
+    </t>
 
-</section>
+  </section>
 
-<section anchor="overview">
-<name>Solution Overview</name>
-<t>
+  <section anchor="overview">
+    <name>Solution Overview</name>
+    <t>
 In a nutshell, an IPv6-mostly network is very much similar to a dual-stack one with two additional key elements:
-</t>
-<ul>
-<li>
-<t>
-The network provides NAT64 (<xref target="RFC6146"/>)  functionality ([RFC6146]), enabling IPv6-only clients to communicate with IPv4-only destinations.
-</t>
-</li>
-<li>
-<t>
+    </t>
+    <ul>
+      <li>
+        <t>
+The network provides NAT64 (<xref target="RFC6146"/>
+)  functionality ([RFC6146]), enabling IPv6-only clients to communicate with IPv4-only destinations.
+        </t>
+      </li>
+      <li>
+        <t>
 The DHCPv4 infrastructure processing DHCPv4 Option 108 as per <xref target="RFC8925"/>.
-</t>
-</li>
-</ul>
-<t>
+        </t>
+      </li>
+    </ul>
+    <t>
 Upon connecting to an IPv6-mostly network segment, an endpoint configures its IP stack based on its capabilities:
-</t>
-<ul>
-<li>
-<t>
+    </t>
+    <ul>
+      <li>
+        <t>
 IPv4-Only Endpoint: Acquires an IPv4 address through DHCPv4.
-</t>
-</li>
-<li>
-<t>
+        </t>
+      </li>
+      <li>
+        <t>
 Dual-Stack Endpoint (Not IPv6-Only Capable): Configures IPv6 addresses via Stateless Address Autoconfiguration (SLAAC) and, optionally, DHCPv6. Additionally, it obtains an IPv4 address via DHCPv4.
-</t>
-</li>
-<li>
-<t>
-IPv6-only capable endpoint configures its IPv6 addresses and, while performing DHCPv4, includes option 108 (<xref target="RFC8925"/>) into the Parameter Request List. The DHCP server returns the option and, as per <xref target="RFC8925"/>, the endpoint forgoes requesting an IPv4 address, remaining in IPv6-only mode.
-</t>
-</li>
-</ul>
+        </t>
+      </li>
+      <li>
+        <t>
+IPv6-only capable endpoint configures its IPv6 addresses and, while performing DHCPv4, includes option 108 (<xref target="RFC8925"/>
+) into the Parameter Request List. The DHCP server returns the option and, as per <xref target="RFC8925"/>
+, the endpoint forgoes requesting an IPv4 address, remaining in IPv6-only mode.
+      </t>
+    </li>
+  </ul>
 
-<t>
-An IPv6-mostly network segment can support a mix of IPv4-only, dual-stack, and IPv6-only devices.  IPv6-only endpoints utilize the network-provided NAT64 to reach IPv4-only destinations. 
-</t>
-<t>
+  <t>
+An IPv6-mostly network segment can support a mix of IPv4-only, dual-stack, and IPv6-only devices.  IPv6-only endpoints utilize the network-provided NAT64 along with DNS64 services to reach IPv4-only destinations. 
+  </t>
+  <t>
 The following sections discussed the various solution elements in more details.
-</t>
+  </t>
 
-<section anchor="capable">
-<name>IPv6-Only Capable Endpoints</name>
-<t>
-The term "IPv6-only capable endpoint" lacks a strict technical definition. It broadly describes a device that can function without native IPv4 connectivity/IPv4 addresses, providing the same user experience. The most common way to achieve this is by implementing a customer-side translator (CLAT) as specified in 464XLAT (<xref target="RFC6877"/>). Devices which support CLAT (such as mobile phones) are known to operate without issues in IPv6-only mode.
+  <section anchor="capable">
+    <name>IPv6-Only Capable Endpoints</name>
+    <t>
+The term "IPv6-only capable endpoint" lacks a strict technical definition. It broadly describes a device that can function without native IPv4 connectivity/IPv4 addresses, providing the same user experience. The most common way to achieve this is by implementing a customer-side translator (CLAT) as specified in 464XLAT (<xref target="RFC6877"/>
+). Devices which support CLAT (such as mobile phones) are known to operate without issues in IPv6-only mode.
 In some cases, however, a network administrator may consider a device IPv6-only capable even without CLAT implementation. 
 For example, if all applications run on the device have been tested and confirmed to operate in NAT64 envinronment without any IPv4 dependencies.
-</t>
-</section>
+    </t>
+  </section>
 
-<section>
-<name>IPv6-Only and IPv4-enabled Endpoints Coexistence</name>
-<t>
-One effective way to restrict IPv4 addresses solely to devices that require them is to enable support for the IPv6-Only Preferred DHCPv4 option (Option 108, <xref target="RFC8925"/>) on the network's DHCP infrastructure. 
+  <section>
+    <name>IPv6-Only and IPv4-enabled Endpoints Coexistence</name>
+    <t>
+One effective way to restrict IPv4 addresses solely to devices that require them is to enable support for the IPv6-Only Preferred DHCPv4 option (Option 108, <xref target="RFC8925"/>
+) on the network's DHCP infrastructure. 
 Most CLAT-enabled systems also support Option 108.  By recognizing this option, the network can configure those devices as IPv6-only, allowing them to use CLAT fo
 providing IPv4 address to the local endpoint's network stack. 
-</t>
-<t>
+    </t>
+    <t>
 Certain devices, such as resource-constrained embedded systems, may operate in IPv6-only mode without CLAT if their communication is limited to IPv6-enabled destinations. Since these systems often lack Option 108 support, administrators may need alternative methods to prevent IPv4 address assignment.
 
 One approach is to block IPv4 traffic at the switchport level. This could involve:
-</t>
+    </t>
 
-<ul>
-<li>
-<t>
+    <ul>
+      <li>
+        <t>
 Static ACL: Applying a static filter with a "deny ip any any" rule.
-</t>
-</li>
-<li>
-<t>
+        </t>
+      </li>
+      <li>
+        <t>
 Dynamic ACL via RADIUS: If 802.1x authentication is in use, RADIUS can provide an ACL blocking all IPv4 traffic.
-</t>
-</li>
-</ul>
+        </t>
+      </li>
+    </ul>
 
-<t>
+    <t>
 The ACL-based approach has some scalability implications and increases operational complexity, therefore it could only be recommended as a stopgap solution. 
-</t>
+    </t>
 
 
-</section>
+  </section>
 
-<section>
+  <section>
 
-<name>Access to IPv4-only Destinations</name>
-<t>
-</t>
+    <name>Access to IPv4-only Destinations</name>
+    <t>
+    </t>
 
-<section>
+    <section>
 
-<name>NAT64</name>
-<t>
+      <name>NAT64</name>
+      <t>
 IPv6-only endpoints require NAT64 to access IPv4-only destinations. Quite often operators choose to combine NAT44 and NAT64 functions.
-However, if not all internal services are IPv6-enabled, then NAT64 might need to be performed closer to the clients. If IPv4-only internal destinations are using <xref target="RFC1918"/> address space, then the operator MUST NOT use the well-known prefix 64:ff9b::/96 for NAT64 (see section 3.1 of <xref target="RFC6052"/>).
-</t>
+However, if not all internal services are IPv6-enabled, then NAT64 might need to be performed closer to the clients. If IPv4-only internal destinations are using <xref target="RFC1918"/>
+ address space, then the operator MUST NOT use the well-known prefix 64:ff9b::/96 for NAT64 (see section 3.1 of <xref target="RFC6052"/>
+).
+    </t>
 
-</section>
+  </section>
 
-<section anchor="v4only">
-<name>464XLAT</name>
-<t>
-Enabling CLAT (Customer-side translator) on endpoints is essential for seamless operation of IPv4-only applications in IPv6-only environments. CLAT provides an <xref target="RFC1918"/> address and IPv4 default route, ensuring functionality even without a native IPv4 address from the network. Without CLAT, IPv4-only applications would fail, negatively impacting user experience and increasing support overhead.
-</t>
-<t>
+  <section anchor="v4only">
+    <name>464XLAT</name>
+    <t>
+Enabling CLAT (Customer-side translator) on endpoints is essential for seamless operation of IPv4-only applications in IPv6-only environments. CLAT provides an <xref target="RFC1918"/>
+ address and IPv4 default route, ensuring functionality even without a native IPv4 address from the network. Without CLAT, IPv4-only applications would fail, negatively impacting user experience and increasing support overhead.
+    </t>
+    <t>
 Recommendations for Network Administrators controlling the endpoints:
-</t>
-<ul>
-<li>
-<t>
+    </t>
+    <ul>
+      <li>
+        <t>
 CLAT + DHCPv4 Option 108: If the network administrator can control endpoint configuration, CLAT SHOULD be enabled on endpoints sending DHCPv4 Option 108. This streamlines the transition.
-</t>
-</li>
-<li>
-<t>
+        </t>
+      </li>
+      <li>
+        <t>
 Option 108 Without CLAT MAY be enabled if the administrator is willing to identify and fixIPv4-only systems/applications, or if all applications are confirmed to work in IPv6-only mode.
-</t>
-</li>
-</ul>
-<t>
-</t>
-</section>
+        </t>
+      </li>
+    </ul>
+    <t>
+    </t>
+  </section>
 
-<section anchor="pref64">
-<name>Signalling NAT64 Prefix to Hosts</name>
-<t>
+  <section anchor="pref64">
+    <name>Signalling NAT64 Prefix to Hosts</name>
+    <t>
 Hosts running 464XLAT need to discover the PREF64 (the IPv6 prefix used by NAT64).
-The network administrator SHOULD configure the first-hop routers to include PREF64 information in Router Advertisements as per (<xref target="RFC8781"/>) even if the network provides DNS64 (so hosts can use DNS64-based prefix discovery, <xref target="RFC7050"/>).
-This is required as hosts or individual applications might have custom DNS configuration (or even run a local DNS server) and ignore DNS64 information provided by the network, so they can not use <xref target="RFC7050"/> method to detect PREF64.
+The network administrator SHOULD configure the first-hop routers to include PREF64 information in Router Advertisements as per (<xref target="RFC8781"/>
+) even if the network provides DNS64 (so hosts can use DNS64-based prefix discovery, <xref target="RFC7050"/>
+).
+This is required as hosts or individual applications might have custom DNS configuration (or even run a local DNS server) and ignore DNS64 information provided by the network, so they can not use <xref target="RFC7050"/>
+ method to detect PREF64.
 In the absense of PREF64 information in Router Advertisements such systems would not be able to run clat, which would cause connectivity issues for all IPv4-only applications running on the affected device. 
 As such device wouldn't be able to use the network-provided DNS64, access to IPv4-only destination would be impacted as well.
-At the time of writing all major OSes supporting DHCPv4 option 108 and enabling clat automatically also support <xref target="RFC8781"/>.
+At the time of writing all major OSes supporting DHCPv4 option 108 and enabling clat automatically also support <xref target="RFC8781"/>
+.
 Therefore providing PREF64 information in RAs can reliably mitigate the impact of custom DNS configuration on those systems.
 </t>
 <t>
@@ -281,23 +302,24 @@ While DNS64 (with NAT64) enables IPv6-only endpoints to access IPv4-only destina
 </t>
 <ul>
 <li>
-<t>
+  <t>
 DNSSEC Incompatibility: DNS64 responses fail DNSSEC validation.
-</t>
+  </t>
 </li>
 <li>
-<t>
+  <t>
 Custom Resolvers: Endpoints or applications configured with custom resolvers can not benefit from the DNS64 provided by the network.
-</t>
+  </t>
 </li>
 <li>
-<t>
+  <t>
 Additional requirements for application: to benefit from DNS64, applications need to be IPv6-enabled, use DNS (do not use IPv4 literals). Many applications do not satisfy those requirements and therefore fail if the endpoint does not have an IPv4 address/native IPv4 connectivity.
-</t>
+  </t>
 </li>
 </ul>
 <t>
-If the network provides PREF64 in RAs (<xref target="pref64"/>) and all endpoints are guaranteed to have CLAT enabled, DNS64 is unnecessary and SHOULD NOT be enabled.  However, if some IPv6-only devices might lack CLAT support, the network MUST provide DNS64 unless those endpoints are guaranteed  never to need IPv4-only destinations (for example, in case of a specialized network segment communicating solely with IPv6-capable destinations).
+If the network provides PREF64 in RAs (<xref target="pref64"/>
+) and all endpoints are guaranteed to have CLAT enabled, DNS64 is unnecessary and SHOULD NOT be enabled.  However, if some IPv6-only devices might lack CLAT support, the network MUST provide DNS64 unless those endpoints are guaranteed never to need IPv4-only destinations (for example, in case of a specialized network segment communicating solely with IPv6-capable destinations).
 </t>
 
 </section>
@@ -322,7 +344,7 @@ Drastically Reduced IPv4 Consumption: Dual-stack deployments don't solve the cor
 </li>
 <li>
 <t>
-Simplified Operations: Managing dual-stack networks means running two network planes simultaneously, increasing complexity, costs, and the potential for errors. IPv6-Mostly allows to phase out IPv4 from many endpoints, streamlining operations and improving overall network reliability.
+Simplified Operations: Managing dual-stack networks means running two network data planes simultaneously, increasing complexity, costs, and the potential for errors. IPv6-Mostly allows for the controlled phase out IPv4 from many endpoints, streamlining operations and improving overall network reliability at a measured and operator-controlled pace.
 </t>
 </li>
 <li>
@@ -342,7 +364,7 @@ Traditional IPv6-only adoption involved separate networks alongside dual-stack o
 <ul>
 <li>
 <t>
-Enhanced Scalability:  Separate IPv6-only networks double the number of SSIDs in wireless environments, causing channel congestion and degrading performance. IPv6-Mostly doesn't require additional SSIDs. Similarly, it allows IPv4 and IPv6-only devices to coexist on the same wired VLANs, eliminating the need of additional VLANs.
+Enhanced Scalability:  Separate IPv6-only networks double the number of SSIDs in wireless environments, causing channel congestion and degrading performance. IPv6-Mostly doesn't require additional SSIDs. Similarly, it allows IPv4 and IPv6-only devices to coexist on the same wired VLANs, eliminating the need of additional layer2 segments, VLAN IDs, and their respective layer3 configurations.
 </t>
 </li>
 <li>
@@ -405,7 +427,8 @@ Controlled Endpoint Activation: Enable Option 108 on managed endpoints with per-
 Rollback Approach
 </name>
 <t>
-For quick rollback, the administrator SHOULD start with a minimal Option 108 value (300 seconds, Section 3.4 of <xref target="RFC8925"/>) and increase this value as the IPv6-mostly network proves reliable, reducing the likelihood of full-scale rollback.
+For quick rollback, the administrator SHOULD start with a minimal Option 108 value (300 seconds, Section 3.4 of <xref target="RFC8925"/>
+) and increase this value as the IPv6-mostly network proves reliable, reducing the likelihood of full-scale rollback.
 </t>
 </section>
 
@@ -413,8 +436,9 @@ For quick rollback, the administrator SHOULD start with a minimal Option 108 val
 <name>Opt-In and Opt-Out Modes</name>
 
 <t>
-Before user-facing deployment, the administrator SHOULD consider a dedicated IPv6-mostly proof-of-concept network for early adopters. While this temporarily sacrifices some IPv6-mostly benefits (<xref target="vsv6only"/>), it provides valuable operational experience and early issue detection.
-  </t>
+Before user-facing deployment, the administrator SHOULD consider a dedicated IPv6-mostly proof-of-concept network for early adopters. While this temporarily sacrifices some IPv6-mostly benefits (<xref target="vsv6only"/>
+), it provides valuable operational experience and early issue detection.
+</t>
 <ul>
 <li>
 <t>
@@ -429,7 +453,8 @@ Opt-Out Phase: Incrementally enable Option 108. Allow selective disabling for pr
 </ul>
 
 <t>
-In some scenarios (see <xref target="nov6"/>) the administrator MAY keep a dual-stack network as a last resort fallback mechanism but SHOULD prevent usesrs from connecting to it accidentially (e.g. it should be a hidden protected SSID).
+In some scenarios (see <xref target="nov6"/>
+) the administrator MAY keep a dual-stack network as a last resort fallback mechanism but SHOULD prevent usesrs from connecting to it accidentially (e.g. it should be a hidden protected SSID).
 </t>
 
 </section>
@@ -442,7 +467,8 @@ In some scenarios (see <xref target="nov6"/>) the administrator MAY keep a dual-
 <section anchor="slaac">
 <name>Address Assignment Policy</name>
 <t>
-As outlined in Section 6.3 of <xref target="RFC6877"/>, CLAT requires either a dedicated IPv6 prefix or, if unavailable, a dedicated IPv6 address. Currently (2024), all implementations use SLAAC for CLAT address acquisition. Therefore, to enable CLAT functionality within IPv6-mostly network segments, first-hop routers must advertise a Prefix Information Option (PIO) containing a globally routable SLAAC-suitable prefix with the 'Autonomous Address-Configuration' (A) flag set to zero.
+As outlined in Section 6.3 of <xref target="RFC6877"/>
+, CLAT requires either a dedicated IPv6 prefix or, if unavailable, a dedicated IPv6 address. Currently (2024), all implementations use SLAAC for CLAT address acquisition. Therefore, to enable CLAT functionality within IPv6-mostly network segments, first-hop routers must advertise a Prefix Information Option (PIO) containing a globally routable SLAAC-suitable prefix with the 'Autonomous Address-Configuration' (A) flag set to zero.
 </t>
 </section>
 
@@ -457,12 +483,14 @@ The network SHOULD permit at least the following extension headers:
 <ul>
 <li>
 <t>
-Fragment Header (Section 4.5 of <xref target="RFC8200"/>). <xref target="frag"/> discusses the fragmentation in more details.
+Fragment Header (Section 4.5 of <xref target="RFC8200"/>
+).<xref target="frag"/>
+ discusses the fragmentation in more details.
 </t>
 </li>
 <li>
 <t>
-ESP Header, which is used for IPSec traffic, such as VPN and WiFi Calling.
+ESP Header, which is used for IPSec traffic, such as VPN and Wi-Fi Calling.
 </t>
 </li>
 </ul>
@@ -502,20 +530,23 @@ Solutions and trade-offs:
 <ul>
 <li>
 <t>
-Using DHCPv6-PD to allocate prefixes to endpoints (<xref target="I-D.ietf-v6ops-dhcp-pd-per-device"/>).
+Using DHCPv6-PD to allocate prefixes to endpoints (<xref target="I-D.ietf-v6ops-dhcp-pd-per-device"/>
+).
 Provides downstream systems with IPv6 addresses and native connectivity.
 </t>
 </li>
 <li>
 <t>
-Enabling the CLAT function on the endpoint. This scenario is similar to the Wireline Network Architecture described in Section 4.1 of <xref target="RFC6877"/>. The downstream systems would receive IPv4 addresses and their IPv4 traffic would be translated to IPv6 by the endpoint. However thios approach leads to the downstream systems using IPv4 only and not benefiting from end2end IPv6 connectivity. 
+Enabling the CLAT function on the endpoint. This scenario is similar to the Wireline Network Architecture described in Section 4.1 of <xref target="RFC6877"/>
+. The downstream systems would receive IPv4 addresses and their IPv4 traffic would be translated to IPv6 by the endpoint. However thios approach leads to the downstream systems using IPv4 only and not benefiting from end2end IPv6 connectivity. 
 To enable IPv6 benefits, combine this with IPv6 Prefix Delegation as above.
 </t>
 </li>
 <li>
 <t>
 Bridging and ND Proxy: The endpoint bridges IPv6 traffic and masks downstream devices behind its MAC address.
-This can lead to scalability issues ( <xref target="multip"/>) due to the single MAC being mapped to many IPv6 addresses.
+This can lead to scalability issues ( <xref target="multip"/>
+) due to the single MAC being mapped to many IPv6 addresses.
 </t>
 </li>
 </ul>
@@ -556,7 +587,8 @@ In all those cases Endpoints and applications don't receive explicit signalling 
 </t>
 
 <t>
-While allocating prefixes to endpoints via DHCP-PD (<xref target="I-D.ietf-v6ops-dhcp-pd-per-device"/>) alows to eliminate the issue and corresponding scalability concerns, that solution migth not be supported by all endpoints. 
+While allocating prefixes to endpoints via DHCP-PD (<xref target="I-D.ietf-v6ops-dhcp-pd-per-device"/>
+) alows to eliminate the issue and corresponding scalability concerns, that solution migth not be supported by all endpoints. 
 The network administrator SHOULD ensure that the deployed network infastructure devices allow sufficient number of IPv6 addresses to be mapped to a client's MAC and SHOULD monitor for events, indicating that the limit has been reached (such as syslog messages etc).
 </t>
 
@@ -566,7 +598,8 @@ The network administrator SHOULD ensure that the deployed network infastructure 
 <name>Host Mobility and Renumbering</name>
 <t>
 Networks employing dynamic VLAN assignment (e.g., based on 802.1x or MAC-based authentication) can cause endpoints to move between VLANs and IPv6 subnets.
-As client operating systems do not always handle changes in link-layer state (e.g., VLAN changes) correctly, this mobility often leads to inconsistent IP stack behavior on operating systems, resulting in the persistence of old subnet addresses and potential connectivity issues due to incorrect source address selection. <xref target="I-D.link-v6ops-gulla"/> provides further analysis and potential solutions.
+As client operating systems do not always handle changes in link-layer state (e.g., VLAN changes) correctly, this mobility often leads to inconsistent IP stack behavior on operating systems, resulting in the persistence of old subnet addresses and potential connectivity issues due to incorrect source address selection. <xref target="I-D.link-v6ops-gulla"/>
+ provides further analysis and potential solutions.
 </t>
 </section>
 
@@ -574,8 +607,10 @@ As client operating systems do not always handle changes in link-layer state (e.
 <name>Fragmentation</name>
 <t>
 As the basic IPv6 header is 20 bytes longer than the IPv4 header, transating from IPv4 to IPv6 can result in packets exceeding the path MTU on the IPv6 side.
-In that case NAT64 creates IPv6 packets with the Fragment Header (see Section 4 of <xref target="RFC6145"/> for more details.
-As per  <xref target="RFC6145"/>, by default the translator fragments IPv4 packets so that they fit in 1280-byte IPv6 packets. It means that all IPv4 packets larger than 1260 bytes are fragmented (or dropped if the DF bit is set).
+In that case NAT64 creates IPv6 packets with the Fragment Header (see Section 4 of <xref target="RFC6145"/>
+ for more details.
+As per  <xref target="RFC6145"/>
+, by default the translator fragments IPv4 packets so that they fit in 1280-byte IPv6 packets. It means that all IPv4 packets larger than 1260 bytes are fragmented (or dropped if the DF bit is set).
 </t>
 <t>
  Administrators SHOULD maximize the path MTU on the IPv6 side (from the translator to IPv6-only hosts) to minimize fragmentation. NAT64 devices SHOULD be configured to use the actual path MTU on the IPv6 side when fragmenting IPv4 packets.
@@ -585,7 +620,9 @@ Another common case of IPv6 fragmentation is the use of protocols like DNS and R
 Network security policies MUST allow IPv6 fragments for permitted UDP traffic (e.g., DNS, RADIUS) where single-datagram responses are required. Allowing IPv6 fragments for permitted TCP traffic is RECOMMENDED unless the network infrastructure reliably performs TCP MSS clamping.
 </t>
 <t>
-DISCUSSION: neither <xref target="RFC6145"/> nor <xref target="RFC6146"/> requires that NAT64 device performs MSS clamping, reducing MSS by 20 bytes while translating IPv6 to IPv4. Sounds like a useful feature though.
+DISCUSSION: neither <xref target="RFC6145"/>
+ nor <xref target="RFC6146"/>
+ requires that NAT64 device performs MSS clamping, reducing MSS by 20 bytes while translating IPv6 to IPv4. Sounds like a useful feature though.
 </t>
 </section>
 
@@ -615,7 +652,8 @@ DISCUSSION: shall the IETF  consider standardizing a translation mechanism for s
 <section>
 <name>Custom DNS Configuration on Endpoints</name>
 <t>
-In IPv6-mostly networks without PREF64 in RAs, hosts rely on DNS64 (<xref target="RFC7050"/>) to discover the NAT64 prefix for CLAT operation. Endpoints or applications configured with custom DNS resolvers (e.g., public or corporate DNS) may bypass the network-provided DNS64, preventing NAT64 prefix discovery and hindering CLAT functionality.
+In IPv6-mostly networks without PREF64 in RAs, hosts rely on DNS64 (<xref target="RFC7050"/>
+) to discover the NAT64 prefix for CLAT operation. Endpoints or applications configured with custom DNS resolvers (e.g., public or corporate DNS) may bypass the network-provided DNS64, preventing NAT64 prefix discovery and hindering CLAT functionality.
 </t>
 <t>
 Where feasible, administrators SHOULD include PREF64 in RAs within IPv6-mostly networks to minimize reliance on DNS64.
@@ -626,71 +664,71 @@ Administrators need to  be aware of the potential for CLAT failures when endpoin
 </section>
 </section>
 
-    <section anchor="Security">
-      <!-- All drafts are required to have a security considerations section. See RFC 3552 for a guide. -->
-      <name>Security Considerations</name>
+<section anchor="Security">
+<!-- All drafts are required to have a security considerations section. See RFC 3552 for a guide. -->
+<name>Security Considerations</name>
 <t>
 </t>
 </section>
 
-    <section anchor="privacy">
-      <name>Privacy Considerations</name>
-      <t>
+<section anchor="privacy">
+<name>Privacy Considerations</name>
+<t>
 This document does not introduce any privacy considerations.
-      </t>
-    </section>
-    
-    <section anchor="IANA">
-    <!-- All drafts are required to have an IANA considerations section. See RFC 8126 for a guide.-->
-      <name>IANA Considerations</name>
-      <t>This memo does not introduce any requests to IANA.</t>
-    </section>
-    
-    <!-- NOTE: The Acknowledgements and Contributors sections are at the end of this template -->
-  </middle>
+</t>
+</section>
 
-  <back>
-    <references>
-      <name>References</name>
-      <references>
-        <name>Normative References</name>
-        
-        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.2119.xml"/>
-	<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6146.xml"/>
-	<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6333.xml"/>
-        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6877.xml"/>
-        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7050.xml"/>
-        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7335.xml"/>
-        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8200.xml"/>
-        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8174.xml"/>
-        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8781.xml"/>
-        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8585.xml"/>
-        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8925.xml"/>
-        <!-- The recommended and simplest way to include a well known reference -->
-        
-      </references>
- 
-      <references>
-	      <name>Informative References</name>
-        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.1918.xml"/>
-        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4861.xml"/>
-        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4862.xml"/>
-        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6052.xml"/>
-        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6145.xml"/>
-        <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7225.xml"/>
-        <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-v6ops-dhcp-pd-per-device.xml"/>
-        <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.link-v6ops-claton.xml"/>
-        <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.link-v6ops-gulla.xml"/>
+<section anchor="IANA">
+<!-- All drafts are required to have an IANA considerations section. See RFC 8126 for a guide.-->
+<name>IANA Considerations</name>
+<t>This memo does not introduce any requests to IANA.</t>
+</section>
 
-      </references>
-    </references>
-    
-    <section anchor="Acknowledgements" numbered="false">
-      <name>Acknowledgements</name>
+<!-- NOTE: The Acknowledgements and Contributors sections are at the end of this template -->
+</middle>
+
+<back>
+<references>
+<name>References</name>
+<references>
+<name>Normative References</name>
+
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.2119.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6146.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6333.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6877.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7050.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7335.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8200.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8174.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8781.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8585.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8925.xml"/>
+<!-- The recommended and simplest way to include a well known reference -->
+
+</references>
+
+<references>
+<name>Informative References</name>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.1918.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4861.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4862.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6052.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6145.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7225.xml"/>
+<xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-v6ops-dhcp-pd-per-device.xml"/>
+<xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.link-v6ops-claton.xml"/>
+<xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.link-v6ops-gulla.xml"/>
+
+</references>
+</references>
+
+<section anchor="Acknowledgements" numbered="false">
+<name>Acknowledgements</name>
 <t>
 TBA
 </t>
-    </section>
-    
- </back>
+</section>
+
+</back>
 </rfc>
