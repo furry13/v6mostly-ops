@@ -652,7 +652,7 @@ DISCUSSION: shall the IETF  consider standardizing a translation mechanism for s
 <section anchor="L2">
 <name>IPv4-Dependencies in Network Admission Control</name>
 <t>
-Certain layer 2 network devices (e.g., wireless access points, controllers) may enforce a policy where a host's network access is contingent upon successful DHCP IPv4 address assignment. 
+Certain layer 2 network devices (e.g., wireless access points, controllers) may enforce a policy where a host's network access is contingent upon successful DHCP IPv4 address assignment or tied to results of DHCP snooping.
 Consequently, hosts supporting Option 108 may experience network access denial or disconnection, as they are not assigned IPv4 addresses.
 </t>
 </section>
