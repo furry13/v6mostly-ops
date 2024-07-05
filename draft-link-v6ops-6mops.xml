@@ -16,7 +16,7 @@
 <rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="info" docName="draft-link-v6ops-6mops-00" ipr="trust200902" obsoletes="" submissionType="IETF" xml:lang="en" version="3">
   <front>
     <title abbrev="6mops">IPv6-Mostly Networks: Deployment and Operations Considerations</title>
-    <seriesInfo name="Internet-Draft" value="draft-link-v6ops-6mops"/>
+    <seriesInfo name="Internet-Draft" value="draft-link-v6ops-6mops-00"/>
     <author fullname="Jen Linkova" initials="J" surname="Linkova">
       <organization>Google</organization>
       <address>
@@ -646,6 +646,14 @@ Path MTU Discovery Issues: Potential disruptions in the PMTU discovery process.
 
 <t>
 DISCUSSION: shall the IETF  consider standardizing a translation mechanism for such packets?
+</t>
+</section>
+
+<section anchor="L2">
+<name>IPv4-Dependencies in Network Admission Control</name>
+<t>
+Certain layer 2 network devices (e.g., wireless access points, controllers) may enforce a policy where a host's network access is contingent upon successful DHCP IPv4 address assignment. 
+Consequently, hosts supporting Option 108 may experience network access denial or disconnection, as they are not assigned IPv4 addresses.
 </t>
 </section>
 
