@@ -693,6 +693,35 @@ Administrators need to  be aware of the potential for CLAT failures when endpoin
 <!-- All drafts are required to have a security considerations section. See RFC 3552 for a guide. -->
 <name>Security Considerations</name>
 <t>
+The proposed deployment scenario inherits security considerations of IPv6 (see <xref target="RFC9099"/>).
+As IPv6-only device can not fall back to IPv4 if IPv6 connectivity is not available or impacted by a malicious actor.
+Therefore any attack affecting IPv6 connectivity would have much more drastic outcome, comparing to dual-stack networks.
+</t>
+<t>
+By signalling a rogue NAT64 prefix to a host, a malicious actor can:
+</t>
+<ul>
+<li>
+<t>
+cause a DoS attack, if the network does not provide NAT64 functions (for that prefix or at all);
+</t>
+</li>
+<li>
+<t>
+implement MitM attack by intercepting traffic to the rogue prefix.
+</t>
+</li>
+</ul>
+<t>
+To countermeasure this attack vector, the network administrators SHOULD configure  the first-hop routers to include PREF64 information in Router Advertisements as per <xref target="RFC8781"/> and ensure that layer 2 security measures such as RA-Guard (<xref target="RFC6105"/>) are in place.
+Section 7 of <xref target="RFC8781"/> discusses this topic in more details.
+Additionally, <xref target="I-D.link-v6ops-claton"/> discusses security implications of enabling CLAT if native IPv4 connectivity is available and recommends disabling CLAT in that case.
+</t>
+<t>
+Security considerations of using DHCP Option 108 are documented in Section 6 of <xref target="RFC8925"/>.
+</t>
+<t>
+
 </t>
 </section>
 
@@ -719,6 +748,7 @@ This document does not introduce any privacy considerations.
 <name>Normative References</name>
 
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.2119.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6105.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6146.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6333.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6877.xml"/>
@@ -729,6 +759,7 @@ This document does not introduce any privacy considerations.
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8781.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8585.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8925.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9099.xml"/>
 <!-- The recommended and simplest way to include a well known reference -->
 
 </references>
@@ -752,7 +783,7 @@ This document does not introduce any privacy considerations.
 <section anchor="Acknowledgements" numbered="false">
 <name>Acknowledgements</name>
 <t>
-TBA
+Thanks to Ondrej Caletka, Brian Carpenter, Stuart Cheshire, Lorenzo Colitti, Jordi Palet, Michael Richardson, Matsuzaki Yoshinobu for the discussions, the feedback, and all contribution.
 </t>
 </section>
 
