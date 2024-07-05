@@ -660,8 +660,9 @@ Consequently, hosts supporting Option 108 may experience network access denial o
 <section>
 <name>Custom DNS Configuration on Endpoints</name>
 <t>
-In IPv6-mostly networks without PREF64 in RAs, hosts rely on DNS64 (<xref target="RFC7050"/>
-) to discover the NAT64 prefix for CLAT operation. Endpoints or applications configured with custom DNS resolvers (e.g., public or corporate DNS) may bypass the network-provided DNS64, preventing NAT64 prefix discovery and hindering CLAT functionality.
+In IPv6-mostly networks without PREF64 in RAs, hosts rely on DNS64 (<xref target="RFC7050"/> to discover the NAT64 prefix for CLAT operation.
+<xref target="RFC8880"/> requires that queries for AAAA resource records of "ipv4only.arpa." MUST be sent to the recursive resolvers provided by the network, not to the resolvers configured manually, local recursive resolvers etc.
+However some implementations do not comply with <xref target="RFC8880"/> and, when configured with custom DNS resolvers (e.g., public or corporate DNS) may bypass the network-provided DNS64, preventing NAT64 prefix discovery and hindering CLAT functionality.
 </t>
 <t>
 Where feasible, administrators SHOULD include PREF64 in RAs within IPv6-mostly networks to minimize reliance on DNS64.
@@ -724,6 +725,7 @@ This document does not introduce any privacy considerations.
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6052.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6145.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7225.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8880.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-v6ops-dhcp-pd-per-device.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.link-v6ops-claton.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.link-v6ops-gulla.xml"/>
