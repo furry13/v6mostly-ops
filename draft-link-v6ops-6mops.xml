@@ -33,7 +33,7 @@
       </address>
     </author>
     <author fullname="Nick Buraglio" initials="N" surname="Buraglio">
-      <organization>Google</organization>
+      <organization>Energy Sciences Network</organization>
       <address>
         <postal>
           <!-- Reorder these if your country does things differently -->
@@ -78,7 +78,7 @@ While most network operators initially deploy IPv6 alongside their existing IPv4
       </t>
 
       <t>
-However, dual-stack networks don not address the core problem driving IPv6 adoption: IPv4 address exhaustion. They still require the same amount of IPv4 resources as IPv4-only networks.  Even worse, this dual-stack approach has been demonstrated to be a long-term crutch, frequently masking problems that would otherwise be exposed and remedied as normal operational workflows. Many applications still rely on IPv4, creating a chicken-and-egg problem: IPv6-only networks seem impractical with so many incompatible applications, yet applications continue to rely on IPv4 because IPv6-only networks are rare.
+However, dual-stack networks do not address the core problem driving IPv6 adoption: IPv4 address exhaustion. They still require the same amount of IPv4 resources as IPv4-only networks.  Even worse, this dual-stack approach has been demonstrated to be a long-term crutch, frequently masking problems that would otherwise be exposed and remedied as normal operational workflows. Many applications still rely on IPv4, creating a chicken-and-egg problem: IPv6-only networks seem impractical with so many incompatible applications, yet applications continue to rely on IPv4 because IPv6-only networks are rare.
       </t>
 
       <t>
@@ -202,7 +202,7 @@ For example, if all applications run on the device have been tested and confirme
     <t>
 One effective way to restrict IPv4 addresses solely to devices that require them is to enable support for the IPv6-Only Preferred DHCPv4 option (Option 108, <xref target="RFC8925"/>
 ) on the network's DHCP infrastructure. 
-Most CLAT-enabled systems also support Option 108.  By recognizing this option, the network can configure those devices as IPv6-only, allowing them to use CLAT fo
+Most CLAT-enabled systems also support Option 108.  By recognizing this option, the network can configure those devices as IPv6-only, allowing them to use CLAT for
 providing IPv4 address to the local endpoint's network stack. 
     </t>
     <t>
@@ -223,6 +223,12 @@ Dynamic ACL via RADIUS: If 802.1x authentication is in use, RADIUS can provide a
         </t>
       </li>
     </ul>
+    <li>
+      <t>
+Filtering the IPv4 ethertype (0x0800): Some hardware platforms may allow for low level filtering of ethertype 0x0800 preventing IPv4 from passing into or out of a given switchport. 
+      </t>
+    </li>
+  </ul>
 
     <t>
 The ACL-based approach has some scalability implications and increases operational complexity, therefore it could only be recommended as a stopgap solution. 
@@ -283,14 +289,14 @@ The network administrator SHOULD configure the first-hop routers to include PREF
 ).
 This is required as hosts or individual applications might have custom DNS configuration (or even run a local DNS server) and ignore DNS64 information provided by the network, so they can not use <xref target="RFC7050"/>
  method to detect PREF64.
-In the absense of PREF64 information in Router Advertisements such systems would not be able to run clat, which would cause connectivity issues for all IPv4-only applications running on the affected device. 
+In the absense of PREF64 information in Router Advertisements such systems would not be able to run CLAT, which would cause connectivity issues for all IPv4-only applications running on the affected device. 
 As such device wouldn't be able to use the network-provided DNS64, access to IPv4-only destination would be impacted as well.
-At the time of writing all major OSes supporting DHCPv4 option 108 and enabling clat automatically also support <xref target="RFC8781"/>
+At the time of writing all major OSes supporting DHCPv4 option 108 and enabling CLAT automatically also support <xref target="RFC8781"/>
 .
 Therefore providing PREF64 information in RAs can reliably mitigate the impact of custom DNS configuration on those systems.
 </t>
 <t>
-Receiving PREF64 information in RAs also speeds up the clat start up time, so an IPv4 address and default route become available for applications much faster.
+Receiving PREF64 information in RAs also speeds up the CLAT start up time, so an IPv4 address and default route become available for applications much faster.
 </t>
 
 </section>
@@ -358,7 +364,7 @@ Reduced Dependency on DHCPv4: As more devices operate seamlessly in IPv6-only mo
 <section anchor="vsv6only">
 <name>Benefits Compared to a Dedicated IPv6-Only Network</name>
 <t>
-Traditional IPv6-only adoption involved separate networks alongside dual-stack ones. IPv6-Mostly offers significant improvements:
+Traditional IPv6-only adoption involves separate networks alongside dual-stack ones. IPv6-Mostly offers significant improvements:
 </t>
 
 <ul>
@@ -508,11 +514,11 @@ It's crucial to note that these issues likely pre-exist in dual-stack networks, 
 <t>
 Historically, tech support often advised disabling IPv6 as a quick workaround, leading to devices with disabled IPv6.
 Similarly, corporate IT may have disabled or filtered IPv6 under the assumption that it's not widely used.
-Such endpoints requesting Option 108 will fail to connect in an IPv6-mostly network, as they won't receive IPv4 addresses and Ipv6 is disabled.
+Such endpoints requesting Option 108 will fail to connect in an IPv6-mostly network, as they won't receive IPv4 addresses and IPv6 is disabled.
 </t>
 
 <t>
-Administrators controlling endpoints SHOULD ensure those endpoints have IPv6 enabled and operational before migrating the network to IPv6-mostly mode. 
+Administrators controlling endpoints SHOULD ensure those endpoints have IPv6 enabled and operational before migrating the network to IPv6-mostly mode. This includes verifying protocol enablement as well as validation of any central or discreetly managed host based firewalls that could potentially interfere with proper IPv6 function that may be masked by the presence of IPv4, and therefor exp[osed with its removal. 
 </t>
 
 </section>
@@ -538,8 +544,8 @@ Provides downstream systems with IPv6 addresses and native connectivity.
 <li>
 <t>
 Enabling the CLAT function on the endpoint. This scenario is similar to the Wireline Network Architecture described in Section 4.1 of <xref target="RFC6877"/>
-. The downstream systems would receive IPv4 addresses and their IPv4 traffic would be translated to IPv6 by the endpoint. However thios approach leads to the downstream systems using IPv4 only and not benefiting from end2end IPv6 connectivity. 
-To enable IPv6 benefits, combine this with IPv6 Prefix Delegation as above.
+. The downstream systems would receive IPv4 addresses and their IPv4 traffic would be translated to IPv6 by the endpoint. However this approach leads to the downstream systems using IPv4 only and not benefiting from end2end IPv6 connectivity. 
+To enable IPv6 benefits, combine this with IPv6 Prefix Delegation as discussed above.
 </t>
 </li>
 <li>
@@ -581,15 +587,15 @@ CLAT address (in IPv6-mostly/IPv6-only networks)
 </ul>
 
 <t>
-Endpoints with containers, namespaces, or ND proxy functions can have even more addresses. This poses challenges for network infrastructure devices (SAVI switches, wireless access points etc) that map MAC addresses to IPv6 addresses, often with limits to prevent resource exhaustion or DoS attacks.
-When the number of IPs per MAC limit is exceeded, infastructure devices behavior varies across implementations, leading to inconsistent connectivity loss: while some systems drop new addresses, others delete older entries, causing previously functional addresses to lose connectivity.
+Endpoints with containers, namespaces, or ND proxy functions may have even more addresses. This poses challenges for network infrastructure devices (SAVI switches, wireless access points, etc.) that map MAC addresses to IPv6 addresses, often with limits to prevent resource exhaustion or DoS attacks.
+When the number of IPs per MAC limit is exceeded, infastructure devices behavior varies across implementations, leading to inconsistent connectivity loss and other unexpected behavior: while some systems drop new addresses, others delete older entries, causing previously functional addresses to lose connectivity.
 In all those cases Endpoints and applications don't receive explicit signalling about the address becoming unusable.
 </t>
 
 <t>
 While allocating prefixes to endpoints via DHCP-PD (<xref target="I-D.ietf-v6ops-dhcp-pd-per-device"/>
 ) alows to eliminate the issue and corresponding scalability concerns, that solution migth not be supported by all endpoints. 
-The network administrator SHOULD ensure that the deployed network infastructure devices allow sufficient number of IPv6 addresses to be mapped to a client's MAC and SHOULD monitor for events, indicating that the limit has been reached (such as syslog messages etc).
+The network administrator SHOULD ensure that the deployed network infastructure devices allow sufficient number of IPv6 addresses to be mapped to a client's MAC and SHOULD monitor for events, indicating that the limit has been reached (such as syslog messages, etc).
 </t>
 
 </section>
