@@ -635,11 +635,6 @@ As per  <xref target="RFC6145"/>
 Another common case of IPv6 fragmentation is the use of protocols like DNS and RADIUS, where the server response needs to be sent as a single UDP datagram. 
 Network security policies MUST allow IPv6 fragments for permitted UDP traffic (e.g., DNS, RADIUS) where single-datagram responses are required. Allowing IPv6 fragments for permitted TCP traffic is RECOMMENDED unless the network infrastructure reliably performs TCP MSS clamping.
 </t>
-<t>
-DISCUSSION: neither <xref target="RFC6145"/>
- nor <xref target="RFC6146"/>
- requires that NAT64 device performs MSS clamping, reducing MSS by 20 bytes while translating IPv6 to IPv4. Sounds like a useful feature though.
-</t>
 </section>
 
 <section anchor="traceroute">
@@ -661,7 +656,7 @@ Path MTU Discovery Issues: Potential disruptions in the PMTU discovery process.
 </ul>
 
 <t>
-DISCUSSION: shall the IETF  consider standardizing a translation mechanism for such packets?
+<xref target="I-D.equinox-intarea-icmpext-xlat-source"/> proposes a solution for signalling the actual non-synthesized IPv6 source address while translating ICMPv6 error messages.
 </t>
 </section>
 
@@ -776,6 +771,7 @@ This document does not introduce any privacy considerations.
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-v6ops-dhcp-pd-per-device.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.link-v6ops-claton.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.link-v6ops-gulla.xml"/>
+<xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.equinox-intarea-icmpext-xlat-source.xml"/>
 
 </references>
 </references>
