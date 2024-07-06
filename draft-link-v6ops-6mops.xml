@@ -62,7 +62,7 @@
 
     <abstract>
       <t>
-This document discusses an deployment scenario called "an IPv6-Mostly network", when IPv6-only and IPv4-enabled endpoints coexist on the same network (network segment, VLAN, SSID etc).
+This document discusses a deployment scenario called "an IPv6-Mostly network", when IPv6-only and IPv4-enabled endpoints coexist on the same network (network segment, VLAN, SSID etc).
       </t>
 
     </abstract>
@@ -304,7 +304,8 @@ Receiving PREF64 information in RAs also speeds up the CLAT start up time, so an
 <section anchor="dns64">
 <name>DNS vs DNS64</name>
 <t>
-While DNS64 (with NAT64) enables IPv6-only endpoints to access IPv4-only destinations, it has several drawbacks:
+Traditionally, DNS64 (with NAT64) is used to enable IPv6-only endpoints to access IPv4-only destinations.
+However, using DNS64 has a number of drawbacks, such as:
 </t>
 <ul>
 <li>
@@ -313,9 +314,10 @@ DNSSEC Incompatibility: DNS64 responses fail DNSSEC validation.
   </t>
 </li>
 <li>
-  <t>
-Custom Resolvers: Endpoints or applications configured with custom resolvers can not benefit from the DNS64 provided by the network.
-  </t>
+<t>
+Custom Resolvers: Endpoints or applications configured with custom resolvers or running recursive resolvers locally can not benefit from the DNS64 provided by the network.
+Such systems would need to rely on CLAT or local synthesis instead (<xref target="customDNS"/> discusses this scenario in more details).
+</t>
 </li>
 <li>
   <t>
@@ -324,9 +326,23 @@ Additional requirements for application: to benefit from DNS64, applications nee
 </li>
 </ul>
 <t>
-If the network provides PREF64 in RAs (<xref target="pref64"/>
-) and all endpoints are guaranteed to have CLAT enabled, DNS64 is unnecessary and SHOULD NOT be enabled.  However, if some IPv6-only devices might lack CLAT support, the network MUST provide DNS64 unless those endpoints are guaranteed never to need IPv4-only destinations (for example, in case of a specialized network segment communicating solely with IPv6-capable destinations).
+Those concerns make DNS64 is suboptimal and undesirtable solution long-term.
+To eliminate the needs for DNS64, the network shall signal PREF64 to endpoints (see <xref target="pref64"/>), and the endpoints need to use the obtained PREF64 for CLAT and local synthesis.
+DNS64 would be still required if any of the following cases need to be supported:
 </t>
+<ul>
+<li>
+<t>
+IPv6-only devices without CLAT (unless those endpoints are guaranteed never to need IPv4-only destinations, e.g. in case of a specialized network segment communicating solely with IPv6-capable destinations).
+</t>
+</li>
+<li>
+<t>
+Systems and applications which perform local synthesis but do not support <xref target="RFC8781"/> and can only discover the NAT64 prefix using <xref target="RFC7050"/>.
+It should be noted that all abovementioned drawbacks and limitations of DNS64 would still apply.
+</t>
+</li>
+</ul>
 
 </section>
 
@@ -625,11 +641,6 @@ As per  <xref target="RFC6145"/>
 Another common case of IPv6 fragmentation is the use of protocols like DNS and RADIUS, where the server response needs to be sent as a single UDP datagram. 
 Network security policies MUST allow IPv6 fragments for permitted UDP traffic (e.g., DNS, RADIUS) where single-datagram responses are required. Allowing IPv6 fragments for permitted TCP traffic is RECOMMENDED unless the network infrastructure reliably performs TCP MSS clamping.
 </t>
-<t>
-DISCUSSION: neither <xref target="RFC6145"/>
- nor <xref target="RFC6146"/>
- requires that NAT64 device performs MSS clamping, reducing MSS by 20 bytes while translating IPv6 to IPv4. Sounds like a useful feature though.
-</t>
 </section>
 
 <section anchor="traceroute">
@@ -651,7 +662,7 @@ Path MTU Discovery Issues: Potential disruptions in the PMTU discovery process.
 </ul>
 
 <t>
-DISCUSSION: shall the IETF  consider standardizing a translation mechanism for such packets?
+<xref target="I-D.equinox-intarea-icmpext-xlat-source"/> proposes a solution for signalling the actual non-synthesized IPv6 source address while translating ICMPv6 error messages.
 </t>
 </section>
 
@@ -663,7 +674,7 @@ Consequently, hosts supporting Option 108 may experience network access denial o
 </t>
 </section>
 
-<section>
+<section anchor="customDNS">
 <name>Custom DNS Configuration on Endpoints</name>
 <t>
 In IPv6-mostly networks without PREF64 in RAs, hosts rely on DNS64 (<xref target="RFC7050"/> to discover the NAT64 prefix for CLAT operation.
@@ -683,6 +694,35 @@ Administrators need to  be aware of the potential for CLAT failures when endpoin
 <!-- All drafts are required to have a security considerations section. See RFC 3552 for a guide. -->
 <name>Security Considerations</name>
 <t>
+The proposed deployment scenario inherits security considerations of IPv6 (see <xref target="RFC9099"/>).
+As IPv6-only device can not fall back to IPv4 if IPv6 connectivity is not available or impacted by a malicious actor.
+Therefore any attack affecting IPv6 connectivity would have much more drastic outcome, comparing to dual-stack networks.
+</t>
+<t>
+By signalling a rogue NAT64 prefix to a host, a malicious actor can:
+</t>
+<ul>
+<li>
+<t>
+cause a DoS attack, if the network does not provide NAT64 functions (for that prefix or at all);
+</t>
+</li>
+<li>
+<t>
+implement MitM attack by intercepting traffic to the rogue prefix.
+</t>
+</li>
+</ul>
+<t>
+To countermeasure this attack vector, the network administrators SHOULD configure  the first-hop routers to include PREF64 information in Router Advertisements as per <xref target="RFC8781"/> and ensure that layer 2 security measures such as RA-Guard (<xref target="RFC6105"/>) are in place.
+Section 7 of <xref target="RFC8781"/> discusses this topic in more details.
+Additionally, <xref target="I-D.link-v6ops-claton"/> discusses security implications of enabling CLAT if native IPv4 connectivity is available and recommends disabling CLAT in that case.
+</t>
+<t>
+Security considerations of using DHCP Option 108 are documented in Section 6 of <xref target="RFC8925"/>.
+</t>
+<t>
+
 </t>
 </section>
 
@@ -709,6 +749,7 @@ This document does not introduce any privacy considerations.
 <name>Normative References</name>
 
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.2119.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6105.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6146.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6333.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6877.xml"/>
@@ -719,6 +760,7 @@ This document does not introduce any privacy considerations.
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8781.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8585.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8925.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9099.xml"/>
 <!-- The recommended and simplest way to include a well known reference -->
 
 </references>
@@ -735,6 +777,7 @@ This document does not introduce any privacy considerations.
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-v6ops-dhcp-pd-per-device.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.link-v6ops-claton.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.link-v6ops-gulla.xml"/>
+<xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.equinox-intarea-icmpext-xlat-source.xml"/>
 
 </references>
 </references>
@@ -742,7 +785,7 @@ This document does not introduce any privacy considerations.
 <section anchor="Acknowledgements" numbered="false">
 <name>Acknowledgements</name>
 <t>
-TBA
+Thanks to Ondrej Caletka, Brian Carpenter, Stuart Cheshire, Lorenzo Colitti, Jordi Palet, Michael Richardson, Matsuzaki Yoshinobu for the discussions, the feedback, and all contribution.
 </t>
 </section>
 
