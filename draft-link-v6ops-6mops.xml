@@ -222,7 +222,6 @@ Static ACL: Applying a static filter with a "deny ip any any" rule.
 Dynamic ACL via RADIUS: If 802.1x authentication is in use, RADIUS can provide an ACL blocking all IPv4 traffic.
         </t>
       </li>
-    </ul>
     <li>
       <t>
 Filtering the IPv4 ethertype (0x0800): Some hardware platforms may allow for low level filtering of ethertype 0x0800 preventing IPv4 from passing into or out of a given switchport. 
