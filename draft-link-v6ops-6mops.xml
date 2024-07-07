@@ -86,7 +86,7 @@ The less control a network operator has over devices and applications, the more 
       </t>
 
       <t>
-To enable a gradual migration, operators need to identify which devices can function in IPv6-only mode and which cannot. Creating separate network segments for each type introduces complexity and scalability issues – a major hurdle to IPv6-only adoption.
+To enable a gradual transition, operators need to identify which devices can function in IPv6-only mode and which cannot. Creating separate network segments for each type introduces complexity and scalability issues – a major hurdle to IPv6-only adoption.
       </t>
 
       <t>
@@ -136,6 +136,10 @@ Mobile phone with tethering enabled: Acts as a host on the Wi-Fi network, but al
     <t>
 Network segment: a link (VLAN, a broadcast domain etc) where hosts share the same IP subnet.
     </t>
+<t>
+PREF64: (or NAT64 prefix): An IPv6 prefix used for IPv6 address synthesis and for network addresses and protocols translation from IPv6 clients to IPv4 servers, <xref target="RFC6146"/>.
+
+</t>
 
   </section>
 
@@ -168,7 +172,7 @@ IPv4-Only Endpoint: Acquires an IPv4 address through DHCPv4.
       </li>
       <li>
         <t>
-Dual-Stack Endpoint (Not IPv6-Only Capable): Configures IPv6 addresses via Stateless Address Autoconfiguration (SLAAC) and, optionally, DHCPv6. Additionally, it obtains an IPv4 address via DHCPv4.
+Dual-Stack Endpoint (Not IPv6-Only Capable): Configures IPv6 addresses via Stateless Address Autoconfiguration (SLAAC) and, optionally, DHCPv6. Additionally, it obtains an IPv4 address via DHCPv4 or by other means.
         </t>
       </li>
       <li>
@@ -222,7 +226,6 @@ Static ACL: Applying a static filter with a "deny ip any any" rule.
 Dynamic ACL via RADIUS: If 802.1x authentication is in use, RADIUS can provide an ACL blocking all IPv4 traffic.
         </t>
       </li>
-    </ul>
     <li>
       <t>
 Filtering the IPv4 ethertype (0x0800): Some hardware platforms may allow for low level filtering of ethertype 0x0800 preventing IPv4 from passing into or out of a given switchport. 
@@ -402,12 +405,12 @@ only when devices don't advertise IPv6-only capability (DHCPv4 Option 108).
 </li>
 <li>
 <t>
-Improved Problem Visibility: User-selected fallback to dual-stack networks can mask issues with IPv6-only operation, hindering problem reporting and resolution. IPv6-Mostly forces users to work through any issues, improving identification and enabling fixes for smoother long-term migration.
+Improved Problem Visibility: User-selected fallback to dual-stack networks can mask issues with IPv6-only operation, hindering problem reporting and resolution. IPv6-Mostly forces users to work through any issues, improving identification and enabling fixes for smoother long-term transition.
 </t>
 </li>
 <li>
 <t>
-Flexible, Incremental Migration: IPv6-Mostly allows for gradual device migration on a per-segment basis. Devices become IPv6-only only when deemed fully compatible with that mode.
+Flexible, Incremental Transition: IPv6-Mostly allows for gradual migration on a per-segment or even on per-device basis. Devices become IPv6-only only when deemed fully compatible with that mode.
 </t>
 </li>
 </ul>
@@ -534,7 +537,7 @@ Such endpoints requesting Option 108 will fail to connect in an IPv6-mostly netw
 </t>
 
 <t>
-Administrators controlling endpoints SHOULD ensure those endpoints have IPv6 enabled and operational before migrating the network to IPv6-mostly mode. This includes verifying protocol enablement as well as validation of any central or discreetly managed host based firewalls that could potentially interfere with proper IPv6 function that may be masked by the presence of IPv4, and therefor exp[osed with its removal. 
+Administrators controlling endpoints SHOULD ensure those endpoints have IPv6 enabled and operational before transitioning the network to IPv6-mostly mode. This includes verifying protocol enablement as well as validation of any central or discreetly managed host based firewalls that could potentially interfere with proper IPv6 function that may be masked by the presence of IPv4, and therefor exp[osed with its removal. 
 </t>
 
 </section>
