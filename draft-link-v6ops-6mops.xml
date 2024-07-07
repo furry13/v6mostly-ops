@@ -136,6 +136,10 @@ Mobile phone with tethering enabled: Acts as a host on the Wi-Fi network, but al
     <t>
 Network segment: a link (VLAN, a broadcast domain etc) where hosts share the same IP subnet.
     </t>
+<t>
+PREF64: (or NAT64 prefix): An IPv6 prefix used for IPv6 address synthesis and for network addresses and protocols translation from IPv6 clients to IPv4 servers, <xref target="RFC6146"/>.
+
+</t>
 
   </section>
 
@@ -168,7 +172,7 @@ IPv4-Only Endpoint: Acquires an IPv4 address through DHCPv4.
       </li>
       <li>
         <t>
-Dual-Stack Endpoint (Not IPv6-Only Capable): Configures IPv6 addresses via Stateless Address Autoconfiguration (SLAAC) and, optionally, DHCPv6. Additionally, it obtains an IPv4 address via DHCPv4.
+Dual-Stack Endpoint (Not IPv6-Only Capable): Configures IPv6 addresses via Stateless Address Autoconfiguration (SLAAC) and, optionally, DHCPv6. Additionally, it obtains an IPv4 address via DHCPv4 or by other means.
         </t>
       </li>
       <li>
