@@ -733,7 +733,8 @@ Security considerations of using DHCP Option 108 are documented in Section 6 of 
 <section anchor="privacy">
 <name>Privacy Considerations</name>
 <t>
-This document does not introduce any privacy considerations.
+This document does not introduce any new privacy considerations.
+IPv6-mostly networks have the same privacy considerations as other Dual-stacked or IPv6-only networks.
 </t>
 </section>
 
@@ -789,7 +790,7 @@ This document does not introduce any privacy considerations.
 <section anchor="Acknowledgements" numbered="false">
 <name>Acknowledgements</name>
 <t>
-Thanks to Ondrej Caletka, Brian Carpenter, Stuart Cheshire, Lorenzo Colitti, Jordi Palet, Michael Richardson, Matsuzaki Yoshinobu for the discussions, the feedback, and all contribution.
+Thanks to Ondrej Caletka, Brian Carpenter, Stuart Cheshire, Lorenzo Colitti, David Farmer, Jordi Palet, Michael Richardson, Matsuzaki Yoshinobu for the discussions, the feedback, and all contribution.
 </t>
 </section>
 
