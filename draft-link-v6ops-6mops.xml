@@ -194,11 +194,14 @@ The following sections discussed the various solution elements in more details.
   <section anchor="capable">
     <name>IPv6-Only Capable Endpoints</name>
     <t>
-The term "IPv6-only capable endpoint" lacks a strict technical definition. It broadly describes a device that can function without native IPv4 connectivity/IPv4 addresses, providing the same user experience. The most common way to achieve this is by implementing a customer-side translator (CLAT) as specified in 464XLAT (<xref target="RFC6877"/>
-). Devices which support CLAT (such as mobile phones) are known to operate without issues in IPv6-only mode.
-In some cases, however, a network administrator may consider a device IPv6-only capable even without CLAT implementation. 
-For example, if all applications run on the device have been tested and confirmed to operate in NAT64 envinronment without any IPv4 dependencies.
+      The term "IPv6-only capable endpoint" lacks a strict technical definition. It broadly describes a device that can function without native IPv4 connectivity/IPv4 addresses, providing the same user experience.
+      This might be achieved by several methods:
     </t>
+    <ul>
+      <li>An endpoint capable of communicating only with a limited set of endpoints, all of which are available over IPv6.</li>
+      <li>An endpoint capable of utilizing only IPv6 sockets, utilizing NAT64 for accessing IPv4 resources.</li>
+      <li>An endpoint implementing a customer-side translator (CLAT) as specified in 464XLAT (<xref target="RFC6877"/>) to provide native IPv4 connectivity for the legacy applications.</li>
+    </ul>
   </section>
 
   <section>
