@@ -209,11 +209,10 @@ The following sections discussed the various solution elements in more details.
     <t>
 One effective way to restrict IPv4 addresses solely to devices that require them is to enable support for the IPv6-Only Preferred DHCPv4 option (Option 108, <xref target="RFC8925"/>
 ) on the network's DHCP infrastructure. 
-Most CLAT-enabled systems also support Option 108.  By recognizing this option, the network can configure those devices as IPv6-only, allowing them to use CLAT for
-providing IPv4 address to the local endpoint's network stack. 
+Most IPv6-only capable systems also support Option 108.  By recognizing this option, the network can configure those devices as IPv6-only.
     </t>
     <t>
-Certain devices, such as resource-constrained embedded systems, may operate in IPv6-only mode without CLAT if their communication is limited to IPv6-enabled destinations. Since these systems often lack Option 108 support, administrators may need alternative methods to prevent IPv4 address assignment.
+Certain devices, such as resource-constrained embedded systems, may operate in IPv6-only mode without specific adjustments if their communication is limited to IPv6-enabled destinations. Since these systems often lack Option 108 support, administrators may need alternative methods to prevent IPv4 address assignment.
 
 One approach is to block IPv4 traffic at the switchport level. This could involve:
     </t>
@@ -237,7 +236,7 @@ Filtering the IPv4 ethertype (0x0800): Some hardware platforms may allow for low
   </ul>
 
     <t>
-The ACL-based approach has some scalability implications and increases operational complexity, therefore it could only be recommended as a stopgap solution. 
+The ACL-based approach has some scalability implications and increases operational complexity, therefore it could only be recommended as a stopgap solution.
     </t>
 
 
