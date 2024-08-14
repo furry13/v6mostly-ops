@@ -172,7 +172,7 @@ IPv4-Only Endpoint: Acquires an IPv4 address through DHCPv4.
       </li>
       <li>
         <t>
-Dual-Stack Endpoint (Not IPv6-Only Capable): Configures IPv6 addresses via Stateless Address Autoconfiguration (SLAAC) and, optionally, DHCPv6. Additionally, it obtains an IPv4 address via DHCPv4 or by other means.
+Dual-Stack Endpoint (Not IPv6-Only Capable): Configures IPv6 addresses using any supported protocol. Additionally, it obtains an IPv4 address via DHCPv4.
         </t>
       </li>
       <li>
