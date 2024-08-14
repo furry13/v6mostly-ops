@@ -427,7 +427,7 @@ Flexible, Incremental Transition: IPv6-Mostly allows for gradual migration on a 
 <section anchor="rollout">
 <name>Incremental Rollout Considerations</name>
 <t>
-  Migrating endpoints to IPv6-only fundamentally changes network dynamics by removing the IPv4 safety net. This includes the masking effect of traditional Happy Eyeballs algorithm (<xref target="RFC6555" />). IPv6 connectivity issues become far more prominent, including those previously hidden within dual-stack environments. Operators should be prepared to discover and troubleshoot issues in both endpoints and network infrastructure, even if the dual-stack network appeared problem-free.
+  Migrating endpoints to IPv6-only fundamentally changes network dynamics by removing the IPv4 safety net. This includes the masking effect of traditional Happy Eyeballs algorithm <xref target="RFC6555" />. IPv6 connectivity issues become far more prominent, including those previously hidden within dual-stack environments. Operators should be prepared to discover and troubleshoot issues in both endpoints and network infrastructure, even if the dual-stack network appeared problem-free.
 </t>
 <t>
 Some rollout considerations are discussed in the following sections.
@@ -458,7 +458,7 @@ Rollback Approach
 </name>
 <t>
 For quick rollback, the administrator SHOULD start with a minimal Option 108 value (300 seconds, Section 3.4 of <xref target="RFC8925"/>
-) and increase this value as the IPv6-mostly network proves reliable, reducing the likelihood of full-scale rollback.
+) and possibly increase this value as the IPv6-mostly network proves reliable, reducing the likelihood of full-scale rollback. In most deployments, the load of DHCP infrastructure caused by each endpoint restarting the DHCP handshake every 300 seconds would be negligible.
 </t>
 </section>
 
