@@ -157,7 +157,7 @@ The network provides NAT64 (<xref target="RFC6146"/>
       </li>
       <li>
         <t>
-The DHCPv4 infrastructure processing DHCPv4 Option 108 as per <xref target="RFC8925"/>.
+The DHCPv4 server infrastructure offers DHCPv4 Option 108 as per <xref target="RFC8925"/>.
         </t>
       </li>
     </ul>
