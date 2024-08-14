@@ -482,19 +482,19 @@ Before user-facing deployment, the administrator SHOULD consider a dedicated IPv
 <ul>
 <li>
 <t>
-Opt-In Phase: Invite tech-savvy early adopters to enable Option 108 and report issues. While response rates may be low, dedicated participants provide valuable troubleshooting data.
+Opt-In Phase: Invite tech-savvy early adopters to join an IPv6-mostly network and report issues. While response rates may be low, dedicated participants provide valuable troubleshooting data.
 </t>
 </li>
 <li>
 <t>
-Opt-Out Phase: Incrementally enable Option 108. Allow selective disabling for problematic endpoints. Disabling Option 108 SHOULD NOT be possible without a problem reports to ensure issue tracking and resolution.
+Opt-Out Phase: Incrementally enable PREF64 signalling as well as Option 108. Allow selective disabling for problematic endpoints, in extreme case even by providing a separate network or rolling back IPv6-mostly in that particular subnet. Opting out SHOULD NOT be possible without a problem reports to ensure issue tracking and resolution.
 </t>
 </li>
 </ul>
 
 <t>
 In some scenarios (see <xref target="nov6"/>
-) the administrator MAY keep a dual-stack network as a last resort fallback mechanism but SHOULD prevent usesrs from connecting to it accidentially (e.g. it should be a hidden protected SSID).
+) the administrator MAY keep a dual-stack network as a last resort fallback mechanism but SHOULD prevent usesrs from connecting to it accidentially (e.g. it should be a hidden protected SSID). For recurring temporary networks, for instance during a conference, it might be a good practice to change the network SSID of the last resort fallback network between each event.
 </t>
 
 </section>
