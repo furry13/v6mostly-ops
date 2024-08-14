@@ -333,7 +333,7 @@ Existence of such applications is the main reason why transition to IPv6-only mu
 <t>
 Those concerns make DNS64 is suboptimal and undesirtable solution long-term.
 To eliminate the needs for DNS64, the network shall signal PREF64 to endpoints (see <xref target="pref64"/>), and the endpoints need to use the obtained PREF64 for performing local synthesis and for CLAT.
-It should be noted that not every application can benefit from local synthesis performed by the operating system, as it would require the application to use DNS (not IP literals). 
+It should be noted that not every application can benefit from local synthesis performed by the operating system, as it would require the application to use DNS (not IP literals).
 Therefore DNS64 is only required to support the following cases:
 </t>
 <ul>
@@ -349,6 +349,9 @@ IPv6-only devices without CLAT (unless those endpoints are guaranteed never to n
 </li>
 </ul>
 
+<t>
+  Using DNS64 however bypasses CLAT for IPv6-capable applications communicating with IPv4-only destinations, making the communication slightly efficienter. For that reason it might be beneficial to run DNS64 even if it is not strictly necessary, provided the the above mentioned drawbacks are adressed.
+</t>
 </section>
 
 </section>
