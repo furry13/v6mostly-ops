@@ -467,7 +467,7 @@ Controlled Endpoint Activation: Enable Option 108 on managed endpoints with per-
 Rollback Approach
 </name>
 <t>
-For quick rollback, the administrator SHOULD start with a minimal Option 108 value (300 seconds, Section 3.4 of <xref target="RFC8925"/>
+For quick rollback, the administrator SHOULD start with a minimal PREF64 option lifetime (possibly together with shortening RA interval) as well as Option 108 value (300 seconds, Section 3.4 of <xref target="RFC8925"/>
 ) and possibly increase this value as the IPv6-mostly network proves reliable, reducing the likelihood of full-scale rollback. In most deployments, the load of DHCP infrastructure caused by each endpoint restarting the DHCP handshake every 300 seconds would be negligible.
 </t>
 </section>
