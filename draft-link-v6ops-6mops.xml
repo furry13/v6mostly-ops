@@ -427,7 +427,7 @@ Flexible, Incremental Transition: IPv6-Mostly allows for gradual migration on a 
 <section anchor="rollout">
 <name>Incremental Rollout Considerations</name>
 <t>
-Migrating endpoints to IPv6-only fundamentally changes network dynamics by removing the IPv4 safety net. This includes the masking effect of Happy Eyeballs. IPv6 connectivity issues become far more prominent, including those previously hidden within dual-stack environments. Operators should be prepared to discover and troubleshoot issues in both endpoints and network infrastructure, even if the dual-stack network appeared problem-free.
+  Migrating endpoints to IPv6-only fundamentally changes network dynamics by removing the IPv4 safety net. This includes the masking effect of traditional Happy Eyeballs algorithm (<xref target="RFC6555" />). IPv6 connectivity issues become far more prominent, including those previously hidden within dual-stack environments. Operators should be prepared to discover and troubleshoot issues in both endpoints and network infrastructure, even if the dual-stack network appeared problem-free.
 </t>
 <t>
 Some rollout considerations are discussed in the following sections.
@@ -761,6 +761,7 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6105.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6146.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6333.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6555.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6877.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7050.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7335.xml"/>
