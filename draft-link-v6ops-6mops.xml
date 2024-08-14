@@ -263,8 +263,8 @@ However, if not all internal services are IPv6-enabled, then NAT64 might need to
   <section anchor="v4only">
     <name>464XLAT</name>
     <t>
-Enabling CLAT (Customer-side translator) on endpoints is essential for seamless operation of IPv4-only applications in IPv6-only environments. CLAT provides an <xref target="RFC1918"/>
- address and IPv4 default route, ensuring functionality even without a native IPv4 address from the network. Without CLAT, IPv4-only applications would fail, negatively impacting user experience and increasing support overhead.
+      Unless the usage of IPv4-only network sockets is prohibited or mitigated in the operating system, enabling CLAT (Customer-side translator) on endpoints is essential for seamless operation of IPv4-only applications in IPv6-only environments.
+      CLAT provides an IPv4 address and IPv4 default route, ensuring functionality even without a native IPv4 address from the network. Without CLAT or similar compatibility layer inside the operating system, IPv4-only applications would fail, negatively impacting user experience and increasing support overhead.
     </t>
     <t>
 Recommendations for Network Administrators controlling the endpoints:
@@ -277,7 +277,7 @@ CLAT + DHCPv4 Option 108: If the network administrator can control endpoint conf
       </li>
       <li>
         <t>
-Option 108 Without CLAT MAY be enabled if the administrator is willing to identify and fixIPv4-only systems/applications, or if all applications are confirmed to work in IPv6-only mode.
+Option 108 Without CLAT MAY be enabled if the administrator is willing to identify and fix IPv4-only systems/applications, or if all applications are confirmed to work in IPv6-only mode.
         </t>
       </li>
     </ul>
@@ -296,8 +296,7 @@ This is required as hosts or individual applications might have custom DNS confi
  method to detect PREF64.
 In the absense of PREF64 information in Router Advertisements such systems would not be able to run CLAT, which would cause connectivity issues for all IPv4-only applications running on the affected device. 
 As such device wouldn't be able to use the network-provided DNS64, access to IPv4-only destination would be impacted as well.
-At the time of writing all major OSes supporting DHCPv4 option 108 and enabling CLAT automatically also support <xref target="RFC8781"/>
-.
+At the time of writing all major OSes supporting DHCPv4 option 108 and enabling CLAT automatically also support <xref target="RFC8781"/>.
 Therefore providing PREF64 information in RAs can reliably mitigate the impact of custom DNS configuration on those systems.
 </t>
 <t>
