@@ -436,9 +436,19 @@ Some rollout considerations are discussed in the following sections.
 <section anchor="incr">
 <name>Per-Device and Per-Subnet Incremental Rollout</name>
 <t>
-Limited control over endpoint configuration necessitates a per-subnet rollout, incrementally enabling Option 108 processing in DHCP. If endpoint control exists, per-device rollout is possible (at least for OSes with configurable Option 108). Note that some OSes unconditionally enable Option 108 support, becoming IPv6-only the moment it's activated on the server side. The following approach is RECOMMENDED:
+  Limited control over endpoint configuration necessitates a per-subnet rollout, incrementally enabling
+  first PREF64 signalling and then option 108 processing in DHCP. Unless special circumstances like
+  unicast router advertisements for each host, enabling PREF64 signalling will happen per-subnet
+  without an option to opt out.
+
+  If endpoint control exists, per-device rollout is possible for option 108 processing (at least for OSes with configurable Option 108). Note that some OSes unconditionally enable Option 108 support, becoming IPv6-only the moment it's activated on the server side. The following approach is RECOMMENDED:
 </t>
 <ul>
+<li>
+<t>
+PREF64 signalling: Enable PREF64 option for the router advertisement and/or DNS64 (see above). Especially if DNS64 is used, this might affect behaviour of some devices as the path via NAT64 would get generally preferred over native IPv4 path. Rollback at this stage affects the entire subnet.
+</t>
+</li>
 <li>
 <t>
 DHCP Server-Side Activation: Enable Option 108 processing. Some OSes automatically switch to IPv6-only. Rollback at this stage affects the entire subnet.
