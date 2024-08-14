@@ -185,7 +185,7 @@ IPv6-only capable endpoint configures its IPv6 addresses and, while performing D
   </ul>
 
   <t>
-An IPv6-mostly network segment can support a mix of IPv4-only, dual-stack, and IPv6-only devices.  IPv6-only endpoints utilize the network-provided NAT64 along with DNS64 services to reach IPv4-only destinations. 
+An IPv6-mostly network segment can support a mix of IPv4-only, dual-stack, and IPv6-only devices.  IPv6-only endpoints utilize the network-provided NAT64 to reach IPv4-only destinations.
   </t>
   <t>
 The following sections discussed the various solution elements in more details.
