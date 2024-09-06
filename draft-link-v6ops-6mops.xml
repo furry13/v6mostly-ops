@@ -350,7 +350,7 @@ IPv6-only devices without CLAT (unless those endpoints are guaranteed never to n
 </ul>
 
 <t>
-  Using DNS64 however bypasses CLAT for IPv6-capable applications communicating with IPv4-only destinations, making the communication slightly efficienter. For that reason it might be beneficial to run DNS64 even if it is not strictly necessary, provided the the above mentioned drawbacks are adressed.
+  Using DNS64 however bypasses CLAT for IPv6-capable applications communicating with IPv4-only destinations, making the communication slightly more efficient. For that reason it might be beneficial to run DNS64 even if it is not strictly necessary, provided the the above mentioned drawbacks are adressed.
 </t>
 </section>
 
