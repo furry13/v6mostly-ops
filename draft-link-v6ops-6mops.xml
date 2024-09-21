@@ -17,21 +17,6 @@
   <front>
     <title abbrev="6mops">IPv6-Mostly Networks: Deployment and Operations Considerations</title>
     <seriesInfo name="Internet-Draft" value="draft-link-v6ops-6mops-01"/>
-    <author fullname="Jen Linkova" initials="J" surname="Linkova">
-      <organization>Google</organization>
-      <address>
-        <postal>
-          <!-- Reorder these if your country does things differently -->
-          <street>1 Darling Island Rd</street>
-          <city>Pyrmont</city>
-          <region>NSW</region>
-          <code>2009</code>
-          <country>AU</country>
-        </postal>
-        <email>furry13@gmail.com</email>
-        <email>furry@google.com</email>
-      </address>
-    </author>
     <author fullname="Nick Buraglio" initials="N" surname="Buraglio">
       <organization>Energy Sciences Network</organization>
       <address>
@@ -45,6 +30,26 @@
         </postal>
         <email>buraglio@forwardingplane.net</email>
         <email>buraglio@es.net</email>
+      </address>
+    </author>
+    <author fullname="Ondrej Caletka" initials="O" surname="Caletka">
+      <organization>RIPE NCC</organization>
+        <email>Ondrej.Caletka@ripe.net</email>
+      </address>
+    </author>
+    <author fullname="Jen Linkova" initials="J" surname="Linkova">
+      <organization>Google</organization>
+      <address>
+        <postal>
+          <!-- Reorder these if your country does things differently -->
+          <street>1 Darling Island Rd</street>
+          <city>Pyrmont</city>
+          <region>NSW</region>
+          <code>2009</code>
+          <country>AU</country>
+        </postal>
+        <email>furry13@gmail.com</email>
+        <email>furry@google.com</email>
       </address>
     </author>
     <date year="2024"/>
@@ -806,7 +811,7 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <section anchor="Acknowledgements" numbered="false">
 <name>Acknowledgements</name>
 <t>
-Thanks to Ondrej Caletka, Brian Carpenter, Stuart Cheshire, Lorenzo Colitti, David Farmer, Jordi Palet, Michael Richardson, Matsuzaki Yoshinobu for the discussions, the feedback, and all contribution.
+Thanks to Brian Carpenter, Stuart Cheshire, Lorenzo Colitti, David Farmer, Jordi Palet, Michael Richardson, Matsuzaki Yoshinobu for the discussions, the feedback, and all contribution.
 </t>
 </section>
 
