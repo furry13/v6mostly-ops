@@ -34,6 +34,12 @@
     </author>
     <author fullname="Ondrej Caletka" initials="O" surname="Caletka">
       <organization>RIPE NCC</organization>
+      <address>
+        <postal>
+          <street>Stationsplein 11</street>
+          <city>Amsterdam</city>
+          <country>Netherlands</country>
+        </postal>
         <email>Ondrej.Caletka@ripe.net</email>
       </address>
     </author>
