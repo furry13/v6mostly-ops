@@ -263,9 +263,13 @@ The ACL-based approach has some scalability implications and increases operation
 
       <name>NAT64</name>
       <t>
-IPv6-only endpoints require NAT64 to access IPv4-only destinations. Quite often operators choose to combine NAT44 and NAT64 functions.
-However, if not all internal services are IPv6-enabled, then NAT64 might need to allow accessing internal destinations as well as external ones. If IPv4-only internal destinations are using <xref target="RFC1918"/>
- address space, then the operator MUST NOT use the well-known prefix 64:ff9b::/96 for NAT64 (see section 3.1 of <xref target="RFC6052"/>
+IPv6-only endpoints require NAT64 to access IPv4-only destinations.
+Quite often operators choose to combine NAT44 and NAT64 functions, deploying NAT64 at the Internet edge.
+However, if not all internal services are IPv6-enabled, then NAT64 might need to allow accessing internal destinations as well as external ones. 
+In that case it might be beneficial to deploy NAT64 closer to the users, instead of the network Internet edge, in order to simplify routing/firewall rules and reduce latency.      
+      </t>
+<t>
+If IPv4-only internal destinations are using <xref target="RFC1918"/> address space, then the operator MUST NOT use the well-known prefix 64:ff9b::/96 for NAT64 (see section 3.1 of <xref target="RFC6052"/>
 ).
     </t>
 
