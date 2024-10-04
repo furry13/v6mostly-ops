@@ -439,6 +439,37 @@ Flexible, Incremental Transition: IPv6-Mostly allows for gradual migration on a 
 
 </section>
 
+<section anchor="drawbacks">
+  <name>Solution Drawbacks</name>
+  <section>
+    <name>NAT64 is required</name>
+    <t>In contrast to traditional dual-stack networks, which can be deployed without any sort of IP address sharing mechanism, IPv6-Mostly networks require NAT64 to be present. NAT64 shares many drawbacks of NAT44, namely:</t>
+    <ul>
+      <li><t>NAT64 have to be stateful, unless 1:1 mapping between IPv6 and IPv4 addresses can be established.</t></li>
+      <li><t>Operating a scalable and/or high available NAT64 presents a challenge.</t></li>
+      <li><t>Sharing of IP addresses might lead to regulatory issues, like a requirement for logging of the translations.</t></li>
+    </ul>
+    <t>Many networks, however, already make use of NAT44 due to IPv4 address shortage. Extending existing NAT44 setups to support NAT64 as well does not introduce any new burden.</t>
+    <t>It is also worth stressing that NAT64 is only used for accessing IPv4 resources. With more and more resources being IPv6-enabled, the traffic flowing via NAT64 is expected to scale down.</t>
+  </section>
+  <section>
+    <name>Network complexity</name>
+    <t>An IPv6-Mostly network have to support dual-stack devices, therefore both IPv6 and IPv4 has to be deployed in such network. On top of that, to support operation of IPv6-only devices, NAT64 must be present (see above) as well as related signalling. This makes IPv6-Mostly the most complex network setup.</t>
+    <t>The complexity of deployment of IPv6-Mostly networks is similar to the complexity of dual-stack networks since both native IPv6 and native IPv4 has to be present on the link. There is thus no direct saving on deployment costs with the expection of IPv4 address pool sizing.</t>
+    <t>The complex nature of IPv6-Mostly networks makes troubleshooting non-trivial. For IPv4 connection of an application, three different paths might exist:</t>
+    <ol>
+      <li><t>Native IPv4</t></li>
+      <li><t>IPv4 via NAT64</t></li>
+      <li><t>IPv4 via 464XLAT</t></li>
+    </ol>
+    <t>Since different devices and/or applications make use of different paths, the network might appear broken for some devices/applications, while fully operational for others at the same time. Care must be taken to properly test all possible data paths, including corner cases like fragmented traffic.</t>
+  </section>
+  <section>
+    <name>Problems with link-local service discovery</name>
+    <t>Shared link is often used for automatic discovery of neighboring devices and their services by means of different protocols like Multicast DNS <xref target="RFC6762" />. Many devices and/or services are built on an assumption that devices on the same link also share the same set of address families or at least they have one common address family shared between all of them.</t>
+    <t>In IPv6-Mostly, this assumption is not valid as there might be both IPv4-only and IPv6-only devices on the same link. As per <xref target="RFC6762" section="20"/>, this means that the link has two unrelated ".local." zones, one for each address family. Discovery of devices across different addres families is impossible, unless some sort of relay is deployed on the link.</t>
+  </section>
+</section>
 <section anchor="rollout">
 <name>Incremental Rollout Considerations</name>
 <t>
@@ -808,6 +839,7 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4862.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6052.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6145.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6762.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7225.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8880.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-v6ops-dhcp-pd-per-device.xml"/>
