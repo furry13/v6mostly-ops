@@ -389,7 +389,7 @@ Drastically Reduced IPv4 Consumption: Dual-stack deployments don't solve the cor
 </li>
 <li>
 <t>
-Simplified Operations: Managing dual-stack networks means running two network data planes simultaneously, increasing complexity, costs, and the potential for errors. IPv6-Mostly allows for the controlled phase out IPv4 from many endpoints, streamlining operations and improving overall network reliability at a measured and operator-controlled pace.
+Controlled phase-out of IPv4: IPv6-Mostly allows for the controlled phase out IPv4 from many endpoints, streamlining operations and improving overall network reliability at a measured and operator-controlled pace.
 </t>
 </li>
 <li>
