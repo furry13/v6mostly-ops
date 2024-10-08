@@ -374,10 +374,10 @@ IPv6-only devices without CLAT (unless those endpoints are guaranteed never to n
 </section>
 
 <section anchor="benefits">
-<name>Solution Benefits</name>
+<name>Solution Analysis</name>
 
 <section anchor="vsds">
-<name>Benefits Compared to Dual-Stack</name>
+<name>IPv6-Only Compared to Dual-Stack</name>
 <t>
 IPv6-Mostly networks offer significant advantages over traditional dual-stack models where endpoints have both IPv4 and IPv6 addresses:
 </t>
@@ -389,19 +389,35 @@ Drastically Reduced IPv4 Consumption: Dual-stack deployments don't solve the cor
 </li>
 <li>
 <t>
-Simplified Operations: Managing dual-stack networks means running two network data planes simultaneously, increasing complexity, costs, and the potential for errors. IPv6-Mostly allows for the controlled phase out IPv4 from many endpoints, streamlining operations and improving overall network reliability at a measured and operator-controlled pace.
+Controlled and incremental phase-out of IPv4: IPv6-Mostly allows for the controlled phase out IPv4 from many endpoints, streamlining operations and improving overall network reliability at a measured and operator-controlled pace.
 </t>
 </li>
 <li>
 <t>
-Reduced Dependency on DHCPv4: As more devices operate seamlessly in IPv6-only mode, the criticality of DHCPv4 service diminishes significantly. This allows operators to scale down DHCPv4 infrastructure or operate it with less stringent SLOs, optimizing costs and resource allocation.
+Reduced Dependency on DHCPv4: As more devices operate seamlessly in IPv6-only mode, the criticality of DHCPv4 service diminishes significantly. This allows operators to scale down DHCPv4 infrastructure or operate it with less stringent service level objectives (SLOs), optimizing costs and resource allocation.
+</t>
+</li>
+<li>
+<t>
+Simplified troubleshooting due reduced impact of Happy Eyeballs: when both the client and the server are dual-stack, communication can happen either over IPv6 or over IPv4 and the protocol choice can change over time. This obscure network issues or make them intermittent, complicating the troubleshooting. In IPv6-Mostly network IPv6-oly hosts are not affected by this issue. It should be noted, however, that this benefit comes with a cost: when an IPv6-only client communicates with an IPv4-only destination, the traffic may traverse CLAT or go natively, depending on how the specific application is written. 
 </t>
 </li>
 </ul>
+
+<t>
+Introducing NAT64 might be seen as a drawback of the IPv6-Mostly model, as NAT64 shares most of NAT44 disadvantages (using the same public IPv4 address for flows originated by different hosts, scalability issues caused by keeping state, etc).
+However, most IPv4-only or dual-stack networks already make use of NAT44 due to IPv4 address shortage. 
+Such networks would simply need to enable NAT64 functionality on existing devices performing NAT44 functions. Flows from IPv6-only capable endpoints to IPv4-only destinations are translated by NAT44 in a dual-stack network and by NAT64 in IPv6-Mostly envinronment. As a result, the total load on the NAT infrastructure does not increase, with NAT44 being replaced by NAT64for some flows.
+It is also worth emphasizing that NAT64 is only used for accessing IPv4 resources. With more and more resources becoming IPv6-enabled, the traffic flowing via NAT64 is expected to scale down.
+</t>
+
+<t>
+As discussed in <xref target="p2p"/> coexistence of IPv6-only and IPv4-only hosts on the same link might present challenges for onlink service discovery and onlink peer2peer communications. It might be consider a disadvantge of IPv6-Moslty model for networks where onlink communication between IPv4-only and IPv6-only devices is desirable. 
+</t>
 </section>
 
 <section anchor="vsv6only">
-<name>Benefits Compared to a Dedicated IPv6-Only Network</name>
+<name>IPv6-Mostly Compared to a Dedicated IPv6-Only Network</name>
 <t>
 Traditional IPv6-only adoption involves separate networks alongside dual-stack ones. IPv6-Mostly offers significant improvements:
 </t>
@@ -524,7 +540,7 @@ In some scenarios (see <xref target="nov6"/>
 <name>Address Assignment Policy</name>
 <t>
 As outlined in Section 6.3 of <xref target="RFC6877"/>
-, CLAT requires either a dedicated IPv6 prefix or, if unavailable, a dedicated IPv6 address. Currently (2024), all implementations use SLAAC for CLAT address acquisition. Therefore, to enable CLAT functionality within IPv6-mostly network segments, first-hop routers must advertise a Prefix Information Option (PIO) containing a globally routable SLAAC-suitable prefix with the 'Autonomous Address-Configuration' (A) flag set to zero.
+, CLAT requires either a dedicated IPv6 prefix or, if unavailable, a dedicated IPv6 address. Currently (2024), all implementations use SLAAC for CLAT address acquisition. Therefore, to enable CLAT functionality within IPv6-mostly network segments, first-hop routers MUST be configured to advertise a Prefix Information Option (PIO, <xref target="RFC4861"/>) containing a globally routable SLAAC-suitable prefix with the 'Autonomous Address-Configuration' (A) flag set to one.
 </t>
 </section>
 
@@ -550,6 +566,18 @@ ESP Header, which is used for IPSec traffic, such as VPN and Wi-Fi Calling.
 </t>
 </li>
 </ul>
+</section>
+
+<section anchor="p2p">
+<name>Onlink Communication and Service Discovery</name>
+<t>
+Shared link is often used for automatic discovery of neighboring devices and their services by means of different protocols like Multicast DNS <xref target="RFC6762" />. Many devices and/or services are built on an assumption that devices on the same link also share the same set of address families or at least they have one common address family shared between all of them.</t>
+    <t>In IPv6-Mostly, this assumption is not valid as there might be both IPv4-only and IPv6-only devices on the same link. As per <xref target="RFC6762" section="20"/>, this means that the link has two unrelated ".local." zones, one for each address family. Discovery of devices across different addres families is impossible, unless some sort of relay is deployed on the link.</t>
+
+<t>
+This concern, however, is only applicable if onlink communications are desired and permitted by security policies. For networks where peer2peer onlink communications are explicitly denied (it's often a case for enterprise networks and public WiFi), this issue is not a concern.
+If onlink peer2peer communication is required, the operator needs to ensure all participating devices are either dual-stack or IPv6-mostly.
+</t>
 </section>
 
 <section anchor="issues">
@@ -808,6 +836,7 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4862.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6052.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6145.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6762.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7225.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8880.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-v6ops-dhcp-pd-per-device.xml"/>
