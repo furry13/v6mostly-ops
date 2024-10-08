@@ -405,10 +405,18 @@ Simplified troubleshooting due reduced impact of Happy Eyeballs: when both the c
 </ul>
 
 <t>
-Introducing NAT64 might be seen as a drawback of the IPv6-Mostly model, as NAT64 shares most of NAT44 disadvantages (using the same public IPv4 address for flows originated by different hosts, scalability issues caused by keeping state, etc).
-However, most IPv4-only or dual-stack networks already make use of NAT44 due to IPv4 address shortage. 
-Such networks would simply need to enable NAT64 functionality on existing devices performing NAT44 functions. Flows from IPv6-only capable endpoints to IPv4-only destinations are translated by NAT44 in a dual-stack network and by NAT64 in IPv6-Mostly envinronment. As a result, the total load on the NAT infrastructure does not increase, with NAT44 being replaced by NAT64for some flows.
-It is also worth emphasizing that NAT64 is only used for accessing IPv4 resources. With more and more resources becoming IPv6-enabled, the traffic flowing via NAT64 is expected to scale down.
+The introduction of NAT64 within the IPv6-Mostly model may appear as a drawback, as it inherits many of the limitations associated with NAT44, such as translating flows from different hosts to thesame public IPv4 address, or scalability challenges caused by stateful opeation.
+However, it's important to recognize that most IPv4-only or dual-stack networks already rely on NAT44 due to IPv4 address scarcity.
+For these networks, transitioning to an IPv6-Mostly architecture would simply require enabling NAT64 functionality on existing NAT44 devices.
+</t>
+<t>
+In a dual-stack network, flows originating from IPv6-only capable endpoints to IPv4-only destinations are translated by NAT44.
+Within an IPv6-Mostly environment, this role is fulfilled by NAT64.
+Consequently, the overall load on the NAT infrastructure remains effectively unchanged, with NAT64 essentially replacing NAT44 for a subset of traffic flows.
+</t>
+<t>
+It is also worth emphasizing that NAT64 is employed solely for facilitating access to IPv4 resources.
+As the availability of IPv6-enabled resources continues to increase, the volume of traffic traversing NAT64 is expected to diminish proportionally.
 </t>
 
 <t>
@@ -419,7 +427,8 @@ As discussed in <xref target="p2p"/> coexistence of IPv6-only and IPv4-only host
 <section anchor="vsv6only">
 <name>IPv6-Mostly Compared to a Dedicated IPv6-Only Network</name>
 <t>
-Traditional IPv6-only adoption involves separate networks alongside dual-stack ones. IPv6-Mostly offers significant improvements:
+Traditional IPv6-only adoption involves separate networks alongside dual-stack ones.
+IPv6-Mostly approach offers significant improvements, such as:
 </t>
 
 <ul>
