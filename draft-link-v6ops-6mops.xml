@@ -399,7 +399,7 @@ Reduced Dependency on DHCPv4: As more devices operate seamlessly in IPv6-only mo
 </li>
 <li>
 <t>
-Simplified troubleshooting due reduced impact of Happy Eyeballs: when both the client and the server are dual-stack, communication can happen either over IPv6 or over IPv4 and the protocol choice can change over time. This obscure network issues or make them intermittent, complicating the troubleshooting. In IPv6-Mostly network IPv6-oly hosts are not affected by this issue. It should be noted, however, that this benefit comes with a cost: when an IPv6-only client communicates with an IPv4-only destination, the traffic may traverse CLAT or go natively, depending on how the specific application is written. 
+Simplified troubleshooting due reduced impact of Happy Eyeballs: when both the client and the server are dual-stack, communication can happen either over IPv6 or over IPv4 and the protocol choice can change over time. This obscure network issues or make them intermittent, complicating the troubleshooting. In IPv6-Mostly network IPv6-only hosts are much less affected by such an issue. Although modern versions of Happy Eyeballs algorithm support falling back to IPv4 even in case of IPv6-only network, the delay before switching to IPv4 is so long that the fallback does not happen during regular operations. It should be noted, however, that when an IPv6-only client communicates with an IPv4-only destination, the traffic may traverse CLAT or be sent as IPv6 towards the NAT64, depending on how the specific application is written.
 </t>
 </li>
 </ul>
