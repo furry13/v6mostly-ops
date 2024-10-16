@@ -627,8 +627,7 @@ Solutions and trade-offs:
 <ul>
 <li>
 <t>
-Using DHCPv6-PD to allocate prefixes to endpoints (<xref target="I-D.ietf-v6ops-dhcp-pd-per-device"/>
-).
+Using DHCPv6-PD to allocate prefixes to endpoints (<xref target="RFC9663"/>).
 Provides downstream systems with IPv6 addresses and native connectivity.
 </t>
 </li>
@@ -684,7 +683,7 @@ In all those cases Endpoints and applications don't receive explicit signalling 
 </t>
 
 <t>
-While allocating prefixes to endpoints via DHCP-PD (<xref target="I-D.ietf-v6ops-dhcp-pd-per-device"/>
+While allocating prefixes to endpoints via DHCP-PD (<xref target="RFC9663"/>
 ) alows to eliminate the issue and corresponding scalability concerns, that solution migth not be supported by all endpoints. 
 The network administrator SHOULD ensure that the deployed network infastructure devices allow sufficient number of IPv6 addresses to be mapped to a client's MAC and SHOULD monitor for events, indicating that the limit has been reached (such as syslog messages, etc).
 </t>
@@ -737,7 +736,7 @@ Path MTU Discovery Issues: Potential disruptions in the PMTU discovery process.
 </ul>
 
 <t>
-<xref target="I-D.equinox-intarea-icmpext-xlat-source"/> proposes a solution for signalling the actual non-synthesized IPv6 source address while translating ICMPv6 error messages.
+<xref target="I-D.equinox-v6ops-icmpext-xlat-v6only-source"/> proposes a solution for signalling the actual non-synthesized IPv6 source address while translating ICMPv6 error messages.
 </t>
 </section>
 
@@ -791,7 +790,7 @@ implement MitM attack by intercepting traffic to the rogue prefix.
 <t>
 To countermeasure this attack vector, the network administrators SHOULD configure  the first-hop routers to include PREF64 information in Router Advertisements as per <xref target="RFC8781"/> and ensure that layer 2 security measures such as RA-Guard (<xref target="RFC6105"/>) are in place.
 Section 7 of <xref target="RFC8781"/> discusses this topic in more details.
-Additionally, <xref target="I-D.link-v6ops-claton"/> discusses security implications of enabling CLAT if native IPv4 connectivity is available and recommends disabling CLAT in that case.
+Additionally, <xref target="I-D.ietf-v6ops-claton"/> discusses security implications of enabling CLAT if native IPv4 connectivity is available and recommends disabling CLAT in that case.
 </t>
 <t>
 Security considerations of using DHCP Option 108 are documented in Section 6 of <xref target="RFC8925"/>.
@@ -852,10 +851,10 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6762.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7225.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8880.xml"/>
-<xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-v6ops-dhcp-pd-per-device.xml"/>
-<xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.link-v6ops-claton.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9663.xml"/>
+<xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-v6ops-claton.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.link-v6ops-gulla.xml"/>
-<xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.equinox-intarea-icmpext-xlat-source.xml"/>
+<xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.equinox-v6ops-icmpext-xlat-v6only-source.xml"/>
 
 </references>
 </references>
