@@ -414,7 +414,7 @@ However, it's important to recognize that most IPv4-only or dual-stack networks 
 For these networks, transitioning to an IPv6-Mostly architecture would simply require enabling NAT64 functionality on existing NAT44 devices.
 </t>
 <t>
-In a dual-stack network, flows originating from IPv6-only capable endpoints to IPv4-only destinations are translated by NAT44.
+In a dual-stack network, flows originating from IPv6-only capable endpoints to IPv4-only destinations are, in most cases,  translated by NAT44.
 Within an IPv6-Mostly environment, this role is fulfilled by NAT64.
 Consequently, the overall load on the NAT infrastructure remains effectively unchanged, with NAT64 essentially replacing NAT44 for a subset of traffic flows.
 </t>
