@@ -13,10 +13,10 @@
 <!-- If further character entities are required then they should be added to the DOCTYPE above.
      Use of an external entity file is not recommended. -->
 
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="info" docName="draft-ietf-v6ops-6mops-00" ipr="trust200902" obsoletes="" submissionType="IETF" xml:lang="en" version="3">
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="info" docName="draft-ietf-v6ops-6mops-01" ipr="trust200902" obsoletes="" submissionType="IETF" xml:lang="en" version="3">
   <front>
     <title abbrev="6mops">IPv6-Mostly Networks: Deployment and Operations Considerations</title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-v6ops-6mops-00"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-v6ops-6mops-01"/>
     <author fullname="Nick Buraglio" initials="N" surname="Buraglio">
       <organization>Energy Sciences Network</organization>
       <address>
@@ -163,7 +163,7 @@ In a nutshell, an IPv6-mostly network is very much similar to a dual-stack one w
       <li>
         <t>
 The network provides NAT64 (<xref target="RFC6146"/>
-)  functionality ([RFC6146]), enabling IPv6-only clients to communicate with IPv4-only destinations.
+)  functionality, enabling IPv6-only clients to communicate with IPv4-only destinations.
         </t>
       </li>
       <li>
@@ -199,18 +199,18 @@ IPv6-only capable endpoint configures its IPv6 addresses and, while performing D
 An IPv6-mostly network segment can support a mix of IPv4-only, dual-stack, and IPv6-only devices.  IPv6-only endpoints utilize the network-provided NAT64 to reach IPv4-only destinations.
   </t>
   <t>
-The following sections discussed the various solution elements in more details.
+The following sections discussed those solution elements in more details.
   </t>
 
   <section anchor="capable">
     <name>IPv6-Only Capable Endpoints</name>
     <t>
       The term "IPv6-only capable endpoint" lacks a strict technical definition. It broadly describes a device that can function without native IPv4 connectivity/IPv4 addresses, providing the same user experience.
-      This might be achieved by several methods:
+Examples include but are not limited to:
     </t>
     <ul>
       <li>An endpoint capable of communicating only with a limited set of endpoints, all of which are available over IPv6.</li>
-      <li>An endpoint capable of utilizing only IPv6 sockets, utilizing NAT64 for accessing IPv4 resources.</li>
+      <li>An endpoint capable of utilizing only IPv6 sockets, employing NAT64 for accessing IPv4 resources.</li>
       <li>An endpoint implementing a customer-side translator (CLAT) as specified in 464XLAT (<xref target="RFC6877"/>) to provide native IPv4 connectivity for the legacy applications.</li>
     </ul>
   </section>
@@ -220,7 +220,8 @@ The following sections discussed the various solution elements in more details.
     <t>
 One effective way to restrict IPv4 addresses solely to devices that require them is to enable support for the IPv6-Only Preferred DHCPv4 option (Option 108, <xref target="RFC8925"/>
 ) on the network's DHCP infrastructure. 
-Most IPv6-only capable systems also support Option 108.  By recognizing this option, the network can configure those devices as IPv6-only.
+Currently, most IPv6-only capable systems also support Option 108 and have it enabled by default.
+By recognizing this option, the network infrastructure can enforce the IPv6-only mode for those devices.
     </t>
     <t>
 Certain devices, such as resource-constrained embedded systems, may operate in IPv6-only mode without specific adjustments if their communication is limited to IPv6-enabled destinations. Since these systems often lack Option 108 support, administrators may need alternative methods to prevent IPv4 address assignment.
@@ -269,7 +270,8 @@ However, if not all internal services are IPv6-enabled, then NAT64 might need to
 In that case it might be beneficial to deploy NAT64 closer to the users, instead of the network Internet edge, in order to simplify routing/firewall rules and reduce latency.      
       </t>
 <t>
-If IPv4-only internal destinations are using <xref target="RFC1918"/> address space, then the operator MUST NOT use the well-known prefix 64:ff9b::/96 for NAT64 (see section 3.1 of <xref target="RFC6052"/>
+If IPv4-only internal destinations are using <xref target="RFC1918"/> address space, then the operator MUST NOT use the well-known prefix 64:ff9b::/96 for NAT64 (see section 3.1 of <xref target="RFC6052"/>. 
+In that scenario the operator is required to allocate a network-specific NAT64 prefix from the operator's address space.
 ).
     </t>
 
@@ -305,17 +307,10 @@ Option 108 Without CLAT MAY be enabled if the administrator is willing to identi
     <t>
 Hosts running 464XLAT need to discover the PREF64 (the IPv6 prefix used by NAT64).
 The network administrator SHOULD configure the first-hop routers to include PREF64 information in Router Advertisements as per (<xref target="RFC8781"/>
-) even if the network provides DNS64 (so hosts can use DNS64-based prefix discovery, <xref target="RFC7050"/>
-).
-This is required as hosts or individual applications might have custom DNS configuration (or even run a local DNS server) and ignore DNS64 information provided by the network, so they can not use <xref target="RFC7050"/>
- method to detect PREF64.
-In the absense of PREF64 information in Router Advertisements such systems would not be able to run CLAT, which would cause connectivity issues for all IPv4-only applications running on the affected device. 
-As such device wouldn't be able to use the network-provided DNS64, access to IPv4-only destination would be impacted as well.
-At the time of writing all major OSes supporting DHCPv4 option 108 and enabling CLAT automatically also support <xref target="RFC8781"/>.
-Therefore providing PREF64 information in RAs can reliably mitigate the impact of custom DNS configuration on those systems.
-</t>
-<t>
-Receiving PREF64 information in RAs also speeds up the CLAT start up time, so an IPv4 address and default route become available for applications much faster.
+) even if the network provides DNS64 (so hosts can use DNS64-based prefix discovery, <xref target="RFC7050"/>).
+
+<xref target="I-D.ietf-v6ops-prefer8781"/> discusses this recommendation in more details.
+
 </t>
 
 </section>
@@ -443,7 +438,7 @@ Enhanced Scalability:  Separate IPv6-only networks double the number of SSIDs in
 </li>
 <li>
 <t>
-Operational Simplicity: Managing one network segment for all clients (regardless of IPv4 needs) simplifies operations, improves user experience (no more confusing SSID choices), and reduces support tickets related to mismatched connections. Dynamic VLAN assignment becomes easier without device-specific IPv6 capability tracking.
+Operational Simplicity: Managing one network segment for all clients (regardless of IPv4 needs) simplifies operations, improves user experience (no more confusing SSID choices), and reduces support tickets related to mismatched connections. For wired connections dynamic VLAN assignment becomes easier without device-specific IPv6 capability tracking.
 </t>
 </li>
 <li>
@@ -483,7 +478,7 @@ Some rollout considerations are discussed in the following sections.
   Limited control over endpoint configuration necessitates a per-subnet rollout, incrementally enabling
   first PREF64 signalling and then option 108 processing in DHCP. Unless special circumstances like
   unicast router advertisements for each host, enabling PREF64 signalling will happen per-subnet
-  without an option to opt out.
+  without per-endpoint opt out mechanism.
 
   If endpoint control exists, per-device rollout is possible for option 108 processing (at least for OSes with configurable Option 108). Note that some OSes unconditionally enable Option 108 support, becoming IPv6-only the moment it's activated on the server side. The following approach is RECOMMENDED:
 </t>
@@ -539,7 +534,7 @@ Opt-Out Phase: Incrementally enable PREF64 signalling as well as Option 108. All
 
 <t>
 In some scenarios (see <xref target="nov6"/>
-) the administrator MAY keep a dual-stack network as a last resort fallback mechanism but SHOULD prevent usesrs from connecting to it accidentially (e.g. it should be a hidden protected SSID). For recurring temporary networks, for instance during a conference, it might be a good practice to change the network SSID of the last resort fallback network between each event.
+) the administrator MAY keep a dual-stack network as a last resort fallback mechanism but SHOULD prevent usesrs from connecting to it accidentially (e.g. it should be a hidden SSID with authentication enabled). For recurring temporary networks, for instance during a conference, it might be a good practice to change the network SSID of the last resort fallback network between each event.
 </t>
 
 </section>
@@ -853,6 +848,7 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8880.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9663.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-v6ops-claton.xml"/>
+<xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-v6ops-prefer8781.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.link-v6ops-gulla.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.equinox-v6ops-icmpext-xlat-v6only-source.xml"/>
 
