@@ -314,7 +314,7 @@ Option 108 Without CLAT MAY be enabled if the administrator is willing to identi
   <section anchor="pref64">
     <name>Signalling NAT64 Prefix to Hosts</name>
     <t>
-Hosts running 464XLAT need to discover the PREF64 (the IPv6 prefix used by NAT64).
+Hosts running 464XLAT, translating IPv4 literal to an IPv6 literals (Section 7.1 of <xref target="RFC8305"/>) or performing local DNS64 functions need to discover the PREF64 (the IPv6 prefix used by NAT64).
 The network administrator SHOULD configure the first-hop routers to include PREF64 information in Router Advertisements as per (<xref target="RFC8781"/>
 ) even if the network provides DNS64 (so hosts can use DNS64-based prefix discovery, <xref target="RFC7050"/>).
 
@@ -863,6 +863,7 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6762.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7225.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8201.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8305.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8880.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9568.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9663.xml"/>
