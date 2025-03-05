@@ -721,6 +721,10 @@ As per  <xref target="RFC6145"/>
 Another common case of IPv6 fragmentation is the use of protocols like DNS and RADIUS, where the server response needs to be sent as a single UDP datagram. 
 Network security policies MUST allow IPv6 fragments for permitted UDP traffic (e.g., DNS, RADIUS) where single-datagram responses are required. Allowing IPv6 fragments for permitted TCP traffic is RECOMMENDED unless the network infrastructure reliably performs TCP MSS clamping.
 </t>
+<t>
+To ensure reliable Path MTU Discovery (PMTUD, <xref target="RFC8201"/>), network security policies SHOULD permit the passage of ICMPv6 Type 2 (Packet Too Big, <xref target="RFC4443"/>) messages to and from all IPv6-enabled devices. 
+This recommendation is fundamentally no different from the established practice in IPv4 networks, where ICMP Type 3 Code 4 (Fragmentation Needed and DF set) messages are essential for PMTUD. 
+</t>
 </section>
 
 <section anchor="traceroute">
@@ -850,6 +854,7 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <references>
 <name>Informative References</name>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.1918.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4443.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4861.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4862.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6052.xml"/>
@@ -857,6 +862,7 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6147.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6762.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7225.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8201.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8880.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9568.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9663.xml"/>
