@@ -165,6 +165,15 @@ In a nutshell, an IPv6-mostly network is very much similar to a dual-stack one w
 The network provides NAT64 (<xref target="RFC6146"/>
 )  functionality, enabling IPv6-only clients to communicate with IPv4-only destinations.
         </t>
+<ul>
+<li>
+<t>
+The network also offers the PREF64 in RAs (<xref target="RFC8781"/>), DNS64 (<xref target="RFC6147"/>) , or both.
+This is to ensure that clients and the network's NAT64 use the same PREF64 to translate between IPv6 and IPv4.
+<xref target="pref64"/> and <xref target="dns64"/> discuss those mechanisms in more detail.
+</t>
+</li>
+</ul>
       </li>
       <li>
         <t>
@@ -845,6 +854,7 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4862.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6052.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6145.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6147.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6762.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7225.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8880.xml"/>
@@ -861,7 +871,7 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <section anchor="Acknowledgements" numbered="false">
 <name>Acknowledgements</name>
 <t>
-Thanks to Brian Carpenter, Stuart Cheshire, Lorenzo Colitti, David Farmer, Jordi Palet, Michael Richardson, Matsuzaki Yoshinobu for the discussions, the feedback, and all contribution.
+Thanks to Brian Carpenter, Stuart Cheshire, Lorenzo Colitti, Jeremy Duncan, David Farmer, Jordi Palet, Michael Richardson, Matsuzaki Yoshinobu for the discussions, the feedback, and all contribution.
 </t>
 </section>
 
