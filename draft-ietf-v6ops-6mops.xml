@@ -130,6 +130,9 @@ Terminology
 This document reuses most of Terminology section from <xref target="RFC8925"/>
 .
     </t>
+<t>
+CLAT: a customer-side translator (CLAT) as specified in <xref target="RFC6877"/> and  <xref target="I-D.ietf-v6ops-claton"/>.
+</t>
     <t>
 Endpoint: A device connected to a network and considered a host From the operator's perspective. However, some endpoint can also extend the network to other physical or logical systems, thereby assuming routing functions. Examples include:
     </t>
@@ -146,6 +149,9 @@ Mobile phone with tethering enabled: Acts as a host on the Wi-Fi network, but al
         </t>
       </li>
     </ul>
+<t>
+Native IPv4 connectivity: IPv4 connectivity or default gateway provided by the network without using any form of translation mechanisms (such as 464XLAT, <xref target="RFC6877"/>).
+</t>
     <t>
 Network segment: a link (VLAN, a broadcast domain etc) where hosts share the same IP subnet.
     </t>
@@ -170,7 +176,7 @@ The network provides NAT64 (<xref target="RFC6146"/>
 <ul>
 <li>
 <t>
-The network also offers the PREF64 in RAs (<xref target="RFC8781"/>), DNS64 (<xref target="RFC6147"/>, <xref target="RFC7050"/>), or both.
+The network also provides the information about the PREF64, for example via RAs (<xref target="RFC8781"/>), via DNS64 (<xref target="RFC6147"/>, <xref target="RFC7050"/>), or both.
 This is to ensure that clients and the network's NAT64 use the same PREF64 to translate between IPv6 and IPv4.
 <xref target="pref64"/> and <xref target="dns64"/> discuss those mechanisms in more detail.
 </t>
@@ -180,6 +186,8 @@ This is to ensure that clients and the network's NAT64 use the same PREF64 to tr
       <li>
         <t>
 The DHCPv4 server infrastructure offers DHCPv4 Option 108 as per <xref target="RFC8925"/>.
+This is to ensure that IPv6-only capable devices are not consuming IPv4 addresses.
+<xref target="coexist"/> discusses other approaches to provide IPv4 addresses on demand.
         </t>
       </li>
     </ul>
@@ -222,11 +230,11 @@ Examples include but are not limited to:
     <ul>
       <li>An endpoint capable of communicating only with a limited set of endpoints, all of which are available over IPv6.</li>
       <li>An endpoint capable of utilizing only IPv6 sockets, employing NAT64 for accessing IPv4 resources.</li>
-      <li>An endpoint implementing a customer-side translator (CLAT) as specified in 464XLAT (<xref target="RFC6877"/>) to provide native IPv4 connectivity for the legacy applications.</li>
+      <li>An endpoint implementing CLAT to provide IPv4 connectivity for the legacy applications.</li>
     </ul>
   </section>
 
-  <section>
+  <section anchor="coexist">
     <name>IPv6-Only and IPv4-enabled Endpoints Coexistence</name>
     <t>
 One effective way to restrict IPv4 addresses solely to devices that require them is to enable support for the IPv6-Only Preferred DHCPv4 option (Option 108, <xref target="RFC8925"/>
@@ -237,7 +245,7 @@ By recognizing this option, the network infrastructure can enforce the IPv6-only
     <t>
 Certain devices, such as resource-constrained embedded systems, may operate in IPv6-only mode without specific adjustments if their communication is limited to IPv6-enabled destinations. Since these systems often lack Option 108 support, administrators may need alternative methods to prevent IPv4 address assignment.
 
-One approach is to block IPv4 traffic at the switchport level. This could involve:
+One approach is to block IPv4 traffic at the network attachment level (such as a switchport or wireless access point). This could involve methods like:
     </t>
 
     <ul>
@@ -281,10 +289,14 @@ However, if not all internal services are IPv6-enabled, then NAT64 might need to
 In that case it might be beneficial to deploy NAT64 closer to the users, instead of the network Internet edge, in order to simplify routing/firewall rules and reduce latency.      
       </t>
 <t>
-If IPv4-only internal destinations are using <xref target="RFC1918"/> address space, then the operator MUST NOT use the well-known prefix 64:ff9b::/96 for NAT64 (see section 3.1 of <xref target="RFC6052"/>. 
+If IPv4-only internal destinations are using <xref target="RFC1918"/> address space and IPv6-only nodes are expected to communicate with those IPv4-only destinations, then the operator MUST NOT use the well-known prefix 64:ff9b::/96 for NAT64 (see section 3.1 of <xref target="RFC6052"/>). 
 In that scenario the operator is required to allocate a network-specific NAT64 prefix from the operator's address space.
 ).
     </t>
+<t>
+Discussion: reports from the field indicate that it's very common for NAT64 and CLAT implementations to ignore the requirement from section 3.1 of <xref target="RFC6052"/>.
+Such implementations successfully translate <xref target="RFC1918"/> IPv4 addresses using the well-known NAT64 prefix.
+</t>
 
   </section>
 
@@ -689,8 +701,11 @@ In all those cases Endpoints and applications don't receive explicit signalling 
 </t>
 
 <t>
-While allocating prefixes to endpoints via DHCP-PD (<xref target="RFC9663"/>
-) alows to eliminate the issue and corresponding scalability concerns, that solution migth not be supported by all endpoints. 
+Allocating prefixes to endpoints via DHCP-PD (<xref target="RFC9663"/>) alows to eliminate the issue and to address the corresponding scalability concerns.
+Operators of large-scale IPv6-mostly networks might benefit from using DHCPv6 prefix delegation for IPv6-only and IPv6-enabled endpoints.
+In that case the administrator also need to ensure that the first-hop routers set the P-flag <xref target="RFC9762"/> in RAs.
+
+However, the deployment model described in <xref target="RFC9663"/> might not yet be supported by all endpoints. 
 The network administrator SHOULD ensure that the deployed network infastructure devices allow sufficient number of IPv6 addresses to be mapped to a client's MAC and SHOULD monitor for events, indicating that the limit has been reached (such as syslog messages, etc).
 </t>
 
@@ -748,7 +763,7 @@ Path MTU Discovery Issues: Potential disruptions in the PMTU discovery process.
 </ul>
 
 <t>
-<xref target="I-D.equinox-v6ops-icmpext-xlat-v6only-source"/> proposes a solution for signalling the actual non-synthesized IPv6 source address while translating ICMPv6 error messages.
+<xref target="I-D.ietf-v6ops-icmpext-xlat-v6only-source"/> proposes a solution for signalling the actual non-synthesized IPv6 source address while translating ICMPv6 error messages.
 </t>
 </section>
 
@@ -869,10 +884,11 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8880.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9568.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9663.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9762.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-v6ops-claton.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-v6ops-prefer8781.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.link-6man-gulla.xml"/>
-<xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.equinox-v6ops-icmpext-xlat-v6only-source.xml"/>
+<xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-v6ops-icmpext-xlat-v6only-source.xml"/>
 
 </references>
 </references>
