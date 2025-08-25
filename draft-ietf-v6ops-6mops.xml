@@ -167,6 +167,15 @@ In a nutshell, an IPv6-mostly network is very much similar to a dual-stack one w
 The network provides NAT64 (<xref target="RFC6146"/>
 )  functionality, enabling IPv6-only clients to communicate with IPv4-only destinations.
         </t>
+<ul>
+<li>
+<t>
+The network also offers the PREF64 in RAs (<xref target="RFC8781"/>), DNS64 (<xref target="RFC6147"/>, <xref target="RFC7050"/>), or both.
+This is to ensure that clients and the network's NAT64 use the same PREF64 to translate between IPv6 and IPv4.
+<xref target="pref64"/> and <xref target="dns64"/> discuss those mechanisms in more detail.
+</t>
+</li>
+</ul>
       </li>
       <li>
         <t>
@@ -307,7 +316,7 @@ Option 108 Without CLAT MAY be enabled if the administrator is willing to identi
   <section anchor="pref64">
     <name>Signalling NAT64 Prefix to Hosts</name>
     <t>
-Hosts running 464XLAT need to discover the PREF64 (the IPv6 prefix used by NAT64).
+Hosts running 464XLAT, translating IPv4 literal to an IPv6 literals (Section 7.1 of <xref target="RFC8305"/>) or performing local DNS64 functions need to discover the PREF64 (the IPv6 prefix used by NAT64).
 The network administrator SHOULD configure the first-hop routers to include PREF64 information in Router Advertisements as per (<xref target="RFC8781"/>
 ) even if the network provides DNS64 (so hosts can use DNS64-based prefix discovery, <xref target="RFC7050"/>).
 
@@ -351,7 +360,7 @@ Therefore DNS64 is only required to support the following cases:
 <ul>
 <li>
 <t>
-Systems and applications which perform local synthesis but do not support <xref target="RFC8781"/> for prefix discovery, and can only discover the NAT64 prefix using <xref target="RFC7050"/>.
+Systems and applications which perform local synthesis but do not support <xref target="RFC8781"/> for prefix discovery, and can only discover the NAT64 prefix using via DNS64 <xref target="RFC7050"/>.
 </t>
 </li>
 <li>
@@ -714,6 +723,10 @@ As per  <xref target="RFC6145"/>
 Another common case of IPv6 fragmentation is the use of protocols like DNS and RADIUS, where the server response needs to be sent as a single UDP datagram. 
 Network security policies MUST allow IPv6 fragments for permitted UDP traffic (e.g., DNS, RADIUS) where single-datagram responses are required. Allowing IPv6 fragments for permitted TCP traffic is RECOMMENDED unless the network infrastructure reliably performs TCP MSS clamping.
 </t>
+<t>
+To ensure reliable Path MTU Discovery (PMTUD, <xref target="RFC8201"/>), network security policies SHOULD permit the passage of ICMPv6 Type 2 (Packet Too Big, <xref target="RFC4443"/>) messages to and from all IPv6-enabled devices. 
+This recommendation is fundamentally no different from the established practice in IPv4 networks, where ICMP Type 3 Code 4 (Fragmentation Needed and DF set) messages are essential for PMTUD. 
+</t>
 </section>
 
 <section anchor="traceroute">
@@ -843,12 +856,16 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <references>
 <name>Informative References</name>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.1918.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4443.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4861.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4862.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6052.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6145.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6147.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6762.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7225.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8201.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8305.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8880.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9568.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9663.xml"/>
@@ -863,7 +880,7 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <section anchor="Acknowledgements" numbered="false">
 <name>Acknowledgements</name>
 <t>
-Thanks to Brian Carpenter, Stuart Cheshire, Lorenzo Colitti, David Farmer, Jordi Palet, Michael Richardson, Matsuzaki Yoshinobu for the discussions, the feedback, and all contribution.
+Thanks to Brian Carpenter, Stuart Cheshire, Lorenzo Colitti, Jeremy Duncan, David Farmer, Jordi Palet, Michael Richardson, Matsuzaki Yoshinobu for the discussions, the feedback, and all contribution.
 </t>
 </section>
 
