@@ -13,10 +13,10 @@
 <!-- If further character entities are required then they should be added to the DOCTYPE above.
      Use of an external entity file is not recommended. -->
 
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="info" docName="draft-ietf-v6ops-6mops-01" ipr="trust200902" obsoletes="" submissionType="IETF" xml:lang="en" version="3">
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="info" docName="draft-ietf-v6ops-6mops-02" ipr="trust200902" obsoletes="" submissionType="IETF" xml:lang="en" version="3">
   <front>
     <title abbrev="6mops">IPv6-Mostly Networks: Deployment and Operations Considerations</title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-v6ops-6mops-01"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-v6ops-6mops-02"/>
     <author fullname="Nick Buraglio" initials="N" surname="Buraglio">
       <organization>Energy Sciences Network</organization>
       <address>
@@ -97,11 +97,13 @@ The less control a network operator has over devices and applications, the more 
       </t>
 
       <t>
-To enable a gradual transition, operators need to identify which devices can function in IPv6-only mode and which cannot. Creating separate network segments for each type introduces complexity and scalability issues – a major hurdle to IPv6-only adoption.
+To enable a gradual transition, operators need to identify which devices can function in IPv6-only mode and which cannot.
+This still leaves the challenge of how to provide IPv4 addresses only to devices with IPv4 dependencies.
+Creating separate network segments for each type of devices introduces complexity and scalability issues – a major hurdle to IPv6-only adoption.
       </t>
 
       <t>
-A more desirable approach is to deploy an "IPv6-mostly" network that provides IPv4 on demand. This allows IPv6-capable devices to remain IPv6-only while seamlessly supplying IPv4 to those that require it. An IPv6-mostly network allows Endpoints to operate at the highest level of their network stack evolution, on demand, while still allowing for legacy compatibility. 
+A more desirable approach is to deploy an "IPv6-mostly" network that provides IPv4 on demand. This allows IPv6-capable devices to remain IPv6-only while the network is seamlessly supplying IPv4 to those that require it. An IPv6-mostly network allows endpoints to operate at the highest level of their network stack evolution, on demand, while still allowing for legacy compatibility. 
       </t>
 
       <t>
