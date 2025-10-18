@@ -644,7 +644,7 @@ If NAT44 is employed, then NAT64 and NAT44 must share the same pool of IPv4 addr
 </li>
 <li>
 <t>
-Whenever possible, the same NAT pool address is assigned to all concurrent sessions originating from the same internal host (a configuration often referred to as 'sticky' or 'persistent' NAT).
+Whenever possible, the same NAT pool address is assigned to all concurrent sessions originating from the same internal host (a configuration often referred to as 'sticky' NAT).
 </t>
 </li>
 </ul>
