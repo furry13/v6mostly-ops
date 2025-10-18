@@ -501,14 +501,49 @@ Flexible, Incremental Transition: IPv6-Mostly allows for gradual migration on a 
 <t>
 Some rollout considerations are discussed in the following sections.
 </t>
+<section anchor="optin">
+<name>Opt-In and Opt-Out Modes</name>
+
+<t>
+Before user-facing deployment, the administrator SHOULD consider a dedicated IPv6-mostly proof-of-concept network for early adopters. While this temporarily sacrifices some IPv6-mostly benefits (<xref target="vsv6only"/>
+), it provides valuable operational experience and early issue detection.
+</t>
+<ul>
+<li>
+<t>
+Opt-In Phase: Invite tech-savvy early adopters to join an IPv6-mostly network and report issues. While response rates may be low, dedicated participants provide valuable troubleshooting data.
+</t>
+</li>
+<li>
+<t>
+Opt-Out Phase: Incrementally enable PREF64 signalling as well as Option 108. Allow selective disabling for problematic endpoints, in extreme case even by providing a separate network or rolling back IPv6-mostly in that particular subnet. Opting out SHOULD NOT be possible without a problem reports to ensure issue tracking and resolution.
+</t>
+</li>
+</ul>
+
+<t>
+In some scenarios (see <xref target="nov6"/>
+) the administrator MAY keep a dual-stack network as a last resort fallback mechanism but SHOULD prevent usesrs from connecting to it accidentially (e.g. it should be a hidden SSID with authentication enabled). For recurring temporary networks, for instance during a conference, it might be a good practice to change the network SSID of the last resort fallback network between each event.
+</t>
+</section>
+
 
 <section anchor="incr">
 <name>Per-Device and Per-Subnet Incremental Rollout</name>
 <t>
   Limited control over endpoint configuration necessitates a per-subnet rollout, incrementally enabling first PREF64 signalling and then option 108 processing in DHCP.
+</t>
+<t>
 In most networks all hosts on a given subnet receive the same RAs (unless mechanisms like per-client RA <xref target="RFC8273"/> are deployed), so signalling PRE64 via an RA option doesn't allow any per-endpoint opt out mechanism.
-
-If the administrator can control endpoint DHCPv4 client configuration, per-device rollout is possible for option 108 processing (at least for OSes with configurable Option 108). Note that some OSes unconditionally enable Option 108 support, becoming IPv6-only the moment it's activated on the server side. The following approach is RECOMMENDED:
+</t>
+<t>
+Some operating systems provide a mechanism to enable option 108 processing.
+In these cases, if the endpoints are managed, per-device rollout may be possible.
+Note that some OSes enable Option 108 support by default without providing configuration knobs to turn it off.
+Such systems become IPv6-only the moment Option 108 is activated on the server side.
+</t>
+<t>
+The following approach is RECOMMENDED:
 </t>
 <ul>
 <li>
@@ -540,32 +575,10 @@ For quick rollback, the administrator SHOULD start with a minimal Option 108 val
 </t>
 </section>
 
-<section anchor="optin">
-<name>Opt-In and Opt-Out Modes</name>
 
-<t>
-Before user-facing deployment, the administrator SHOULD consider a dedicated IPv6-mostly proof-of-concept network for early adopters. While this temporarily sacrifices some IPv6-mostly benefits (<xref target="vsv6only"/>
-), it provides valuable operational experience and early issue detection.
-</t>
-<ul>
-<li>
-<t>
-Opt-In Phase: Invite tech-savvy early adopters to join an IPv6-mostly network and report issues. While response rates may be low, dedicated participants provide valuable troubleshooting data.
-</t>
-</li>
-<li>
-<t>
-Opt-Out Phase: Incrementally enable PREF64 signalling as well as Option 108. Allow selective disabling for problematic endpoints, in extreme case even by providing a separate network or rolling back IPv6-mostly in that particular subnet. Opting out SHOULD NOT be possible without a problem reports to ensure issue tracking and resolution.
-</t>
-</li>
-</ul>
 
-<t>
-In some scenarios (see <xref target="nov6"/>
-) the administrator MAY keep a dual-stack network as a last resort fallback mechanism but SHOULD prevent usesrs from connecting to it accidentially (e.g. it should be a hidden SSID with authentication enabled). For recurring temporary networks, for instance during a conference, it might be a good practice to change the network SSID of the last resort fallback network between each event.
-</t>
 
-</section>
+
 
 </section>
 
@@ -611,9 +624,30 @@ Shared link is often used for automatic discovery of neighboring devices and the
     <t>In IPv6-Mostly, this assumption is not valid as there might be both IPv4-only and IPv6-only devices on the same link. As per <xref target="RFC6762" section="20"/>, this means that the link has two unrelated ".local." zones, one for each address family. Discovery of devices across different addres families is impossible, unless some sort of relay is deployed on the link.</t>
 
 <t>
-This concern, however, is only applicable if onlink communications are desired and permitted by security policies. For networks where peer2peer onlink communications are explicitly denied (it's often a case for enterprise networks and public WiFi), this issue is not a concern.
+This problem, however, is limited to networks where client-to-client onlink communications are desired and permitted by security policies.
+For networks where client isolation is enabled (it's often a case for enterprise networks and public WiFi), this issue is not a concern.
 If onlink peer2peer communication is required, the operator needs to ensure all participating devices are either dual-stack or IPv6-mostly.
 </t>
+</section>
+
+<section anchor="ip_auth">
+<name>NAT64 IPv4 Pools</name>
+<t>
+It is not uncommon for client IP addresses to be used as part of an authentication mechanism.
+To ensure that migrating a client from dual-stack to IPv6-only mode does not impact such authentication mechanisms:
+</t>
+<ul>
+<li>
+<t>
+If NAT44 is employed, then NAT64 and NAT44 must share the same pool of IPv4 addresses.
+</t>
+</li>
+<li>
+<t>
+Whenever possible, the same NAT pool address is assigned to all concurrent sessions originating from the same internal host (a configuration often referred to as 'sticky' or 'persistent' NAT).
+</t>
+</li>
+</ul>
 </section>
 
 <section anchor="issues">
