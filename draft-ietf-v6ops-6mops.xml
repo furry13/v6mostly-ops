@@ -339,7 +339,7 @@ Hosts running 464XLAT, translating IPv4 literal to an IPv6 literals (Section 7.1
 The network administrator SHOULD configure the first-hop routers to include PREF64 information in Router Advertisements as per (<xref target="RFC8781"/>
 ) even if the network provides DNS64 (so hosts can use DNS64-based prefix discovery, <xref target="RFC7050"/>).
 
-<xref target="I-D.ietf-v6ops-prefer8781"/> discusses this recommendation in more details.
+<xref target="RFC9872"/> discusses this recommendation in more details.
 
 </t>
 
@@ -927,8 +927,8 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9568.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9663.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9762.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9872.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-v6ops-claton.xml"/>
-<xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-v6ops-prefer8781.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.link-6man-gulla.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-v6ops-icmpext-xlat-v6only-source.xml"/>
 
