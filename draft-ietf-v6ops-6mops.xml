@@ -831,6 +831,11 @@ However some implementations do not comply with <xref target="RFC8880"/> and, wh
 Where feasible, administrators SHOULD include PREF64 in RAs within IPv6-mostly networks to minimize reliance on DNS64.
 Administrators need to  be aware of the potential for CLAT failures when endpoints use custom resolvers in environments lacking PREF64.
 </t>
+
+<t>
+Similarly, some VPN clients are known to overrride the DNS configuration on the endpoints, preventing those devices from discovering the NAT64 prefix via <xref target="RFC7050"/> mechanism.
+If the network doesn't provide the NAT64 prefix in RAs or the endpoint doesn't support <xref target="RFC8781"/>, the endpoint might not be able to discover the NAT64 prefix and therefore would fail to enable CLAT.
+</t>
 </section>
 
 </section>
