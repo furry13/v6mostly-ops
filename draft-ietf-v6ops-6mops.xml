@@ -159,6 +159,9 @@ Mobile phone with tethering enabled: Acts as a host on the Wi-Fi network, but al
       </li>
     </ul>
 <t>
+NAT44: Network Address Translation from IPv4 to IPv4.
+</t>
+<t>
 Native IPv4 connectivity: IPv4 connectivity or default gateway provided by the network without using any form of translation mechanisms (such as 464XLAT, <xref target="RFC6877"/>).
 </t>
     <t>
@@ -195,7 +198,7 @@ This is to ensure that clients and the network's NAT64 use the same PREF64 to tr
       <li>
         <t>
 The DHCPv4 server infrastructure offers DHCPv4 Option 108 as per <xref target="RFC8925"/>.
-This is to ensure that IPv6-only capable devices are not consuming IPv4 addresses.
+This is to ensure that IPv6-only Capable devices are not consuming IPv4 addresses.
 <xref target="coexist"/> discusses other approaches to provide IPv4 addresses on demand.
         </t>
       </li>
@@ -216,7 +219,7 @@ Dual-Stack Endpoint (Not IPv6-Only Capable): Configures IPv6 addresses using any
       </li>
       <li>
         <t>
-IPv6-only capable endpoint configures its IPv6 addresses and, while performing DHCPv4, includes option 108 (<xref target="RFC8925"/>
+IPv6-only Capable endpoint configures its IPv6 addresses and, while performing DHCPv4, includes option 108 (<xref target="RFC8925"/>
 ) into the Parameter Request List. The DHCP server returns the option and, as per <xref target="RFC8925"/>
 , the endpoint forgoes requesting an IPv4 address, remaining in IPv6-only mode.
       </t>
@@ -233,7 +236,7 @@ The following sections discussed those solution elements in more details.
   <section anchor="capable">
     <name>IPv6-Only Capable Endpoints</name>
     <t>
-      The term "IPv6-only capable endpoint" lacks a strict technical definition. It broadly describes a device that can function without native IPv4 connectivity/IPv4 addresses, providing the same user experience as if native IPv4 connectivity were present.
+      The term "IPv6-only Capable endpoint" lacks a strict technical definition. It broadly describes a device that can function without native IPv4 connectivity/IPv4 addresses, providing the same user experience as if native IPv4 connectivity were present.
 Examples include but are not limited to:
     </t>
     <ul>
@@ -247,7 +250,7 @@ Examples include but are not limited to:
     <name>IPv6-Only and IPv4-enabled Endpoints Coexistence</name>
     <t>
 One effective way to restrict IPv4 addresses solely to devices that require them is to enable support for the IPv6-Only Preferred DHCPv4 option (Option 108, <xref target="RFC8925"/>) on the network's DHCP infrastructure.
-As most IPv6-only capable devices support Option 108 in their DHCP clients, enabling Option 108 on the server side would allow those devices to cease requesting IPv4 addresses.
+As most IPv6-only Capable devices support Option 108 in their DHCP clients, enabling Option 108 on the server side would allow those devices to cease requesting IPv4 addresses.
     </t>
     <t>
 Certain devices, such as resource-constrained embedded systems, may operate in IPv6-only mode without specific adjustments if their communication is limited to IPv6-enabled destinations. Since these systems often lack Option 108 support, administrators may need alternative methods to prevent IPv4 address assignment.
@@ -439,7 +442,7 @@ However, it's important to recognize that most IPv4-only or dual-stack networks 
 For these networks, transitioning to an IPv6-Mostly architecture would simply require enabling NAT64 functionality on existing NAT44 devices.
 </t>
 <t>
-In a dual-stack network, flows originating from IPv6-only capable endpoints to IPv4-only destinations are, in most cases,  translated by NAT44.
+In a dual-stack network, flows originating from IPv6-only Capable endpoints to IPv4-only destinations are, in most cases,  translated by NAT44.
 Within an IPv6-Mostly environment, this role is fulfilled by NAT64.
 Consequently, the overall load on the NAT infrastructure remains effectively unchanged, with NAT64 essentially replacing NAT44 for a subset of traffic flows.
 </t>
@@ -473,7 +476,7 @@ Operational Simplicity: Managing one network segment for all clients (regardless
 </li>
 <li>
 <t>
-Optimized IPv4 Consumption: User-selected dual-stack networks often lead to unnecessary IPv4 use, as users often connect IPv6-only capable devices to a dual-stack network. IPv6-Mostly network allocates IPv4 addresses 
+Optimized IPv4 Consumption: User-selected dual-stack networks often lead to unnecessary IPv4 use, as users often connect IPv6-only Capable devices to a dual-stack network. IPv6-Mostly network allocates IPv4 addresses 
 only when devices don't advertise IPv6-only capability (DHCPv4 Option 108).
 </t>
 </li>
@@ -938,7 +941,8 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <section anchor="Acknowledgements" numbered="false">
 <name>Acknowledgements</name>
 <t>
-Thanks to Brian Carpenter, Stuart Cheshire, Lorenzo Colitti, Jeremy Duncan, David Farmer, Warren Kumari, Jordi Palet, Michael Richardson, Matsuzaki Yoshinobu for the discussions, the feedback, and all contribution.
+Thanks to Brian Carpenter, Stuart Cheshire, Lorenzo Colitti, Jeremy Duncan, David Farmer, Warren Kumari, Jordi Palet, 
+Tom Petch, Michael Richardson, Matsuzaki Yoshinobu for the discussions, the feedback, and all contribution.
 </t>
 </section>
 
