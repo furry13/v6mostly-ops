@@ -198,7 +198,7 @@ This is to ensure that clients and the network's NAT64 use the same PREF64 to tr
       <li>
         <t>
 The DHCPv4 server infrastructure offers DHCPv4 Option 108 as per <xref target="RFC8925"/>.
-This is to ensure that IPv6-only Capable devices are not consuming IPv4 addresses.
+This is to ensure that IPv6-only capable devices are not consuming IPv4 addresses.
 <xref target="coexist"/> discusses other approaches to provide IPv4 addresses on demand.
         </t>
       </li>
@@ -214,12 +214,12 @@ IPv4-Only Endpoint: Acquires an IPv4 address through DHCPv4.
       </li>
       <li>
         <t>
-Dual-Stack Endpoint (Not IPv6-Only Capable): Configures IPv6 addresses using any supported protocol. Additionally, it obtains an IPv4 address via DHCPv4.
+Dual-Stack Endpoint (Not IPv6-only capable): Configures IPv6 addresses using any supported protocol. Additionally, it obtains an IPv4 address via DHCPv4.
         </t>
       </li>
       <li>
         <t>
-IPv6-only Capable endpoint configures its IPv6 addresses and, while performing DHCPv4, includes option 108 (<xref target="RFC8925"/>
+IPv6-only capable endpoint configures its IPv6 addresses and, while performing DHCPv4, includes option 108 (<xref target="RFC8925"/>
 ) into the Parameter Request List. The DHCP server returns the option and, as per <xref target="RFC8925"/>
 , the endpoint forgoes requesting an IPv4 address, remaining in IPv6-only mode.
       </t>
@@ -234,9 +234,9 @@ The following sections discussed those solution elements in more details.
   </t>
 
   <section anchor="capable">
-    <name>IPv6-Only Capable Endpoints</name>
+    <name>IPv6-only capable Endpoints</name>
     <t>
-      The term "IPv6-only Capable endpoint" lacks a strict technical definition. It broadly describes a device that can function without native IPv4 connectivity/IPv4 addresses, providing the same user experience as if native IPv4 connectivity were present.
+      The term "IPv6-only capable endpoint" lacks a strict technical definition. It broadly describes a device that can function without native IPv4 connectivity/IPv4 addresses, providing the same user experience as if native IPv4 connectivity were present.
 Examples include but are not limited to:
     </t>
     <ul>
@@ -250,7 +250,7 @@ Examples include but are not limited to:
     <name>IPv6-Only and IPv4-enabled Endpoints Coexistence</name>
     <t>
 One effective way to restrict IPv4 addresses solely to devices that require them is to enable support for the IPv6-Only Preferred DHCPv4 option (Option 108, <xref target="RFC8925"/>) on the network's DHCP infrastructure.
-As most IPv6-only Capable devices support Option 108 in their DHCP clients, enabling Option 108 on the server side would allow those devices to cease requesting IPv4 addresses.
+As most IPv6-only capable devices support Option 108 in their DHCP clients, enabling Option 108 on the server side would allow those devices to cease requesting IPv4 addresses.
     </t>
     <t>
 Certain devices, such as resource-constrained embedded systems, may operate in IPv6-only mode without specific adjustments if their communication is limited to IPv6-enabled destinations. Since these systems often lack Option 108 support, administrators may need alternative methods to prevent IPv4 address assignment.
@@ -442,7 +442,7 @@ However, it's important to recognize that most IPv4-only or dual-stack networks 
 For these networks, transitioning to an IPv6-Mostly architecture would simply require enabling NAT64 functionality on existing NAT44 devices.
 </t>
 <t>
-In a dual-stack network, flows originating from IPv6-only Capable endpoints to IPv4-only destinations are, in most cases,  translated by NAT44.
+In a dual-stack network, flows originating from IPv6-only capable endpoints to IPv4-only destinations are, in most cases,  translated by NAT44.
 Within an IPv6-Mostly environment, this role is fulfilled by NAT64.
 Consequently, the overall load on the NAT infrastructure remains effectively unchanged, with NAT64 essentially replacing NAT44 for a subset of traffic flows.
 </t>
@@ -476,7 +476,7 @@ Operational Simplicity: Managing one network segment for all clients (regardless
 </li>
 <li>
 <t>
-Optimized IPv4 Consumption: User-selected dual-stack networks often lead to unnecessary IPv4 use, as users often connect IPv6-only Capable devices to a dual-stack network. IPv6-Mostly network allocates IPv4 addresses 
+Optimized IPv4 Consumption: User-selected dual-stack networks often lead to unnecessary IPv4 use, as users often connect IPv6-only capable devices to a dual-stack network. IPv6-Mostly network allocates IPv4 addresses 
 only when devices don't advertise IPv6-only capability (DHCPv4 Option 108).
 </t>
 </li>
@@ -575,6 +575,9 @@ Rollback Approach
 
 For quick rollback, the administrator SHOULD start with a minimal Option 108 value (300 seconds, Section 3.4 of <xref target="RFC8925"/>) and possibly increase this value as the IPv6-mostly network proves reliable, reducing the likelihood of full-scale rollback.
   In most deployments, the load of DHCP infrastructure caused by each endpoint restarting the DHCP handshake every 300 seconds would be negligible.
+However for large networks containing a high number of IPv6-only capable clients, the default value of 300 seconds may be too low.
+Even if each IPv6-only capable client sends only one DHCPDISCOVER every 300 seconds, the collective traffic can still create a substantial load on the DHCP infrastructure. 
+Administrators are advised to monitor this load and adjust the Option 108 value as necessary.
 </t>
 </section>
 
