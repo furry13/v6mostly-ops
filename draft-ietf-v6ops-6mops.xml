@@ -349,7 +349,10 @@ The network administrator SHOULD configure the first-hop routers to include PREF
 </section>
 
 <section anchor="dns64">
-<name>DNS vs DNS64</name>
+<name>Signalling DNS and  DNS64 to Hosts</name>
+<t>
+To provide IPv6-only endpoints with DNS recursive server addresses, the administrator MUST configure the network to include the DNS servers IPv6 addresses into RA option, as per <xref target="RFC8106"/>.
+</t>
 <t>
 Traditionally, DNS64 (with NAT64) is used to enable IPv6-only endpoints to access IPv4-only destinations.
 However, using DNS64 has a number of drawbacks, such as:
@@ -909,6 +912,7 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7050.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7335.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8200.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8106.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8174.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8781.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8585.xml"/>
