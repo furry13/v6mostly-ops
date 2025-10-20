@@ -837,6 +837,8 @@ Such packets are known as atomic fragments.
 However, <xref target="RFC7915"/> obsoleted <xref target="RFC6145"/> and deprecated the algorithm that generates these IPv6 atomic fragments.
 It has been observed that certain <xref target="RFC7915"/> non-compliant PLAT implementations continue to generate IPv6 atomic fragments.
 This behavior causes unintended connectivity issues, particularly on endpoints where firewalls are enabled.
+Administrators should verify that the PLAT devices do not generate atomic fragments by default.
+If atomic fragments are generated, the administrator should configure the PLAT devices to disable atomic fragments generation, provided a configuration mechanism is available.
 </t>
 </section>
 
