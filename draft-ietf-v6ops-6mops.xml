@@ -159,6 +159,9 @@ Mobile phone with tethering enabled: Acts as a host on the Wi-Fi network, but al
       </li>
     </ul>
 <t>
+NAT44: Network Address Translation from IPv4 to IPv4.
+</t>
+<t>
 Native IPv4 connectivity: IPv4 connectivity or default gateway provided by the network without using any form of translation mechanisms (such as 464XLAT, <xref target="RFC6877"/>).
 </t>
     <t>
@@ -211,7 +214,7 @@ IPv4-Only Endpoint: Acquires an IPv4 address through DHCPv4.
       </li>
       <li>
         <t>
-Dual-Stack Endpoint (Not IPv6-Only Capable): Configures IPv6 addresses using any supported protocol. Additionally, it obtains an IPv4 address via DHCPv4.
+Dual-Stack Endpoint (Not IPv6-only capable): Configures IPv6 addresses using any supported protocol. Additionally, it obtains an IPv4 address via DHCPv4.
         </t>
       </li>
       <li>
@@ -231,7 +234,7 @@ The following sections discussed those solution elements in more details.
   </t>
 
   <section anchor="capable">
-    <name>IPv6-Only Capable Endpoints</name>
+    <name>IPv6-only capable Endpoints</name>
     <t>
       The term "IPv6-only capable endpoint" lacks a strict technical definition. It broadly describes a device that can function without native IPv4 connectivity/IPv4 addresses, providing the same user experience as if native IPv4 connectivity were present.
 Examples include but are not limited to:
@@ -346,7 +349,10 @@ The network administrator SHOULD configure the first-hop routers to include PREF
 </section>
 
 <section anchor="dns64">
-<name>DNS vs DNS64</name>
+<name>Signalling DNS and  DNS64 to Hosts</name>
+<t>
+To provide IPv6-only endpoints with DNS recursive server addresses, the administrator MUST configure the network to include the DNS servers IPv6 addresses into RA option, as per <xref target="RFC8106"/>.
+</t>
 <t>
 Traditionally, DNS64 (with NAT64) is used to enable IPv6-only endpoints to access IPv4-only destinations.
 However, using DNS64 has a number of drawbacks, such as:
@@ -572,6 +578,9 @@ Rollback Approach
 
 For quick rollback, the administrator SHOULD start with a minimal Option 108 value (300 seconds, Section 3.4 of <xref target="RFC8925"/>) and possibly increase this value as the IPv6-mostly network proves reliable, reducing the likelihood of full-scale rollback.
   In most deployments, the load of DHCP infrastructure caused by each endpoint restarting the DHCP handshake every 300 seconds would be negligible.
+However for large networks containing a high number of IPv6-only capable clients, the default value of 300 seconds may be too low.
+Even if each IPv6-only capable client sends only one DHCPDISCOVER every 300 seconds, the collective traffic can still create a substantial load on the DHCP infrastructure. 
+Administrators are advised to monitor this load and adjust the Option 108 value as necessary.
 </t>
 </section>
 
@@ -825,6 +834,11 @@ However some implementations do not comply with <xref target="RFC8880"/> and, wh
 Where feasible, administrators SHOULD include PREF64 in RAs within IPv6-mostly networks to minimize reliance on DNS64.
 Administrators need to  be aware of the potential for CLAT failures when endpoints use custom resolvers in environments lacking PREF64.
 </t>
+
+<t>
+Similarly, some VPN clients are known to overrride the DNS configuration on the endpoints, preventing those devices from discovering the NAT64 prefix via <xref target="RFC7050"/> mechanism.
+If the network doesn't provide the NAT64 prefix in RAs or the endpoint doesn't support <xref target="RFC8781"/>, the endpoint might not be able to discover the NAT64 prefix and therefore would fail to enable CLAT.
+</t>
 </section>
 
 </section>
@@ -898,6 +912,7 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7050.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7335.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8200.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8106.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8174.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8781.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8585.xml"/>
@@ -938,7 +953,8 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <section anchor="Acknowledgements" numbered="false">
 <name>Acknowledgements</name>
 <t>
-Thanks to Brian Carpenter, Stuart Cheshire, Lorenzo Colitti, Jeremy Duncan, David Farmer, Warren Kumari, Jordi Palet, Michael Richardson, Matsuzaki Yoshinobu for the discussions, the feedback, and all contribution.
+Thanks to Brian Carpenter, Stuart Cheshire, Lorenzo Colitti, Jeremy Duncan, David Farmer, Warren Kumari, Jordi Palet, 
+Tom Petch, Michael Richardson, Matsuzaki Yoshinobu for the discussions, the feedback, and all contribution.
 </t>
 </section>
 
