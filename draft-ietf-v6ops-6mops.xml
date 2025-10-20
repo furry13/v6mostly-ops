@@ -829,6 +829,10 @@ To ensure reliable Path MTU Discovery (PMTUD, <xref target="RFC8201"/>), network
 This recommendation is fundamentally no different from the established practice in IPv4 networks, where ICMP Type 3 Code 4 (Fragmentation Needed and DF set) messages are essential for PMTUD. 
 </t>
 
+<t>
+
+</t>
+
 <section>
 <name>Atomic Fragments</name>
 <t>
@@ -842,6 +846,22 @@ If atomic fragments are generated, the administrator should configure the PLAT d
 </t>
 </section>
 
+
+</section>
+
+<section anchor="udpzero">
+<name>IPv4 UDP Packets with Zero Checksum</name>
+<t>
+Translating IPv4 UDP packet with zero checksum to IPv6 requires the translator to calculate the checksum and therefore has performance implication.
+As per Secton 4.5 of <xref target="RFC7915"/>, translators are allowed to drop IPv4 UDP packet with zero checksum.
+Additionally, Section 1.2 of <xref target="RFC7915"/> says:
+"Fragmented IPv4 UDP packets that do not contain a UDP checksum (i.e., the UDP checksum field is zero) are not of significant use on the Internet, and in general will not be translated by the IP/ICMP translator...However, when the translator is configured to forward the packet without a UDP checksum, the fragmented IPv4 UDP packets will be translated."
+</t>
+<t>
+It has been observed that some systems (such as 3GPP ePDG, Evolved Packet Data Gateway) might generate IPv4 UDP packets with zero checksum.
+Those packets could be dropped by the PLAT devices, impacting WiFi calling on IPv6-only endpoints connecting to those ePDGs.
+As Secton 4.5 of <xref target="RFC7915"/> recommends that the translators have a configuration knob to calculate an IPv6 checksum and forward the packet instead of dropping it, the administrator should consider enabling that option if such issue is encountered.
+</t>
 </section>
 
 <section anchor="traceroute">
