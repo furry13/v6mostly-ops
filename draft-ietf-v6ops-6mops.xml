@@ -1035,16 +1035,13 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.2119.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6105.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6146.xml"/>
-<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6333.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6555.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6877.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7050.xml"/>
-<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7335.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8200.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8106.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8174.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8781.xml"/>
-<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8585.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8925.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9099.xml"/>
 <!-- The recommended and simplest way to include a well known reference -->
@@ -1057,7 +1054,6 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4443.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4787.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4861.xml"/>
-<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4862.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6052.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6145.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6147.xml"/>
@@ -1065,7 +1061,6 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6762.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6724.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6888.xml"/>
-<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7225.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7755.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7915.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8201.xml"/>
