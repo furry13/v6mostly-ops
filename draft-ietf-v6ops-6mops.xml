@@ -197,7 +197,7 @@ This is to ensure that clients and the network's NAT64 use the same PREF64 to tr
       </li>
       <li>
         <t>
-The DHCPv4 server infrastructure offers DHCPv4 Option 108 as per <xref target="RFC8925"/>.
+The DHCPv4 server infrastructure offers IPv6-Only Preferred Option (Option 108) as per <xref target="RFC8925"/>.
 This is to ensure that IPv6-only capable devices are not consuming IPv4 addresses.
 <xref target="coexist"/> discusses other approaches to provide IPv4 addresses on demand.
         </t>
@@ -220,7 +220,7 @@ Dual-Stack Endpoint (Not IPv6-only capable): Configures IPv6 addresses using any
       <li>
         <t>
 IPv6-only capable endpoint configures its IPv6 addresses and, while performing DHCPv4, includes Option 108 (<xref target="RFC8925"/>
-) into the Parameter Request List. The DHCP server returns the option and, as per <xref target="RFC8925"/>
+) into the Parameter Request List. The DHCPv4 server returns the option and, as per <xref target="RFC8925"/>
 , the endpoint forgoes requesting an IPv4 address, remaining in IPv6-only mode.
       </t>
     </li>
@@ -249,8 +249,8 @@ Examples include but are not limited to:
   <section anchor="coexist">
     <name>IPv6-only and IPv4-enabled Endpoints Coexistence</name>
     <t>
-One effective way to restrict IPv4 addresses solely to devices that require them is to enable support for the IPv6-Only Preferred Option for DHCPv4 (Option 108, <xref target="RFC8925"/>) on the network's DHCP infrastructure.
-As most IPv6-only capable devices supports Option 108 in their DHCP clients, enabling Option 108 on the server side would allow those devices to cease requesting IPv4 addresses.
+One effective way to restrict IPv4 addresses solely to devices that require them is to enable support for the IPv6-only Preferred Option for DHCPv4 (Option 108, <xref target="RFC8925"/>) on the network's DHCP infrastructure.
+As most IPv6-only capable devices supports Option 108 in their DHCPv4 clients, enabling Option 108 on the server side would allow those devices to cease requesting IPv4 addresses.
     </t>
     <t>
 Certain devices, such as resource-constrained embedded systems, may operate in IPv6-only mode without specific adjustments if their communication is limited to IPv6-enabled destinations. Since these systems often lack Option 108 support, administrators may need alternative methods to prevent IPv4 address assignment.
@@ -633,7 +633,7 @@ In some scenarios (see <xref target="nov6"/>) the administrator MAY keep a dual-
 <section anchor="incr">
 <name>Per-Device and Per-Subnet Incremental Rollout</name>
 <t>
-  Limited control over endpoint configuration necessitates a per-subnet rollout, incrementally enabling first PREF64 signalling and then Option 108 processing in DHCP.
+  Limited control over endpoint configuration necessitates a per-subnet rollout, incrementally enabling first PREF64 signalling and then Option 108 processing in DHCPv4.
 </t>
 <t>
 In most networks all hosts on a given subnet receive the same RAs (unless mechanisms like per-client RA <xref target="RFC8273"/> are deployed), so signalling PREF64 via an RA option doesn't allow any per-endpoint opt out mechanism.
@@ -655,7 +655,7 @@ PREF64 signalling: Enable PREF64 option for the router advertisement and/or DNS6
 </li>
 <li>
 <t>
-DHCP Server-Side Activation: Enable Option 108 processing. Some OSes automatically switch to IPv6-only. Rollback at this stage affects the entire subnet.
+DHCPv4 Server-Side Activation: Enable Option 108 processing. Some OSes automatically switch to IPv6-only. Rollback at this stage affects the entire subnet.
 </t>
 </li>
 <li>
@@ -673,9 +673,9 @@ Rollback Approach
 <t>
 
 For quick rollback, the administrator SHOULD start with a minimal Option 108 value (300 seconds, Section 3.4 of <xref target="RFC8925"/>) and possibly increase this value as the IPv6-mostly network proves reliable, reducing the likelihood of full-scale rollback.
-  In most deployments, the load of DHCP infrastructure caused by each endpoint restarting the DHCP handshake every 300 seconds would be negligible.
+In most deployments, the load of DHCPv4 infrastructure caused by each endpoint restarting the DHCP handshake every 300 seconds would be negligible.
 However for large networks containing a high number of IPv6-only capable clients, the default value of 300 seconds may be too low.
-Even if each IPv6-only capable client sends only one DHCPDISCOVER every 300 seconds, the collective traffic can still create a substantial load on the DHCP infrastructure. 
+Even if each IPv6-only capable client sends only one DHCPDISCOVER every 300 seconds, the collective traffic can still create a substantial load on the DHCPv4 infrastructure. 
 Administrators are advised to monitor this load and adjust the Option 108 value as necessary.
 </t>
 </section>
@@ -844,7 +844,7 @@ Some traffic flows (e.g., belonging to IPv4-only applications) would be using IP
 <t>
 </t>
 <t>
-Allocating prefixes to endpoints via DHCP-PD (<xref target="RFC9663"/>) alows to eliminate the issue and to address the corresponding scalability concerns.
+Allocating prefixes to endpoints via DHCPv6-PD (<xref target="RFC9663"/>) allows to eliminate the issue and to address the corresponding scalability concerns.
 Operators of large-scale IPv6-mostly networks might benefit from using DHCPv6 prefix delegation for IPv6-only and IPv6-enabled endpoints.
 In that case the administrator also need to ensure that the first-hop routers set the P-flag <xref target="RFC9762"/> in RAs.
 
@@ -1002,7 +1002,7 @@ Section 7 of <xref target="RFC8781"/> discusses this topic in more details.
 Additionally, <xref target="I-D.ietf-v6ops-claton"/> discusses security implications of enabling CLAT if native IPv4 connectivity is available and recommends disabling CLAT in that case.
 </t>
 <t>
-Security considerations of using DHCP Option 108 are documented in Section 6 of <xref target="RFC8925"/>.
+Security considerations of using DHCPv4 Option 108 are documented in Section 6 of <xref target="RFC8925"/>.
 </t>
 <t>
 
