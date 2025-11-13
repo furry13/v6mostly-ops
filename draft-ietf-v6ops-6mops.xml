@@ -869,9 +869,9 @@ In such networks, the administrator SHOULD configure the link-local addresses of
 <name>Fragmentation</name>
 <t>
 As the basic IPv6 header is 20 bytes longer than the IPv4 header, translating from IPv4 to IPv6 can result in packets exceeding the path MTU on the IPv6 side.
-In that case NAT64 creates IPv6 packets with the Fragment Header (see Section 4 of <xref target="RFC6145"/>
+In that case NAT64 creates IPv6 packets with the Fragment Header (see Section 4 of <xref target="RFC7915"/>
  for more details.
-As per  <xref target="RFC6145"/>
+As per  <xref target="RFC7915"/>
 , by default the translator fragments IPv4 packets so that they fit in 1280-byte IPv6 packets. It means that all IPv4 packets larger than 1260 bytes are fragmented (or dropped if the DF bit is set).
 </t>
 <t>
