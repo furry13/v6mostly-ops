@@ -13,10 +13,10 @@
 <!-- If further character entities are required then they should be added to the DOCTYPE above.
      Use of an external entity file is not recommended. -->
 
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="info" docName="draft-ietf-v6ops-6mops-04" ipr="trust200902" obsoletes="" submissionType="IETF" xml:lang="en" version="3">
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="info" docName="draft-ietf-v6ops-6mops-05" ipr="trust200902" obsoletes="" submissionType="IETF" xml:lang="en" version="3">
   <front>
     <title abbrev="6mops">IPv6-Mostly Networks: Deployment and Operations Considerations</title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-v6ops-6mops-04"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-v6ops-6mops-05"/>
     <author fullname="Nick Buraglio" initials="N" surname="Buraglio">
       <organization>Energy Sciences Network</organization>
       <address>
@@ -295,19 +295,102 @@ The ACL-based approach has some scalability implications and increases operation
       <name>NAT64</name>
       <t>
 IPv6-only endpoints require NAT64 to access IPv4-only destinations.
-Quite often operators choose to combine NAT44 and NAT64 functions, deploying NAT64 at the Internet edge.
-However, if not all internal services are IPv6-enabled, then NAT64 is needed to access internal destinations as well as external ones. 
-In that case it might be beneficial to deploy NAT64 closer to the users, instead of the network Internet edge, in order to simplify routing/firewall rules and reduce latency.      
-      </t>
-<t>
-If IPv4-only internal destinations are using <xref target="RFC1918"/> address space and IPv6-only nodes are expected to communicate with those IPv4-only destinations, then the operator MUST NOT use the well-known prefix 64:ff9b::/96 for NAT64 (see section 3.1 of <xref target="RFC6052"/>). 
-In that scenario the operator is required to allocate a network-specific NAT64 prefix from the operator's address space.
-).
-    </t>
-<t>
-Discussion: reports from the field indicate that it's very common for NAT64 and CLAT implementations to ignore the requirement from section 3.1 of <xref target="RFC6052"/>.
-Such implementations successfully translate <xref target="RFC1918"/> IPv4 addresses using the well-known NAT64 prefix.
+NAT64 functionality can be deployed on dedicated devices or by enabling it on devices already performing NAT44. 
+Consolidating NAT44 and NAT64 functionality on the same set of devices offers significant reductions in the cost and complexity of an IPv6-mostly deployment.
 </t>
+<t>
+If NAT44 equipment supports NAT64 fuction, the deployment of dedicated NAT64 devices warrants careful consideration of various factors, including, but not limited to:
+</t>
+<ul>
+<li>
+<t>
+Deployment costs: Purchasing and installing additional devices, including the resulting increased requirements for rack space and power.
+</t>
+</li>
+<li>
+<t>
+Network architecture impact: Network design and topology changes necessary to accommodate new devices.
+</t>
+</li>
+<li>
+<t>
+Management Integration: Integration of NAT64 device support within network management systems and related automation platforms.
+</t>
+</li>
+<li>
+<t>
+Capacity planning complexity: When deploying separate devices for NAT64, the operator needs to forecast how many sessions will move from NAT44 to NAT64 during the IPv6-mostly migration. The operator needs also predict how many sessions each type of NAT will handle in the near future. If the NAT64 and NAT44 devices are combined, the NAT devices only need to be scaled to the total number of sessions going to IPv4-only destinations.
+</t>
+</li>
+<li>
+<t>
+Operational costs: Ongoing operational costs associated with the new devices.
+</t>
+</li>
+</ul>
+
+<t>
+Network architecture also influences the decision to deploy dedicated devices. 
+NAT44, for instance, is typically implemented at the network perimeter (Internet edge). 
+However, if internal services are not fully IPv6-enabled, NAT64 is required for IPv6-only clients to access both internal and external IPv4 destinations.
+In that case it might be beneficial to deploy NAT64 closer to the users, instead of the network Internet edge, in order to simplify routing/firewall rules and reduce latency.      
+</t>
+
+<section>
+<name>NAT64 IPv4 Pools Considerations</name>
+<t>
+If NAT64 and NAT44 are performed by the same devices, an operator must choose between allocating a dedicated IPv4 pool for NAT64 or using the existing NAT44 pool for both.
+In general, using the same pool for both translation types has a number of advantages:
+</t>
+<ul>
+<li>
+<t>
+Simplified deployment: no need to provision new pools.
+</t>
+</li>
+<li>
+<t>
+No additional public IPv4 space required.
+</t>
+</li>
+<li>
+<t>
+Simplified capacity planning. The size of IPv4 NAT pool is scaled to the total number of expected sessions, meaning the operator does not need to forecast (or know the current ratio of) how many sessions will use NAT44 and how many will use NAT64, nor predict future changes in those numbers.
+</t>
+</li>
+<li>
+<t>
+Minimised user impact: it is not uncommon for client IP addresses to be used as a part of an authentication and access control lists (ACLs) on the server side.
+If the NAT44 pool is already allowed by an ACL on a remote IPv4-only destination, then using a dedicated NAT64 pool would change the client's public IPv4 address (the one the destination sees) when the client becomes IPv6-only and starts using NAT64.
+This change might impact the client's connectivity to that destination until the ACLs on the remote side are updated.
+</t>
+</li>
+</ul>
+
+<t>
+Additionally, webservers are known to use client IP addresses for various forms of authentication and session tracking.
+Therefore the NAT64 SHOULD be configured so, whenever possible, the same NAT64 pool address is assigned to all concurrent sessions originating from the same IPv6 address of an internal host (a configuration often referred to as 'sticky' NAT). REQ-2 of <xref target="RFC4787"/> and <xref target="RFC6888"/> discusses this behaviour in more details.
+</t>
+</section>
+
+<section>
+<name>NAT64 Prefix Considerations</name>
+<t>
+Operators can use either the Well-Known NAT64 Prefix (64:ff9b::/96, WKP), or they can choose a Network-Specific Prefix (NSP),  either from their own address space or from the Local-Use IPv4/IPv6 Translation Prefix (64:ff9b:1::/48, LUP, <xref target="RFC8215"/>).
+Using the WKP or LUP can make it simpler to set up packet filtering rules and troubleshoot the network, since traffic between IPv6-only hosts and IPv4-only destinations is easy to spot and tell apart from regular IPv6 traffic.
+Using WKP lets the operator use public DNS64 services, which rely on the WKP for address translation.
+</t>
+<t>
+Although Section 3.1 of <xref target="RFC6052"/> forbids IPv4/IPv6 translators from using the WKP for non-global IPv4 addresses (like <xref target="RFC1918"/> addresses), field reports show that some NAT64 and CLAT implementations ignore this rule.
+<xref target="I-D.kumkova-v6ops-nat64-wkp-1918"/> discusses the NAT64 prefix selection considerations and proposes updates to Section 3.1 of <xref target="RFC6052"/>, so translators are allowed to use the WKP for non-global IPv4 addresses.
+</t>
+
+<t>
+If internal IPv4-only destinations use non-global addresses and IPv6-only devices need to reach them, the operator might have to choose a network-specific NAT64 prefix.
+If the operator would rather use the WKP (for example, to use public DNS64 servers), they should test their NAT64 setups to make sure that packets using the WKP to represent private IPv4 addresses are not dropped (such verification might not be possible for BYOD case).
+    </t>
+
+</section>
 
   </section>
 
@@ -653,27 +736,6 @@ If onlink peer2peer communication is required, the operator needs to ensure all 
 </t>
 </section>
 
-<section anchor="ip_auth">
-<name>NAT64 IPv4 Pools</name>
-<t>
-It is not uncommon for client IP addresses to be used as a part of an authentication and access control mechanisms on the server side.
-Additionally, webservers are known to use client IP addresses for session tracking.
-To ensure that migrating a client from dual-stack to IPv6-only mode does not impact user experience:
-</t>
-<ul>
-<li>
-<t>
-If NAT44 is employed, then NAT64 and NAT44 must share the same pool of IPv4 addresses.
-</t>
-</li>
-<li>
-<t>
-Whenever possible, the same NAT pool address SHOULD be assigned to all concurrent sessions originating from the same internal host (a configuration often referred to as 'sticky' NAT).
-</t>
-</li>
-</ul>
-</section>
-
 <section anchor="issues">
 <name>Typical Issues</name>
 <t>
@@ -791,7 +853,7 @@ Allocating prefixes to endpoints via DHCP-PD (<xref target="RFC9663"/>) alows to
 Operators of large-scale IPv6-mostly networks might benefit from using DHCPv6 prefix delegation for IPv6-only and IPv6-enabled endpoints.
 In that case the administrator also need to ensure that the first-hop routers set the P-flag <xref target="RFC9762"/> in RAs.
 
-However, the deployment model described in <xref target="RFC9663"/> might not yet be supported by all endpoints. 
+However, the deployment model described in <xref target="RFC9663"/> might not yet be supported by all endpoints and network infrastrcuture devices.
 The network administrator SHOULD ensure that the deployed network infastructure devices allow sufficient number of IPv6 addresses to be mapped to a client's MAC and SHOULD monitor for events, indicating that the limit has been reached (such as syslog messages, etc).
 </t>
 
@@ -998,6 +1060,7 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <name>Informative References</name>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.1918.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4443.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4787.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4861.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4862.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6052.xml"/>
@@ -1005,10 +1068,12 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6147.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6535.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6762.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6888.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7225.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7755.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7915.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8201.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8215.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8273.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8305.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8880.xml"/>
@@ -1019,6 +1084,7 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-v6ops-claton.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.link-6man-gulla.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-v6ops-icmpext-xlat-v6only-source.xml"/>
+<xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.kumkova-v6ops-nat64-wkp-1918.xml"/>
 
 </references>
 </references>
@@ -1026,7 +1092,7 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <section anchor="Acknowledgements" numbered="false">
 <name>Acknowledgements</name>
 <t>
-Thanks to Brian Carpenter, Stuart Cheshire, Joe Clarke, Lorenzo Colitti, Jeremy Duncan, David Farmer, Warren Kumari, Jordi Palet, Tom Petch, Michael Richardson, Matsuzaki Yoshinobu for the discussions, the feedback, and all contribution.
+Thanks to Mohamed Boucadair, Brian Carpenter, Stuart Cheshire, Joe Clarke, Lorenzo Colitti, Jeremy Duncan, David Farmer, Sorah Fukumori, Warren Kumari, Jordi Palet, Tom Petch, Michael Richardson, Arie Vayner, Matsuzaki Yoshinobu for the discussions, the feedback, and all contribution.
 </t>
 </section>
 
