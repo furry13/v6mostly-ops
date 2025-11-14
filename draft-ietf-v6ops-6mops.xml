@@ -319,7 +319,7 @@ Management Integration: Integration of NAT64 device support within network manag
 </li>
 <li>
 <t>
-Capacity planning complexity: When deploying separate devices for NAT64, the operator needs to forecast how many sessions will move from NAT44 to NAT64 during the IPv6-mostly migration. They must also predict how many sessions each type of NAT will handle in the near future. If the NAT64 and NAT44 devices are combined, the NAT devices need to be scaled to the total number of sessions going to IPv4-only destinations.
+Capacity planning complexity: When deploying separate devices for NAT64, the operator needs to forecast how many sessions will move from NAT44 to NAT64 during the IPv6-mostly migration. The operator needs also predict how many sessions each type of NAT will handle in the near future. If the NAT64 and NAT44 devices are combined, the NAT devices only need to be scaled to the total number of sessions going to IPv4-only destinations.
 </t>
 </li>
 <li>
