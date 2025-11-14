@@ -369,7 +369,7 @@ This change might impact the client's connectivity to that destination until the
 
 <t>
 Additionally, webservers are known to use client IP addresses for various forms of authentication and session tracking.
-Therefore the NAT64 SHOULD be configured so, whenever possible, the same NAT64 pool address is assigned to all concurrent sessions originating from the same IPv6 address of an internal host (a configuration often referred to as 'sticky' NAT).
+Therefore the NAT64 SHOULD be configured so, whenever possible, the same NAT64 pool address is assigned to all concurrent sessions originating from the same IPv6 address of an internal host (a configuration often referred to as 'sticky' NAT). REQ-2 of <xref target="RFC4787"/> and <xref target="RFC6888"/> discusses this behaviour in more details.
 </t>
 </section>
 
