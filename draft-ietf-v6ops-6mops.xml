@@ -387,7 +387,7 @@ Although Section 3.1 of <xref target="RFC6052"/> forbids IPv4/IPv6 translators f
 
 <t>
 If internal IPv4-only destinations use non-global addresses and IPv6-only devices need to reach them, the operator might have to choose a network-specific NAT64 prefix from their own address space.
-If the operator would rather use the WKP (for example, to use public DNS64 servers), they should test their NAT64 setups to make sure that packets using the WKP to represent private IPv4 addresses are not dropped.
+If the operator would rather use the WKP (for example, to use public DNS64 servers), they should test their NAT64 setups to make sure that packets using the WKP to represent private IPv4 addresses are not dropped (such verification might not be possible for BYOD case).
 ).
     </t>
 
