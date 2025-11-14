@@ -378,7 +378,8 @@ Therefore the NAT64 SHOULD be configured so, whenever possible, the same NAT64 p
 <t>
 Operators can use either the Well-Known NAT64 Prefix (64:ff9b::/96, WKP), or they can choose a Network-Specific Prefix (NSP),  either from their own address space or from the Local-Use IPv4/IPv6 Translation Prefix (64:ff9b:1::/48, LUP, <xref target="RFC8215"/>).
 Using the WKP or LUP can make it simpler to set up packet filtering rules and troubleshoot the network, since traffic between IPv6-only hosts and IPv4-only destinations is easy to spot and tell apart from regular IPv6 traffic.
-Using WKP lets the operator use public DNS64 services, which rely on the WKP for address translation.
+Another benefit of the WKP or LUP is that if the client received both non-synthesized (native) and synthesized AAAA responses from DNS, the Rule 9 of the destination address selection algorithm (section 6 of <xref target="RFC6724"/>) would prefer the native IPv6 destination address over a synthesized one.
+Additionally, using WKP lets the operator use public DNS64 services, which rely on the WKP for address translation.
 </t>
 <t>
 Although Section 3.1 of <xref target="RFC6052"/> forbids IPv4/IPv6 translators from using the WKP for non-global IPv4 addresses (like <xref target="RFC1918"/> addresses), field reports show that some NAT64 and CLAT implementations ignore this rule.
