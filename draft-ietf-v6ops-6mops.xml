@@ -386,7 +386,7 @@ Although Section 3.1 of <xref target="RFC6052"/> forbids IPv4/IPv6 translators f
 </t>
 
 <t>
-If internal IPv4-only destinations use non-global addresses and IPv6-only devices need to reach them, the operator might have to choose a network-specific NAT64 prefix from their own address space.
+If internal IPv4-only destinations use non-global addresses and IPv6-only devices need to reach them, the operator might have to choose a network-specific NAT64 prefix.
 If the operator would rather use the WKP (for example, to use public DNS64 servers), they should test their NAT64 setups to make sure that packets using the WKP to represent private IPv4 addresses are not dropped (such verification might not be possible for BYOD case).
 ).
     </t>
@@ -1074,6 +1074,7 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7755.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7915.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8201.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8215.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8273.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8305.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8880.xml"/>
