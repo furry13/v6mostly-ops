@@ -444,7 +444,7 @@ However, using DNS64 has a number of drawbacks, such as:
 <ul>
 <li>
   <t>
-DNSSEC Incompatibility: DNS64 responses fail DNSSEC validation.
+DNSSEC Incompatibility: DNS64  can interfere with DNSSEC validation.
   </t>
 </li>
 <li>
@@ -520,7 +520,7 @@ Reduced Dependency on DHCPv4: As more devices operate seamlessly in IPv6-only mo
 </li>
 <li>
 <t>
-Simplified troubleshooting due reduced impact of Happy Eyeballs <xref target="RFC8305"/>: when both the client and the server are dual-stack, communication can happen either over IPv6 or over IPv4 and the protocol choice can change over time.
+Simplified troubleshooting due to reduced impact of Happy Eyeballs <xref target="RFC8305"/>: when both the client and the server are dual-stack, communication can happen either over IPv6 or over IPv4 and the protocol choice can change over time.
 This may obscure network issues or make them intermittent, complicating the troubleshooting.
 In IPv6-mostly network IPv6-only hosts are much less affected by such an issue.
 Although modern versions of Happy Eyeballs algorithm support falling back to IPv4 even in case of IPv6-only network, the delay before switching to IPv4 is so long that the fallback does not happen during regular operations.
@@ -644,7 +644,9 @@ This process facilitates the identification of related issues and expedites issu
 </ul>
 
 <t>
-In some scenarios (see <xref target="nov6"/>) the administrator MAY keep a dual-stack network as a last resort fallback mechanism but SHOULD prevent users from connecting to it accidentially (e.g., it should be a hidden SSID with authentication enabled). For recurring temporary networks, for instance during a conference, it might be a good practice to change the network SSID of the last resort fallback network between each event.
+In some scenarios (see <xref target="nov6"/>) the administrator MAY keep a dual-stack network as a last resort fallback mechanism but SHOULD prevent users from connecting to it accidentially (e.g., it should be a hidden SSID with authentication enabled).
+For recurring temporary networks, for instance deployed on regular events such as a conference, it might be a good practice to change the last resort fallback network SSID between each event.
+This would prevent devices which have the fallback SSID saved in their configuration, to reconnect automatically during the next event.
 </t>
 </section>
 
@@ -888,10 +890,8 @@ In such networks, the administrator SHOULD configure the link-local addresses of
 <name>Fragmentation</name>
 <t>
 As the basic IPv6 header is 20 bytes longer than the IPv4 header, translating from IPv4 to IPv6 can result in packets exceeding the path MTU on the IPv6 side.
-In that case NAT64 creates IPv6 packets with the Fragment Header (see Section 4 of <xref target="RFC7915"/>
- for more details.
-As per  <xref target="RFC7915"/>
-, by default the translator fragments IPv4 packets so that they fit in 1280-byte IPv6 packets. It means that all IPv4 packets larger than 1260 bytes are fragmented (or dropped if the DF bit is set).
+In that case NAT64 creates IPv6 packets with the Fragment Header (see Section 4 of <xref target="RFC7915"/> for more details).
+As per  <xref target="RFC7915"/> , by default the translator fragments IPv4 packets so that they fit in 1280-byte IPv6 packets. It means that all IPv4 packets larger than 1260 bytes are fragmented (or dropped if the DF bit is set).
 </t>
 <t>
  Administrators SHOULD maximize the path MTU on the IPv6 side (from the translator to IPv6-only hosts) to minimize fragmentation. NAT64 devices SHOULD be configured to use the actual path MTU on the IPv6 side when fragmenting IPv4 packets.
@@ -997,8 +997,7 @@ If the network doesn't provide the NAT64 prefix in RAs or the endpoint doesn't s
 <name>Security Considerations</name>
 <t>
 The proposed deployment scenario inherits security considerations of IPv6 (see <xref target="RFC9099"/>).
-As IPv6-only device can not fall back to IPv4 if IPv6 connectivity is not available or impacted by a malicious actor.
-Therefore any attack affecting IPv6 connectivity would have much more drastic outcome, comparing to dual-stack networks.
+As IPv6-only device can not fall back to IPv4 if IPv6 connectivity is not available or impacted by a malicious actor, any attack affecting IPv6 connectivity would have much more drastic outcome, comparing to dual-stack networks.
 </t>
 <t>
 By signalling a rogue NAT64 prefix to a host, a malicious actor can:
@@ -1102,7 +1101,7 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <section anchor="Acknowledgements" numbered="false">
 <name>Acknowledgements</name>
 <t>
-Thanks to Mohamed Boucadair, Brian Carpenter, Stuart Cheshire, Joe Clarke, Lorenzo Colitti, Jeremy Duncan, David Farmer, Sorah Fukumori, Götz Görisch, Warren Kumari, Jordi Palet, Tom Petch, Michael Richardson, Philipp Tiesel, Arie Vayner, Matsuzaki Yoshinobu for the discussions, the feedback, and all contribution.
+Thanks to Mohamed Boucadair, Brian Carpenter, Stuart Cheshire, Joe Clarke, Lorenzo Colitti, Jeremy Duncan, David Farmer, Sorah Fukumori, Götz Görisch, Warren Kumari, Jordi Palet, Tom Petch, Michael Richardson, Philipp Tiesel, Arie Vayner, XiPeng Xiao, Matsuzaki Yoshinobu for the discussions, the feedback, and all contribution.
 </t>
 </section>
 
