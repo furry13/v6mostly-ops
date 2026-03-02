@@ -649,7 +649,7 @@ This process facilitates the identification of related issues and expedites issu
 
 <t>
 In some scenarios (see <xref target="nov6"/>) the administrator MAY keep a dual-stack network as a last resort fallback mechanism but SHOULD prevent users from connecting to it accidentially (e.g., it should be a hidden SSID with authentication enabled).
-For recurring temporary networks, for instance deployed on regular events such as a conference, it might be a good practice to change the last resort fallback network SSID between each event.
+For recurring temporary networks, for instance deployed on regular events such as a conference, operators may consider changing the last resort fallback network SSID between each event to help prevent inadvertent or long-term use of legacy resources, preventing devices which have the fallback SSID saved in their configuration from reconnecting automatically during the next event.
 This would prevent devices which have the fallback SSID saved in their configuration, to reconnect automatically during the next event.
 </t>
 </section>
