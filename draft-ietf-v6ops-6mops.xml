@@ -112,7 +112,9 @@ Creating separate network segments for each type of devices introduces complexit
       </t>
 
       <t>
-A more desirable approach is to deploy an "IPv6-mostly" network that provides IPv4 on demand. This allows IPv6-capable devices to remain IPv6-only while the network is seamlessly supplying IPv4 to those that require it. An IPv6-mostly network allows endpoints to operate at the highest level of their network stack evolution, on demand, while still allowing for legacy compatibility. 
+A more desirable approach is to deploy an "IPv6-mostly" network that provides IPv4 on demand only to devices which require IPv4 to operate correctly.
+This allows IPv6-capable devices to remain IPv6-only while the network is seamlessly supplying IPv4 to those that require it.
+An IPv6-mostly network allows endpoints to operate at the highest level of their network stack evolution, on demand, while still allowing for legacy compatibility. 
 
       </t>
 
@@ -277,7 +279,9 @@ Filtering the IPv4 ethertype (0x0800): Some hardware platforms may allow for low
   </ul>
 
     <t>
-The ACL-based approach has some scalability implications and increases operational complexity, therefore it could only be recommended as a stopgap solution.
+The ACL-based approach presents significant scalability and operational complexity challenges, particularly in environments with highly mobile endpoints.
+These challenges arise from the requirement that operators define and maintain the specific intent regarding which devices should have IPv4 traffic blocked.
+Consequently, this approach is recommended only as an interim or stopgap solution.
     </t>
 
 
@@ -560,7 +564,7 @@ Furthermore, the number of devices requiring IPv4 is expected to decrease over t
 <t>
 In IPv6-mostly deployments, the reduction in public IPv4 consumption is only realized if the network assigns public IPv4 addresses directly to endpoints.
 For networks utilizing <xref target="RFC1918"/> addressing, the IPv6-mostly approach facilitates the conservation of private address space.
-While this benefit may be negligible for smaller networks, it is significant for large-scale enterprises that face private address exhaustion and seek to avoid the complexity of deploying multiple layers of NAT.
+While this benefit may be negligible for smaller networks, it is significant for large-scale enterprises and datacenters that face private address exhaustion and seek to avoid the complexity of deploying multiple layers of NAT.
 </t>
 
 <t>
@@ -757,7 +761,10 @@ If on-link peer2peer communication is required, the operator needs to ensure all
 <name>Typical Issues</name>
 <t>
 IPv6-mostly networks expose hidden issues by removing the IPv4 safety net. While implementation bugs vary greatly and are beyond the scope of this document, this section focus on common problems caused by configuration, topology, or design choices.
-It's crucial to note that these issues likely pre-exist in dual-stack networks, but remain unnoticed due to IPv4 fallback.
+It is important to emphasize that these issues frequently pre-exist in dual-stack environments but remain undetected due to IPv4 fallback mechanisms.
+
+The problems described herein may not be applicable to every IPv6-mostly deployment. However, operators are advised to verify that these issues are not present within their infrastructure prior to initiating an IPv6-mostly migration or deployment.
+
 </t>
 
 <section anchor="nov6">
@@ -968,6 +975,8 @@ Path MTU Discovery Issues: Potential disruptions in the PMTU discovery process.
 <t>
 Certain layer 2 network devices (e.g., wireless access points, controllers) may enforce a policy where a host's network access is contingent upon successful DHCP IPv4 address assignment or tied to results of DHCP snooping.
 Consequently, hosts supporting Option 108 may experience network access denial or disconnection, as they are not assigned IPv4 addresses.
+
+To facilitate a smooth migration to IPv6-mostly, operators are advised to update their network access policies to eliminate any hard dependencies on the assignment of IPv4 addresses to hosts.
 </t>
 </section>
 
@@ -1101,7 +1110,7 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <section anchor="Acknowledgements" numbered="false">
 <name>Acknowledgements</name>
 <t>
-Thanks to Mohamed Boucadair, Brian Carpenter, Stuart Cheshire, Joe Clarke, Lorenzo Colitti, Jeremy Duncan, David Farmer, Sorah Fukumori, Götz Görisch, Warren Kumari, Jordi Palet, Tom Petch, Michael Richardson, Philipp Tiesel, Arie Vayner, XiPeng Xiao, Matsuzaki Yoshinobu for the discussions, the feedback, and all contribution.
+Thanks to Mohamed Boucadair, Brian Carpenter, Stuart Cheshire, Joe Clarke, Lorenzo Colitti, Jeremy Duncan, David Farmer, Sorah Fukumori, Götz Görisch, Warren Kumari, Eliot Lear, Jordi Palet, Tom Petch, Michael Richardson, Philipp Tiesel, Arie Vayner, XiPeng Xiao, Matsuzaki Yoshinobu for the discussions, the feedback, and all contribution.
 </t>
 </section>
 
