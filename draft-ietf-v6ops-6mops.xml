@@ -55,7 +55,6 @@
           <country>AU</country>
         </postal>
         <email>furry13@gmail.com</email>
-        <email>furry@google.com</email>
       </address>
     </author>
     <date/>
@@ -74,6 +73,7 @@
     <abstract>
       <t>
 This document discusses a deployment scenario called "an IPv6-mostly network", when IPv6-only and IPv4-enabled endpoints coexist on the same network (network segment, VLAN, SSID etc).
+The proposed approach enables smooth and incremental transition from dual-stack to IPv6-only network by allowing IPv6-capable devices to remain IPv6-only while the network is seamlessly supplying IPv4 to those that require it.
       </t>
 
     </abstract>
@@ -112,7 +112,9 @@ Creating separate network segments for each type of devices introduces complexit
       </t>
 
       <t>
-A more desirable approach is to deploy an "IPv6-mostly" network that provides IPv4 on demand. This allows IPv6-capable devices to remain IPv6-only while the network is seamlessly supplying IPv4 to those that require it. An IPv6-mostly network allows endpoints to operate at the highest level of their network stack evolution, on demand, while still allowing for legacy compatibility. 
+A more desirable approach is to deploy an "IPv6-mostly" network that provides IPv4 on demand only to devices which require IPv4 to operate correctly.
+This allows IPv6-capable devices to remain IPv6-only while the network is seamlessly supplying IPv4 to those that require it.
+An IPv6-mostly network allows endpoints to operate at the highest level of their network stack evolution, on demand, while still allowing for legacy compatibility. 
 
       </t>
 
@@ -277,7 +279,9 @@ Filtering the IPv4 ethertype (0x0800): Some hardware platforms may allow for low
   </ul>
 
     <t>
-The ACL-based approach has some scalability implications and increases operational complexity, therefore it could only be recommended as a stopgap solution.
+The ACL-based approach presents significant scalability and operational complexity challenges, particularly in environments with highly mobile endpoints.
+These challenges arise from the requirement that operators define and maintain the specific intent regarding which devices should have IPv4 traffic blocked.
+Consequently, this approach is recommended only as an interim or stopgap solution.
     </t>
 
 
@@ -381,14 +385,14 @@ Another benefit of the WKP or LUP is that if the client received both non-synthe
 Additionally, using WKP lets the operator use public DNS64 services, which rely on the WKP for address translation.
 </t>
 <t>
-Although Section 3.1 of <xref target="RFC6052"/> forbids IPv4/IPv6 translators from using the WKP for non-global IPv4 addresses (like <xref target="RFC1918"/> addresses), field reports show that some NAT64 and CLAT implementations ignore this rule.
-<xref target="I-D.kumkova-v6ops-nat64-wkp-1918"/> discusses the NAT64 prefix selection considerations and proposes updates to Section 3.1 of <xref target="RFC6052"/>, so translators are allowed to use the WKP for non-global IPv4 addresses.
+Currently Section 3.1 of <xref target="RFC6052"/> forbids IPv4/IPv6 translators from using the WKP for non-global IPv4 addresses (like <xref target="RFC1918"/> addresses).
+<xref target="I-D.ietf-v6ops-nat64-wkp-1918"/> discusses the NAT64 prefix selection considerations and proposes updates to Section 3.1 of <xref target="RFC6052"/>, so translators are allowed to use the WKP for non-global IPv4 addresses.
 </t>
 
 <t>
-If internal IPv4-only destinations use non-global addresses and IPv6-only devices need to reach them, the operator might have to choose a network-specific NAT64 prefix.
-If the operator would rather use the WKP (for example, to use public DNS64 servers), they should test their NAT64 setups to make sure that packets using the WKP to represent private IPv4 addresses are not dropped (such verification might not be possible for BYOD case).
-    </t>
+If internal IPv4-only destinations use non-global addresses and IPv6-only devices need to reach them, the operator should ensure that their NAT64 devices are compliant with the changes proposed in <xref target="I-D.ietf-v6ops-nat64-wkp-1918"/>.
+Alternatively, the operator might utilize a network-specific NAT64 prefix.
+</t>
 
 </section>
 
@@ -444,7 +448,7 @@ However, using DNS64 has a number of drawbacks, such as:
 <ul>
 <li>
   <t>
-DNSSEC Incompatibility: DNS64 responses fail DNSSEC validation.
+DNSSEC Incompatibility: DNS64  can interfere with DNSSEC validation.
   </t>
 </li>
 <li>
@@ -504,11 +508,7 @@ IPv6-mostly networks offer significant advantages over traditional dual-stack mo
 <t>
 The deployment of dual-stack networks does not fundamentally resolve the core issue of IPv4 address exhaustion.
 The IPv6-mostly approach, however, offers a mechanism to significantly reduce the IPv4 address space allocated to endpoints and reclaim existing IPv4 space.
-The degree of possible reduction is dependent on endpoint capabilities, specifically support of DHCPv4 Option 108 and CLAT.
-Real-world IPv6-mostly deployments (2025 data) show that approximately 60-70% of endpoints support IPv6-only operation. This capability potentially allows for the use of IPv4 subnets that are 2 to 4 times smaller than those required for dual-stack.
-It is important to note that migrating a dual-stack network to an IPv6-only mode does not reduce the amount of public IPv4 space required for network elements such as NAT pools.
-However, for large networks (e.g., enterprises and datacenters) facing private IPv4 address exhaustion, the IPv6-mostly strategy drastically reduces internal IPv4 demand, helping to ensure business continuity.
-
+<xref target="save_v4"/> discusses this aspect in more details.
 </t>
 </li>
 <li>
@@ -524,7 +524,7 @@ Reduced Dependency on DHCPv4: As more devices operate seamlessly in IPv6-only mo
 </li>
 <li>
 <t>
-Simplified troubleshooting due reduced impact of Happy Eyeballs <xref target="RFC8305"/>: when both the client and the server are dual-stack, communication can happen either over IPv6 or over IPv4 and the protocol choice can change over time.
+Simplified troubleshooting due to reduced impact of Happy Eyeballs <xref target="RFC8305"/>: when both the client and the server are dual-stack, communication can happen either over IPv6 or over IPv4 and the protocol choice can change over time.
 This may obscure network issues or make them intermittent, complicating the troubleshooting.
 In IPv6-mostly network IPv6-only hosts are much less affected by such an issue.
 Although modern versions of Happy Eyeballs algorithm support falling back to IPv4 even in case of IPv6-only network, the delay before switching to IPv4 is so long that the fallback does not happen during regular operations.
@@ -551,6 +551,28 @@ As the availability of IPv6-enabled resources continues to increase, the volume 
 <t>
 As discussed in <xref target="p2p"/> coexistence of IPv6-only and IPv4-only hosts on the same link might present challenges for on-link service discovery and on-link peer2peer communications. It might be consider a disadvantge of IPv6-mostly model for networks where on-link communication between IPv4-only and IPv6-only devices is desirable.
 </t>
+
+<section anchor="save_v4">
+<name>Reducing IPv4 Consumption and Mitigating IPv4 Exhaustion</name>
+<t>
+In IPv6-mostly networks, IPv4 addresses are assigned exclusively to endpoints that require them for operation.
+This approach reduces IPv4 address utilization within network segments compared to traditional dual-stack deployments.
+The proportion of devices operating in IPv6-only mode — and the resulting decrease in IPv4 consumption — is dependent on the specific endpoint footprint and may vary across different network environments.
+Furthermore, the number of devices requiring IPv4 is expected to decrease over time as more operating systems implement support for CLAT, PREF64, and DHCPv4 option 108.
+</t>
+
+<t>
+In IPv6-mostly deployments, the reduction in public IPv4 consumption is only realized if the network assigns public IPv4 addresses directly to endpoints.
+For networks utilizing <xref target="RFC1918"/> addressing, the IPv6-mostly approach facilitates the conservation of private address space.
+While this benefit may be negligible for smaller networks, it is significant for large-scale enterprises and datacenters that face private address exhaustion and seek to avoid the complexity of deploying multiple layers of NAT.
+</t>
+
+<t>
+Additionally, while migrating from dual-stack to IPv6-mostly reduces IPv4 consumption, existing networks require renumbering to downsize the IPv4 netblocks assigned to those segments.
+For new deployments, however, administrators can leverage the benefits of IPv6-mostly without renumbering by provisioning smaller netblocks from the outset.
+</t>
+
+</section>
 </section>
 
 <section anchor="vsv6only">
@@ -591,6 +613,7 @@ Flexible, Incremental Transition: IPv6-mostly allows for gradual migration on a 
 </section>
 
 
+
 </section>
 
 <section anchor="rollout">
@@ -625,7 +648,8 @@ This process facilitates the identification of related issues and expedites issu
 </ul>
 
 <t>
-In some scenarios (see <xref target="nov6"/>) the administrator MAY keep a dual-stack network as a last resort fallback mechanism but SHOULD prevent users from connecting to it accidentially (e.g., it should be a hidden SSID with authentication enabled). For recurring temporary networks, for instance during a conference, it might be a good practice to change the network SSID of the last resort fallback network between each event.
+In some scenarios (see <xref target="nov6"/>) the administrator MAY keep a dual-stack network as a last resort fallback mechanism but SHOULD prevent users from connecting to it accidentially (e.g., it should be a hidden SSID with authentication enabled).
+For recurring temporary networks, for instance deployed on regular events such as a conference, operators may consider changing the last resort fallback network SSID between each event to help prevent inadvertent or long-term use of legacy resources, preventing devices which have the fallback SSID saved in their configuration from reconnecting automatically during the next event.
 </t>
 </section>
 
@@ -736,7 +760,10 @@ If on-link peer2peer communication is required, the operator needs to ensure all
 <name>Typical Issues</name>
 <t>
 IPv6-mostly networks expose hidden issues by removing the IPv4 safety net. While implementation bugs vary greatly and are beyond the scope of this document, this section focus on common problems caused by configuration, topology, or design choices.
-It's crucial to note that these issues likely pre-exist in dual-stack networks, but remain unnoticed due to IPv4 fallback.
+It is important to emphasize that these issues frequently pre-exist in dual-stack environments but remain undetected due to IPv4 fallback mechanisms.
+
+The problems described herein may not be applicable to every IPv6-mostly deployment. However, operators are advised to verify that these issues are not present within their infrastructure prior to initiating an IPv6-mostly migration or deployment.
+
 </t>
 
 <section anchor="nov6">
@@ -869,10 +896,8 @@ In such networks, the administrator SHOULD configure the link-local addresses of
 <name>Fragmentation</name>
 <t>
 As the basic IPv6 header is 20 bytes longer than the IPv4 header, translating from IPv4 to IPv6 can result in packets exceeding the path MTU on the IPv6 side.
-In that case NAT64 creates IPv6 packets with the Fragment Header (see Section 4 of <xref target="RFC7915"/>
- for more details.
-As per  <xref target="RFC7915"/>
-, by default the translator fragments IPv4 packets so that they fit in 1280-byte IPv6 packets. It means that all IPv4 packets larger than 1260 bytes are fragmented (or dropped if the DF bit is set).
+In that case NAT64 creates IPv6 packets with the Fragment Header (see Section 4 of <xref target="RFC7915"/> for more details).
+As per  <xref target="RFC7915"/> , by default the translator fragments IPv4 packets so that they fit in 1280-byte IPv6 packets. It means that all IPv4 packets larger than 1260 bytes are fragmented (or dropped if the DF bit is set).
 </t>
 <t>
  Administrators SHOULD maximize the path MTU on the IPv6 side (from the translator to IPv6-only hosts) to minimize fragmentation. NAT64 devices SHOULD be configured to use the actual path MTU on the IPv6 side when fragmenting IPv4 packets.
@@ -949,6 +974,8 @@ Path MTU Discovery Issues: Potential disruptions in the PMTU discovery process.
 <t>
 Certain layer 2 network devices (e.g., wireless access points, controllers) may enforce a policy where a host's network access is contingent upon successful DHCP IPv4 address assignment or tied to results of DHCP snooping.
 Consequently, hosts supporting Option 108 may experience network access denial or disconnection, as they are not assigned IPv4 addresses.
+
+To facilitate a smooth migration to IPv6-mostly, operators are advised to update their network access policies to eliminate any hard dependencies on the assignment of IPv4 addresses to hosts.
 </t>
 </section>
 
@@ -978,8 +1005,7 @@ If the network doesn't provide the NAT64 prefix in RAs or the endpoint doesn't s
 <name>Security Considerations</name>
 <t>
 The proposed deployment scenario inherits security considerations of IPv6 (see <xref target="RFC9099"/>).
-As IPv6-only device can not fall back to IPv4 if IPv6 connectivity is not available or impacted by a malicious actor.
-Therefore any attack affecting IPv6 connectivity would have much more drastic outcome, comparing to dual-stack networks.
+As IPv6-only device can not fall back to IPv4 if IPv6 connectivity is not available or impacted by a malicious actor, any attack affecting IPv6 connectivity would have much more drastic outcome, comparing to dual-stack networks.
 </t>
 <t>
 By signalling a rogue NAT64 prefix to a host, a malicious actor can:
@@ -1075,7 +1101,7 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-v6ops-claton.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.link-6man-gulla.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-v6ops-icmpext-xlat-v6only-source.xml"/>
-<xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.kumkova-v6ops-nat64-wkp-1918.xml"/>
+<xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-v6ops-nat64-wkp-1918.xml"/>
 
 </references>
 </references>
@@ -1083,7 +1109,7 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <section anchor="Acknowledgements" numbered="false">
 <name>Acknowledgements</name>
 <t>
-Thanks to Mohamed Boucadair, Brian Carpenter, Stuart Cheshire, Joe Clarke, Lorenzo Colitti, Jeremy Duncan, David Farmer, Sorah Fukumori, Götz Görisch, Warren Kumari, Jordi Palet, Tom Petch, Michael Richardson, Arie Vayner, Matsuzaki Yoshinobu for the discussions, the feedback, and all contribution.
+Thanks to Mohamed Boucadair, Brian Carpenter, Stuart Cheshire, Joe Clarke, Lorenzo Colitti, Jeremy Duncan, David Farmer, Sorah Fukumori, Götz Görisch, Warren Kumari, Eliot Lear, Jordi Palet, Tom Petch, Michael Richardson, Philipp Tiesel, Arie Vayner, XiPeng Xiao, Matsuzaki Yoshinobu for the discussions, the feedback, and all contribution.
 </t>
 </section>
 
