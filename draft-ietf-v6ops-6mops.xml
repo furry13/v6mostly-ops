@@ -504,11 +504,7 @@ IPv6-mostly networks offer significant advantages over traditional dual-stack mo
 <t>
 The deployment of dual-stack networks does not fundamentally resolve the core issue of IPv4 address exhaustion.
 The IPv6-mostly approach, however, offers a mechanism to significantly reduce the IPv4 address space allocated to endpoints and reclaim existing IPv4 space.
-The degree of possible reduction is dependent on endpoint capabilities, specifically support of DHCPv4 Option 108 and CLAT.
-Real-world IPv6-mostly deployments (2025 data) show that approximately 60-70% of endpoints support IPv6-only operation. This capability potentially allows for the use of IPv4 subnets that are 2 to 4 times smaller than those required for dual-stack.
-It is important to note that migrating a dual-stack network to an IPv6-only mode does not reduce the amount of public IPv4 space required for network elements such as NAT pools.
-However, for large networks (e.g., enterprises and datacenters) facing private IPv4 address exhaustion, the IPv6-mostly strategy drastically reduces internal IPv4 demand, helping to ensure business continuity.
-
+<xref target="save_v4"/> discusses this aspect in more details.
 </t>
 </li>
 <li>
@@ -551,6 +547,28 @@ As the availability of IPv6-enabled resources continues to increase, the volume 
 <t>
 As discussed in <xref target="p2p"/> coexistence of IPv6-only and IPv4-only hosts on the same link might present challenges for on-link service discovery and on-link peer2peer communications. It might be consider a disadvantge of IPv6-mostly model for networks where on-link communication between IPv4-only and IPv6-only devices is desirable.
 </t>
+
+<section anchor="save_v4">
+<name>Reducing IPv4 Consumption and Mitigating IPv4 Exhaustion</name>
+<t>
+In IPv6-mostly networks, IPv4 addresses are assigned exclusively to endpoints that require them for operation.
+This approach reduces IPv4 address utilization within network segments compared to traditional dual-stack deployments.
+The proportion of devices operating in IPv6-only mode — and the resulting decrease in IPv4 consumption — is dependent on the specific endpoint footprint and may vary across different network environments.
+Furthermore, the number of devices requiring IPv4 is expected to decrease over time as more operating systems implement support for CLAT, PREF64, and DHCPv4 option 108.
+</t>
+
+<t>
+In IPv6-mostly deployments, the reduction in public IPv4 consumption is only realized if the network assigns public IPv4 addresses directly to endpoints.
+For networks utilizing <xref target="RFC1918"/> addressing, the IPv6-mostly approach facilitates the conservation of private address space.
+While this benefit may be negligible for smaller networks, it is significant for large-scale enterprises that face private address exhaustion and seek to avoid the complexity of deploying multiple layers of NAT.
+</t>
+
+<t>
+Additionally, while migrating from dual-stack to IPv6-mostly reduces IPv4 consumption, existing networks require renumbering to downsize the IPv4 netblocks assigned to those segments.
+For new deployments, however, administrators can leverage the benefits of IPv6-mostly without renumbering by provisioning smaller netblocks from the outset.
+</t>
+
+</section>
 </section>
 
 <section anchor="vsv6only">
@@ -590,27 +608,6 @@ Flexible, Incremental Transition: IPv6-mostly allows for gradual migration on a 
 </ul>
 </section>
 
-<section anchor="save_v4">
-<name>Reducing IPv4 Consumption and Mitigating IPv4 Exhaustion</name>
-<t>
-In IPv6-mostly networks, IPv4 addresses are assigned exclusively to endpoints that require them for operation.
-This approach reduces IPv4 address utilization within network segments compared to traditional dual-stack deployments.
-The proportion of devices operating in IPv6-only mode — and the resulting decrease in IPv4 consumption — is dependent on the specific endpoint footprint and may vary across different network environments.
-Furthermore, the number of devices requiring IPv4 is expected to decrease over time as more operating systems implement support for CLAT, PREF64, and DHCPv4 option 108.
-</t>
-
-<t>
-In IPv6-mostly deployments, the reduction in public IPv4 consumption is only realized if the network assigns public IPv4 addresses directly to endpoints.
-For networks utilizing <xref target="RFC1918"/> addressing, the IPv6-mostly approach facilitates the conservation of private address space.
-While this benefit may be negligible for smaller networks, it is significant for large-scale enterprises that face private address exhaustion and seek to avoid the complexity of deploying multiple layers of NAT.
-</t>
-
-<t>
-Additionally, while migrating from dual-stack to IPv6-mostly reduces IPv4 consumption, existing networks require renumbering to downsize the IPv4 netblocks assigned to those segments.
-For new deployments, however, administrators can leverage the benefits of IPv6-mostly without renumbering by provisioning smaller netblocks from the outset.
-</t>
-
-</section>
 
 
 </section>
