@@ -5,7 +5,7 @@
 
 
 <!DOCTYPE rfc [
-  <!ENTITY nbsp    "&#160;">
+<!ENTITY nbsp    "&#160;">
 <!ENTITY zwsp   "&#8203;">
 <!ENTITY nbhy   "&#8209;">
 <!ENTITY wj     "&#8288;">
@@ -15,7 +15,7 @@
 
 <rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="info" docName="draft-ietf-v6ops-6mops-05" ipr="trust200902" obsoletes="" submissionType="IETF" xml:lang="en" version="3">
   <front>
-    <title abbrev="6mops">IPv6-Mostly Networks: Deployment and Operations Considerations</title>
+    <title abbrev="6mops">IPv6-mostly Networks: Deployment and Operations Considerations</title>
     <seriesInfo name="Internet-Draft" value="draft-ietf-v6ops-6mops-05"/>
     <author fullname="Nick Buraglio" initials="N" surname="Buraglio">
       <organization>Energy Sciences Network</organization>
@@ -40,7 +40,7 @@
           <city>Amsterdam</city>
           <country>Netherlands</country>
         </postal>
-        <email>Ondrej.Caletka@ripe.net</email>
+        <email>ondrej.caletka@ripe.net</email>
       </address>
     </author>
     <author fullname="Jen Linkova" initials="J" surname="Linkova">
@@ -73,7 +73,7 @@
 
     <abstract>
       <t>
-This document discusses a deployment scenario called "an IPv6-Mostly network", when IPv6-only and IPv4-enabled endpoints coexist on the same network (network segment, VLAN, SSID etc).
+This document discusses a deployment scenario called "an IPv6-mostly network", when IPv6-only and IPv4-enabled endpoints coexist on the same network (network segment, VLAN, SSID etc).
       </t>
 
     </abstract>
@@ -108,7 +108,7 @@ As a result, a chicken-and-egg problem arises: IPv6-only networks seem impractic
       <t>
 To enable a gradual transition from dual-stack to IPv6-only, operators need to identify which devices can function in IPv6-only mode and which cannot.
 This still leaves the challenge of how to provide IPv4 addresses only to devices which can not operate without them.
-Creating separate network segments for each type of devices introduces complexity and scalability issues – a major hurdle to IPv6-only adoption.
+Creating separate network segments for each type of devices introduces complexity and scalability issues - a major hurdle to IPv6-only adoption.
       </t>
 
       <t>
@@ -137,14 +137,14 @@ This document explores the requirements, recommendations, and challenges associa
 Terminology
     </name>
     <t>
-This document reuses most of Terminology section from <xref target="RFC8925"/>
+This document reuses most of Terminology Section from <xref target="RFC8925"/>
 .
     </t>
 <t>
 CLAT: a customer-side translator (CLAT) as specified in <xref target="RFC6877"/> and  <xref target="I-D.ietf-v6ops-claton"/>.
 </t>
     <t>
-Endpoint: A device connected to a network and considered a host From the operator's perspective. However, some endpoint can also extend the network to other physical or logical systems, thereby assuming routing functions. Examples include:
+Endpoint: A device connected to a network and considered a host from the operator's perspective. However, some endpoint can also extend the network to other physical or logical systems, thereby assuming routing functions. Examples include:
     </t>
 
     <ul>
@@ -169,7 +169,7 @@ Native IPv4 connectivity: IPv4 connectivity or default gateway provided by the n
 Network segment: a link (VLAN, a broadcast domain etc) where hosts share the same IP subnet.
     </t>
 <t>
-PREF64: (or NAT64 prefix): An IPv6 prefix used for IPv6 address synthesis and for network addresses and protocols translation from IPv6 clients to IPv4 servers, <xref target="RFC6146"/>.
+PREF64: (or NAT64 prefix): An IPv6 prefix used for IPv6 address synthesis and for network addresses and protocols translation from IPv6 clients to IPv4 destinations, <xref target="RFC6146"/>.
 
 </t>
 
@@ -183,8 +183,7 @@ In a nutshell, an IPv6-mostly network is very similar to a dual-stack one with t
     <ul>
       <li>
         <t>
-The network provides NAT64 (<xref target="RFC6146"/>
-)  functionality, enabling IPv6-only clients to communicate with IPv4-only destinations.
+The network provides NAT64 (<xref target="RFC6146"/>) functionality, enabling IPv6-only clients to communicate with IPv4-only destinations.
         </t>
 <ul>
 <li>
@@ -198,7 +197,7 @@ This is to ensure that clients and the network's NAT64 use the same PREF64 to tr
       </li>
       <li>
         <t>
-The DHCPv4 server infrastructure offers DHCPv4 Option 108 as per <xref target="RFC8925"/>.
+The DHCPv4 server infrastructure offers IPv6-Only Preferred Option (Option 108) as per <xref target="RFC8925"/>.
 This is to ensure that IPv6-only capable devices are not consuming IPv4 addresses.
 <xref target="coexist"/> discusses other approaches to provide IPv4 addresses on demand.
         </t>
@@ -210,7 +209,7 @@ Upon connecting to an IPv6-mostly network segment, an endpoint configures its IP
     <ul>
       <li>
         <t>
-IPv4-Only Endpoint: Acquires an IPv4 address through DHCPv4.
+IPv4-only Endpoint: Acquires an IPv4 address through DHCPv4.
         </t>
       </li>
       <li>
@@ -220,15 +219,15 @@ Dual-Stack Endpoint (Not IPv6-only capable): Configures IPv6 addresses using any
       </li>
       <li>
         <t>
-IPv6-only capable endpoint configures its IPv6 addresses and, while performing DHCPv4, includes option 108 (<xref target="RFC8925"/>
-) into the Parameter Request List. The DHCP server returns the option and, as per <xref target="RFC8925"/>
+IPv6-only capable endpoint configures its IPv6 addresses and, while performing DHCPv4, includes Option 108 (<xref target="RFC8925"/>
+) into the Parameter Request List. The DHCPv4 server returns the option and, as per <xref target="RFC8925"/>
 , the endpoint forgoes requesting an IPv4 address, remaining in IPv6-only mode.
       </t>
     </li>
   </ul>
 
   <t>
-An IPv6-mostly network segment can support a mix of IPv4-only, dual-stack, and IPv6-only devices.  IPv6-only endpoints utilize the network-provided NAT64 to reach IPv4-only destinations.
+An IPv6-mostly network segment can support a mix of IPv4-only, dual-stack, and IPv6-only devices. IPv6-only endpoints utilize the network-provided NAT64 to reach IPv4-only destinations.
   </t>
   <t>
 The following sections discussed those solution elements in more details.
@@ -248,10 +247,10 @@ Examples include but are not limited to:
   </section>
 
   <section anchor="coexist">
-    <name>IPv6-Only and IPv4-enabled Endpoints Coexistence</name>
+    <name>IPv6-only and IPv4-enabled Endpoints Coexistence</name>
     <t>
-One effective way to restrict IPv4 addresses solely to devices that require them is to enable support for the IPv6-Only Preferred DHCPv4 option (Option 108, <xref target="RFC8925"/>) on the network's DHCP infrastructure.
-As most IPv6-only capable devices support Option 108 in their DHCP clients, enabling Option 108 on the server side would allow those devices to cease requesting IPv4 addresses.
+One effective way to restrict IPv4 addresses solely to devices that require them is to enable support for the IPv6-only Preferred Option for DHCPv4 (Option 108, <xref target="RFC8925"/>) on the network's DHCP infrastructure.
+As most IPv6-only capable devices supports Option 108 in their DHCPv4 clients, enabling Option 108 on the server side would allow those devices to cease requesting IPv4 addresses.
     </t>
     <t>
 Certain devices, such as resource-constrained embedded systems, may operate in IPv6-only mode without specific adjustments if their communication is limited to IPv6-enabled destinations. Since these systems often lack Option 108 support, administrators may need alternative methods to prevent IPv4 address assignment.
@@ -398,7 +397,7 @@ If the operator would rather use the WKP (for example, to use public DNS64 serve
   <section anchor="v4only">
     <name>464XLAT</name>
     <t>
-      Unless the usage of IPv4-only network sockets is prohibited or mitigated (e.g. by implementing translation mechanisms such as BIH <xref target="RFC6535"/>) in the operating system, enabling CLAT (Customer-side translator) on endpoints is essential for seamless operation of IPv4-only applications in IPv6-only environments.
+      Unless the usage of IPv4-only network sockets is prohibited or mitigated (e.g., by implementing translation mechanisms such as BIH <xref target="RFC6535"/>) in the operating system, enabling CLAT (Customer-side Translator) on endpoints is essential for seamless operation of IPv4-only applications in IPv6-only environments.
       CLAT provides an IPv4 address and IPv4 default route, ensuring functionality even without a native IPv4 address from the network. Without CLAT or similar compatibility layer inside the operating system, IPv4-only applications would fail, negatively impacting user experience and increasing support overhead.
     </t>
     <t>
@@ -412,7 +411,7 @@ CLAT + DHCPv4 Option 108: If the network administrator can control endpoint conf
       </li>
       <li>
         <t>
-Option 108 Without CLAT MAY be enabled if the administrator aims to identify IPv4-only systems/applications, or if all applications are confirmed to work in IPv6-only mode.
+Option 108 without CLAT MAY be enabled if the administrator aims to identify IPv4-only systems/applications, or if all applications are confirmed to work in IPv6-only mode.
         </t>
       </li>
     </ul>
@@ -424,8 +423,8 @@ Option 108 Without CLAT MAY be enabled if the administrator aims to identify IPv
     <name>Signalling NAT64 Prefix to Hosts</name>
     <t>
 Hosts running 464XLAT, translating IPv4 literal to an IPv6 literals (Section 7.1 of <xref target="RFC8305"/>) or performing local DNS64 functions need to discover the NAT64 prefix.
-The network administrator SHOULD configure the first-hop routers to include PREF64 information in Router Advertisements as per (<xref target="RFC8781"/>
-) even if the network provides DNS64 (so hosts can use DNS64-based prefix discovery, <xref target="RFC7050"/>).
+The network administrator SHOULD configure the first-hop routers to include PREF64 information in Router Advertisements as per (<xref target="RFC8781"/>)
+ even if the network provides DNS64 (so hosts can use DNS64-based prefix discovery, <xref target="RFC7050"/>).
 
 <xref target="RFC9872"/> discusses this recommendation in more details.
 
@@ -434,7 +433,7 @@ The network administrator SHOULD configure the first-hop routers to include PREF
 </section>
 
 <section anchor="dns64">
-<name>Signalling DNS and  DNS64 to Hosts</name>
+<name>Signalling DNS and DNS64 to Hosts</name>
 <t>
 To provide IPv6-only endpoints with DNS recursive server addresses, the administrator MUST configure the network to include the DNS servers IPv6 addresses into RA option, as per <xref target="RFC8106"/>.
 </t>
@@ -462,7 +461,7 @@ Existence of such applications is the main reason why transition to IPv6-only mu
 </li>
 </ul>
 <t>
-Those concerns make DNS64 is suboptimal and undesirtable solution long-term.
+Those concerns make DNS64 a suboptimal and undesirable solution long-term.
 To eliminate the needs for DNS64, the network shall signal PREF64 to endpoints (see <xref target="pref64"/>), and the endpoints need to use the obtained PREF64 for performing local synthesis and for CLAT.
 It should be noted that not every application can benefit from local synthesis performed by the operating system, as it would require the application to use DNS (not IP literals).
 Therefore DNS64 is only required to support the following cases:
@@ -475,7 +474,7 @@ Systems and applications which perform local synthesis but do not support <xref 
 </li>
 <li>
 <t>
-IPv6-only devices without CLAT (unless those endpoints are guaranteed never to need IPv4-only destinations, e.g. in case of a specialized network segment communicating solely with IPv6-capable destinations).
+IPv6-only devices without CLAT (unless those endpoints are guaranteed never to need IPv4-only destinations, e.g., in case of a specialized network segment communicating solely with IPv6-capable destinations).
 </t>
 </li>
 </ul>
@@ -496,38 +495,38 @@ For that reason administrators might find it beneficial to run DNS64 even if it 
 <name>Solution Analysis</name>
 
 <section anchor="vsds">
-<name>IPv6-Only Compared to Dual-Stack</name>
+<name>IPv6-only Compared to Dual-Stack</name>
 <t>
-IPv6-Mostly networks offer significant advantages over traditional dual-stack models where endpoints have both IPv4 and IPv6 addresses:
+IPv6-mostly networks offer significant advantages over traditional dual-stack models where endpoints have both IPv4 and IPv6 addresses:
 </t>
 <ul>
 <li>
 <t>
 The deployment of dual-stack networks does not fundamentally resolve the core issue of IPv4 address exhaustion.
-The IPv6-Mostly approach, however, offers a mechanism to significantly reduce the IPv4 address space allocated to endpoints and reclaim existing IPv4 space.
+The IPv6-mostly approach, however, offers a mechanism to significantly reduce the IPv4 address space allocated to endpoints and reclaim existing IPv4 space.
 The degree of possible reduction is dependent on endpoint capabilities, specifically support of DHCPv4 Option 108 and CLAT.
-Real-world IPv6-Mostly deployments (2025 data) show that approximately 60-70% of endpoints support IPv6-only operation. This capability potentially allows for the use of IPv4 subnets that are 2 to 4 times smaller than those required for dual-stack.
+Real-world IPv6-mostly deployments (2025 data) show that approximately 60-70% of endpoints support IPv6-only operation. This capability potentially allows for the use of IPv4 subnets that are 2 to 4 times smaller than those required for dual-stack.
 It is important to note that migrating a dual-stack network to an IPv6-only mode does not reduce the amount of public IPv4 space required for network elements such as NAT pools.
-However, for large networks (e.g., enterprises and datacenters) facing private IPv4 address exhaustion, the IPv6-Mostly strategy drastically reduces internal IPv4 demand, helping to ensure business continuity.
+However, for large networks (e.g., enterprises and datacenters) facing private IPv4 address exhaustion, the IPv6-mostly strategy drastically reduces internal IPv4 demand, helping to ensure business continuity.
 
 </t>
 </li>
 <li>
 <t>
-Controlled and incremental phase-out of IPv4: IPv6-Mostly allows for the controlled phase out IPv4 from many endpoints, streamlining operations and improving overall network reliability at a measured and operator-controlled pace.
-While IPv6-Mostly deployments do not inherently resolve the IPv4 address exhaustion issue (as previously noted), the approach effectively paves the road toward IPv6-only networks.
+Controlled and incremental phase-out of IPv4: IPv6-mostly allows for the controlled phase out IPv4 from many endpoints, streamlining operations and improving overall network reliability at a measured and operator-controlled pace.
+While IPv6-mostly deployments do not inherently resolve the IPv4 address exhaustion issue (as previously noted), the approach effectively paves the road toward IPv6-only networks.
 </t>
 </li>
 <li>
 <t>
-Reduced Dependency on DHCPv4: As more devices operate seamlessly in IPv6-only mode, the criticality of DHCPv4 service diminishes significantly. This allows operators to scale down DHCPv4 infrastructure or, in some cases, even  operate it with less stringent service level objectives (SLOs), optimizing costs and resource allocation.
+Reduced Dependency on DHCPv4: As more devices operate seamlessly in IPv6-only mode, the criticality of DHCPv4 service diminishes significantly. This allows operators to scale down DHCPv4 infrastructure or, in some cases, even operate it with less stringent service level objectives (SLOs), optimizing costs and resource allocation.
 </t>
 </li>
 <li>
 <t>
 Simplified troubleshooting due reduced impact of Happy Eyeballs <xref target="RFC8305"/>: when both the client and the server are dual-stack, communication can happen either over IPv6 or over IPv4 and the protocol choice can change over time.
 This may obscure network issues or make them intermittent, complicating the troubleshooting.
-In IPv6-Mostly network IPv6-only hosts are much less affected by such an issue.
+In IPv6-mostly network IPv6-only hosts are much less affected by such an issue.
 Although modern versions of Happy Eyeballs algorithm support falling back to IPv4 even in case of IPv6-only network, the delay before switching to IPv4 is so long that the fallback does not happen during regular operations.
 It should be noted, however, that when an IPv6-only client communicates with an IPv4-only destination, the traffic may traverse CLAT or be sent as IPv6 towards the NAT64, depending on how the specific application is written.
 </t>
@@ -535,13 +534,13 @@ It should be noted, however, that when an IPv6-only client communicates with an 
 </ul>
 
 <t>
-The introduction of NAT64 within the IPv6-Mostly model may appear as a drawback, as it inherits many of the limitations associated with NAT44, such as translating flows from different hosts to thesame public IPv4 address, or scalability challenges caused by stateful opeation.
+The introduction of NAT64 within the IPv6-mostly model may appear as a drawback, as it inherits many of the limitations associated with NAT44, such as translating flows from different hosts to the same public IPv4 address, or scalability challenges caused by stateful operation.
 However, it's important to recognize that most IPv4-only or dual-stack networks already rely on NAT44 due to IPv4 address scarcity.
-For these networks, transitioning to an IPv6-Mostly architecture would simply require enabling NAT64 functionality on existing NAT44 devices.
+For these networks, transitioning to an IPv6-mostly architecture would simply require enabling NAT64 functionality on existing NAT44 devices.
 </t>
 <t>
-In a dual-stack network, flows originating from IPv6-only capable endpoints to IPv4-only destinations are, in most cases,  translated by NAT44.
-Within an IPv6-Mostly environment, this role is fulfilled by NAT64.
+In a dual-stack network, flows originating from IPv6-only capable endpoints to IPv4-only destinations are, in most cases, translated by NAT44.
+Within an IPv6-mostly environment, this role is fulfilled by NAT64.
 Consequently, the overall load on the NAT infrastructure remains effectively unchanged, with NAT64 essentially replacing NAT44 for a subset of traffic flows.
 </t>
 <t>
@@ -550,21 +549,21 @@ As the availability of IPv6-enabled resources continues to increase, the volume 
 </t>
 
 <t>
-As discussed in <xref target="p2p"/> coexistence of IPv6-only and IPv4-only hosts on the same link might present challenges for onlink service discovery and onlink peer2peer communications. It might be consider a disadvantge of IPv6-Moslty model for networks where onlink communication between IPv4-only and IPv6-only devices is desirable. 
+As discussed in <xref target="p2p"/> coexistence of IPv6-only and IPv4-only hosts on the same link might present challenges for on-link service discovery and on-link peer2peer communications. It might be consider a disadvantge of IPv6-mostly model for networks where on-link communication between IPv4-only and IPv6-only devices is desirable.
 </t>
 </section>
 
 <section anchor="vsv6only">
-<name>IPv6-Mostly Compared to a Dedicated IPv6-Only Network</name>
+<name>IPv6-mostly Compared to a Dedicated IPv6-only Network</name>
 <t>
 Traditional IPv6-only adoption involves separate networks alongside dual-stack ones.
-IPv6-Mostly approach offers significant improvements, such as:
+IPv6-mostly approach offers significant improvements, such as:
 </t>
 
 <ul>
 <li>
 <t>
-Enhanced Scalability:  Separate IPv6-only networks double the number of SSIDs in wireless environments, causing channel congestion and degrading performance. IPv6-Mostly doesn't require additional SSIDs. Similarly, it allows IPv4 and IPv6-only devices to coexist on the same wired VLANs, eliminating the need of additional layer2 segments, VLAN IDs, and their respective layer3 configurations.
+Enhanced Scalability: Separate IPv6-only networks double the number of SSIDs in wireless environments, causing channel congestion and degrading performance. IPv6-mostly doesn't require additional SSIDs. Similarly, it allows IPv4 and IPv6-only devices to coexist on the same wired VLANs, eliminating the need of additional Layer 2 segments, VLAN IDs, and their respective Layer 3 configurations.
 </t>
 </li>
 <li>
@@ -574,18 +573,18 @@ Operational Simplicity: Managing one network segment for all clients (regardless
 </li>
 <li>
 <t>
-Optimized IPv4 Consumption: User-selected dual-stack networks often lead to unnecessary IPv4 use, as users often connect IPv6-only capable devices to a dual-stack network. IPv6-Mostly network allocates IPv4 addresses 
+Optimized IPv4 Consumption: User-selected dual-stack networks often lead to unnecessary IPv4 use, as users often connect IPv6-only capable devices to a dual-stack network. IPv6-mostly network allocates IPv4 addresses 
 only when devices don't advertise IPv6-only capability (DHCPv4 Option 108).
 </t>
 </li>
 <li>
 <t>
-Improved Problem Visibility: User-selected fallback to dual-stack networks can mask issues with IPv6-only operation, hindering problem reporting and resolution. IPv6-Mostly forces users to work through any issues, improving identification and enabling fixes for smoother long-term transition.
+Improved Problem Visibility: User-selected fallback to dual-stack networks can mask issues with IPv6-only operation, hindering problem reporting and resolution. IPv6-mostly forces users to work through any issues, improving identification and enabling fixes for smoother long-term transition.
 </t>
 </li>
 <li>
 <t>
-Flexible, Incremental Transition: IPv6-Mostly allows for gradual migration on a per-segment or even on per-device basis. Devices become IPv6-only only when deemed fully compatible with that mode.
+Flexible, Incremental Transition: IPv6-mostly allows for gradual migration on a per-segment or even on per-device basis. Devices become IPv6-only only when deemed fully compatible with that mode.
 </t>
 </li>
 </ul>
@@ -626,8 +625,7 @@ This process facilitates the identification of related issues and expedites issu
 </ul>
 
 <t>
-In some scenarios (see <xref target="nov6"/>
-) the administrator MAY keep a dual-stack network as a last resort fallback mechanism but SHOULD prevent usesrs from connecting to it accidentially (e.g. it should be a hidden SSID with authentication enabled). For recurring temporary networks, for instance during a conference, it might be a good practice to change the network SSID of the last resort fallback network between each event.
+In some scenarios (see <xref target="nov6"/>) the administrator MAY keep a dual-stack network as a last resort fallback mechanism but SHOULD prevent users from connecting to it accidentially (e.g., it should be a hidden SSID with authentication enabled). For recurring temporary networks, for instance during a conference, it might be a good practice to change the network SSID of the last resort fallback network between each event.
 </t>
 </section>
 
@@ -635,16 +633,16 @@ In some scenarios (see <xref target="nov6"/>
 <section anchor="incr">
 <name>Per-Device and Per-Subnet Incremental Rollout</name>
 <t>
-  Limited control over endpoint configuration necessitates a per-subnet rollout, incrementally enabling first PREF64 signalling and then option 108 processing in DHCP.
+  Limited control over endpoint configuration necessitates a per-subnet rollout, incrementally enabling first PREF64 signalling and then Option 108 processing in DHCPv4.
 </t>
 <t>
-In most networks all hosts on a given subnet receive the same RAs (unless mechanisms like per-client RA <xref target="RFC8273"/> are deployed), so signalling PRE64 via an RA option doesn't allow any per-endpoint opt out mechanism.
+In most networks all hosts on a given subnet receive the same RAs (unless mechanisms like per-client RA <xref target="RFC8273"/> are deployed), so signalling PREF64 via an RA option doesn't allow any per-endpoint opt out mechanism.
 </t>
 <t>
 Some operating systems provide a mechanism to enable option 108 processing.
 In these cases, if the endpoints are managed, per-device rollout may be possible.
 Note that some OSes enable Option 108 support by default without providing configuration knobs to turn it off.
-Such systems become IPv6-only the moment Option 108 is activated on the server side.
+Such systems become IPv6-only the moment Option 108 is activated on the DHCPv4 server side.
 </t>
 <t>
 The following approach is RECOMMENDED:
@@ -657,7 +655,7 @@ PREF64 signalling: Enable PREF64 option for the router advertisement and/or DNS6
 </li>
 <li>
 <t>
-DHCP Server-Side Activation: Enable Option 108 processing. Some OSes automatically switch to IPv6-only. Rollback at this stage affects the entire subnet.
+DHCPv4 Server-Side Activation: Enable Option 108 processing. Some OSes automatically switch to IPv6-only. Rollback at this stage affects the entire subnet.
 </t>
 </li>
 <li>
@@ -675,9 +673,9 @@ Rollback Approach
 <t>
 
 For quick rollback, the administrator SHOULD start with a minimal Option 108 value (300 seconds, Section 3.4 of <xref target="RFC8925"/>) and possibly increase this value as the IPv6-mostly network proves reliable, reducing the likelihood of full-scale rollback.
-  In most deployments, the load of DHCP infrastructure caused by each endpoint restarting the DHCP handshake every 300 seconds would be negligible.
+In most deployments, the load of DHCPv4 infrastructure caused by each endpoint restarting the DHCP handshake every 300 seconds would be negligible.
 However for large networks containing a high number of IPv6-only capable clients, the default value of 300 seconds may be too low.
-Even if each IPv6-only capable client sends only one DHCPDISCOVER every 300 seconds, the collective traffic can still create a substantial load on the DHCP infrastructure. 
+Even if each IPv6-only capable client sends only one DHCPDISCOVER every 300 seconds, the collective traffic can still create a substantial load on the DHCPv4 infrastructure. 
 Administrators are advised to monitor this load and adjust the Option 108 value as necessary.
 </t>
 </section>
@@ -695,15 +693,14 @@ Administrators are advised to monitor this load and adjust the Option 108 value 
 <section anchor="slaac">
 <name>Address Assignment Policy</name>
 <t>
-As outlined in Section 6.3 of <xref target="RFC6877"/>
-, CLAT requires either a dedicated IPv6 prefix or, if unavailable, a dedicated IPv6 address. Currently (2024), all implementations use SLAAC for CLAT address acquisition. Therefore, to enable CLAT functionality within IPv6-mostly network segments, first-hop routers MUST be configured to advertise a Prefix Information Option (PIO, <xref target="RFC4861"/>) containing a globally routable SLAAC-suitable prefix with the 'Autonomous Address-Configuration' (A) flag set to one.
+As outlined in Section 6.3 of <xref target="RFC6877"/>, CLAT requires either a dedicated IPv6 prefix or, if unavailable, a dedicated IPv6 address. Currently (2025), all implementations use SLAAC for CLAT address acquisition. Therefore, to enable CLAT functionality within IPv6-mostly network segments, first-hop routers MUST be configured to advertise a Prefix Information Option (PIO, <xref target="RFC4861"/>) containing a globally routable SLAAC-suitable prefix with the 'Autonomous Address-Configuration' (A) flag set to one.
 </t>
 </section>
 
 <section anchor="eh">
 <name>Extension Headers</name>
 <t>
-Being an IPv6-specific concept, IPv6 extension headers are often neglected or even explictly prohibited by security policies in dual-stack networks. The issues caused by blockig extension headers might be masked by the presense of Happy Eyeballs but become highly visible when there is no IPv4 to fallback to.
+Being an IPv6-specific concept, IPv6 extension headers are often neglected or even explictly prohibited by security policies in dual-stack networks. The issues caused by blocking extension headers might be masked by the presense of Happy Eyeballs but become highly visible when there is no IPv4 to fallback to.
 </t>
 <t>
 The network SHOULD permit at least the following extension headers:
@@ -711,9 +708,7 @@ The network SHOULD permit at least the following extension headers:
 <ul>
 <li>
 <t>
-Fragment Header (Section 4.5 of <xref target="RFC8200"/>
-).<xref target="frag"/>
- discusses the fragmentation in more details.
+Fragment Header (Section 4.5 of <xref target="RFC8200"/>). <xref target="frag"/> discusses the fragmentation in more details.
 </t>
 </li>
 <li>
@@ -725,15 +720,15 @@ ESP Header, which is used for IPSec traffic, such as VPN and Wi-Fi Calling.
 </section>
 
 <section anchor="p2p">
-<name>Onlink Communication and Service Discovery</name>
+<name>On-link Communication and Service Discovery</name>
 <t>
 Shared link is often used for automatic discovery of neighboring devices and their services by means of different protocols like Multicast DNS <xref target="RFC6762" />. Many devices and/or services are built on an assumption that devices on the same link also share the same set of address families or at least they have one common address family shared between all of them.</t>
-    <t>In IPv6-Mostly, this assumption is not valid as there might be both IPv4-only and IPv6-only devices on the same link. As per <xref target="RFC6762" section="20"/>, this means that the link has two unrelated ".local." zones, one for each address family. Discovery of devices across different addres families is impossible, unless some sort of relay is deployed on the link.</t>
+    <t>In IPv6-mostly, this assumption is not valid as there might be both IPv4-only and IPv6-only devices on the same link. As per <xref target="RFC6762" section="20"/>, this means that the link has two unrelated ".local." zones, one for each address family. Discovery of devices across different address families is impossible, unless some sort of relay is deployed on the link.</t>
 
 <t>
-This problem, however, is limited to networks where client-to-client onlink communications are desired and permitted by security policies.
+This problem, however, is limited to networks where client-to-client on-link communications are desired and permitted by security policies.
 For networks where client isolation is enabled (it's often a case for enterprise networks and public WiFi), this issue is not a concern.
-If onlink peer2peer communication is required, the operator needs to ensure all participating devices are either dual-stack or IPv6-mostly.
+If on-link peer2peer communication is required, the operator needs to ensure all participating devices are either dual-stack or IPv6-mostly.
 </t>
 </section>
 
@@ -753,7 +748,7 @@ Such endpoints requesting Option 108 will fail to connect in an IPv6-mostly netw
 </t>
 
 <t>
-Administrators controlling endpoints SHOULD ensure those endpoints have IPv6 enabled and operational before transitioning the network to IPv6-mostly mode. This includes verifying protocol enablement as well as validation of any central or discreetly managed host based firewalls that could potentially interfere with proper IPv6 function that may be masked by the presence of IPv4, and therefor exp[osed with its removal. 
+Administrators controlling endpoints SHOULD ensure those endpoints have IPv6 enabled and operational before transitioning the network to IPv6-mostly mode. This includes verifying protocol enablement as well as validation of any central or discreetly managed host based firewalls that could potentially interfere with proper IPv6 function that may be masked by the presence of IPv4, and therefore exposed with its removal.
 </t>
 
 </section>
@@ -777,16 +772,15 @@ Provides downstream systems with IPv6 addresses and native connectivity.
 </li>
 <li>
 <t>
-Enabling the CLAT function on the endpoint. This scenario is similar to the Wireline Network Architecture described in Section 4.1 of <xref target="RFC6877"/>
-. The downstream systems would receive IPv4 addresses and their IPv4 traffic would be translated to IPv6 by the endpoint. However this approach leads to the downstream systems using IPv4 only and not benefiting from end2end IPv6 connectivity. 
+Enabling the CLAT function on the endpoint. This scenario is similar to the Wireline Network Architecture described in Section 4.1 of <xref target="RFC6877"/>.
+The downstream systems would receive IPv4 addresses and their IPv4 traffic would be translated to IPv6 by the endpoint. However this approach leads to the downstream systems using IPv4 only and not benefiting from end-to-end IPv6 connectivity. 
 To enable IPv6 benefits, combine this with IPv6 Prefix Delegation as discussed above.
 </t>
 </li>
 <li>
 <t>
 Bridging and ND Proxy: The endpoint bridges IPv6 traffic and masks downstream devices behind its MAC address.
-This can lead to scalability issues ( <xref target="multip"/>
-) due to the single MAC being mapped to many IPv6 addresses.
+This can lead to scalability issues (<xref target="multip"/>) due to the single MAC being mapped to many IPv6 addresses.
 </t>
 </li>
 </ul>
@@ -800,12 +794,12 @@ Unlike IPv4, where endpoints typically have a single IPv4 address per interface,
 <ul>
 <li>
 <t>
-Link-local address.
+Link-local address
 </t>
 </li>
 <li>
 <t>
-Temporary address (common on mobile devices for privacy)
+Temporary address (default on endpoints for privacy)
 </t>
 </li>
 <li>
@@ -842,7 +836,7 @@ Using dedicated IPv6 addresses for CLAT instances increases the number of IPv6 a
 </li>
 <li>
 <t>
-Some traffic flows (e.g. belonging to IPv4-only applications) would be using IPv4 on a dual-stack endpoint but go through CLAT on an IPv6-only one. Such flows would be unaffected on a dual-stack network but experience an outage if the CLAT address is blocked by the network.
+Some traffic flows (e.g., belonging to IPv4-only applications) would be using IPv4 on a dual-stack endpoint but go through CLAT on an IPv6-only one. Such flows would be unaffected on a dual-stack network but experience an outage if the CLAT address is blocked by the network.
 </t>
 </li>
 </ul>
@@ -850,12 +844,12 @@ Some traffic flows (e.g. belonging to IPv4-only applications) would be using IPv
 <t>
 </t>
 <t>
-Allocating prefixes to endpoints via DHCP-PD (<xref target="RFC9663"/>) alows to eliminate the issue and to address the corresponding scalability concerns.
+Allocating prefixes to endpoints via DHCPv6-PD (<xref target="RFC9663"/>) allows to eliminate the issue and to address the corresponding scalability concerns.
 Operators of large-scale IPv6-mostly networks might benefit from using DHCPv6 prefix delegation for IPv6-only and IPv6-enabled endpoints.
 In that case the administrator also need to ensure that the first-hop routers set the P-flag <xref target="RFC9762"/> in RAs.
 
 However, the deployment model described in <xref target="RFC9663"/> might not yet be supported by all endpoints and network infrastrcuture devices.
-The network administrator SHOULD ensure that the deployed network infastructure devices allow sufficient number of IPv6 addresses to be mapped to a client's MAC and SHOULD monitor for events, indicating that the limit has been reached (such as syslog messages, etc).
+The network administrator SHOULD ensure that the deployed network infastructure devices allow sufficient number of IPv6 addresses to be mapped to a client's MAC and SHOULD monitor for events, indicating that the limit has been reached (such as syslog messages, etc.).
 </t>
 
 </section>
@@ -874,10 +868,10 @@ In such networks, the administrator SHOULD configure the link-local addresses of
 <section anchor="frag">
 <name>Fragmentation</name>
 <t>
-As the basic IPv6 header is 20 bytes longer than the IPv4 header, transating from IPv4 to IPv6 can result in packets exceeding the path MTU on the IPv6 side.
-In that case NAT64 creates IPv6 packets with the Fragment Header (see Section 4 of <xref target="RFC6145"/>
+As the basic IPv6 header is 20 bytes longer than the IPv4 header, translating from IPv4 to IPv6 can result in packets exceeding the path MTU on the IPv6 side.
+In that case NAT64 creates IPv6 packets with the Fragment Header (see Section 4 of <xref target="RFC7915"/>
  for more details.
-As per  <xref target="RFC6145"/>
+As per  <xref target="RFC7915"/>
 , by default the translator fragments IPv4 packets so that they fit in 1280-byte IPv6 packets. It means that all IPv4 packets larger than 1260 bytes are fragmented (or dropped if the DF bit is set).
 </t>
 <t>
@@ -918,19 +912,19 @@ If atomic fragments are generated, the administrator should configure the PLAT d
 Translating IPv4 UDP packet with zero checksum to IPv6 requires the translator to calculate the checksum and therefore has performance implication.
 As per Secton 4.5 of <xref target="RFC7915"/>, translators are allowed to drop IPv4 UDP packet with zero checksum.
 Additionally, Section 1.2 of <xref target="RFC7915"/> says:
-"Fragmented IPv4 UDP packets that do not contain a UDP checksum (i.e., the UDP checksum field is zero) are not of significant use on the Internet, and in general will not be translated by the IP/ICMP translator...However, when the translator is configured to forward the packet without a UDP checksum, the fragmented IPv4 UDP packets will be translated."
+"Fragmented IPv4 UDP packets that do not contain a UDP checksum (i.e., the UDP checksum field is zero) are not of significant use on the Internet, and in general will not be translated by the IP/ICMP translator ... However, when the translator is configured to forward the packet without a UDP checksum, the fragmented IPv4 UDP packets will be translated."
 </t>
 <t>
 It has been observed that some systems (such as 3GPP ePDG, Evolved Packet Data Gateway) might generate IPv4 UDP packets with zero checksum.
 Those packets could be dropped by the PLAT devices, impacting WiFi calling on IPv6-only endpoints connecting to those ePDGs.
-As Secton 4.5 of <xref target="RFC7915"/> recommends that the translators have a configuration knob to calculate an IPv6 checksum and forward the packet instead of dropping it, the administrator should consider enabling that option if such issue is encountered.
+As Secton 4.5 of <xref target="RFC7915"/> recommends that the translators have a configuration knob to calculate an IPv6 checksum and forward the packet instead of dropping it, the administrator should consider enabling that option if such an issue is encountered.
 </t>
 </section>
 
 <section anchor="traceroute">
 <name>Representing IPv6 Addresses by CLAT</name>
 <t>
-Certain CLAT implementations face challenges when translating incoming IPv6 packets with native (non-synthesized) source addresses (e.g. ICMPv6 packets sent by intermediate hops on the path). This lack of standardized translation mechanisms can lead to:
+Certain CLAT implementations face challenges when translating incoming IPv6 packets with native (non-synthesized) source addresses (e.g., ICMPv6 packets sent by intermediate hops on the path). This lack of standardized translation mechanisms can lead to:
 </t>
 <ul>
 <li>
@@ -1008,7 +1002,7 @@ Section 7 of <xref target="RFC8781"/> discusses this topic in more details.
 Additionally, <xref target="I-D.ietf-v6ops-claton"/> discusses security implications of enabling CLAT if native IPv4 connectivity is available and recommends disabling CLAT in that case.
 </t>
 <t>
-Security considerations of using DHCP Option 108 are documented in Section 6 of <xref target="RFC8925"/>.
+Security considerations of using DHCPv4 Option 108 are documented in Section 6 of <xref target="RFC8925"/>.
 </t>
 <t>
 
@@ -1041,16 +1035,13 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.2119.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6105.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6146.xml"/>
-<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6333.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6555.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6877.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7050.xml"/>
-<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7335.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8200.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8106.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8174.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8781.xml"/>
-<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8585.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8925.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9099.xml"/>
 <!-- The recommended and simplest way to include a well known reference -->
@@ -1063,7 +1054,6 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4443.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4787.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4861.xml"/>
-<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4862.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6052.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6145.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6147.xml"/>
@@ -1071,7 +1061,6 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6762.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6724.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6888.xml"/>
-<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7225.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7755.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7915.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8201.xml"/>
