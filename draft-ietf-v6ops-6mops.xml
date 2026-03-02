@@ -381,14 +381,14 @@ Another benefit of the WKP or LUP is that if the client received both non-synthe
 Additionally, using WKP lets the operator use public DNS64 services, which rely on the WKP for address translation.
 </t>
 <t>
-Although Section 3.1 of <xref target="RFC6052"/> forbids IPv4/IPv6 translators from using the WKP for non-global IPv4 addresses (like <xref target="RFC1918"/> addresses), field reports show that some NAT64 and CLAT implementations ignore this rule.
-<xref target="I-D.kumkova-v6ops-nat64-wkp-1918"/> discusses the NAT64 prefix selection considerations and proposes updates to Section 3.1 of <xref target="RFC6052"/>, so translators are allowed to use the WKP for non-global IPv4 addresses.
+Currently Section 3.1 of <xref target="RFC6052"/> forbids IPv4/IPv6 translators from using the WKP for non-global IPv4 addresses (like <xref target="RFC1918"/> addresses).
+<xref target="I-D.ietf-v6ops-nat64-wkp-1918"/> discusses the NAT64 prefix selection considerations and proposes updates to Section 3.1 of <xref target="RFC6052"/>, so translators are allowed to use the WKP for non-global IPv4 addresses.
 </t>
 
 <t>
-If internal IPv4-only destinations use non-global addresses and IPv6-only devices need to reach them, the operator might have to choose a network-specific NAT64 prefix.
-If the operator would rather use the WKP (for example, to use public DNS64 servers), they should test their NAT64 setups to make sure that packets using the WKP to represent private IPv4 addresses are not dropped (such verification might not be possible for BYOD case).
-    </t>
+If internal IPv4-only destinations use non-global addresses and IPv6-only devices need to reach them, the operator should ensure that their NAT64 devices are compliant with the changes proposed in <xref target="I-D.ietf-v6ops-nat64-wkp-1918"/>.
+Alternatively, the operator might utilize a network-specific NAT64 prefix.
+</t>
 
 </section>
 
@@ -1097,7 +1097,7 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-v6ops-claton.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.link-6man-gulla.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-v6ops-icmpext-xlat-v6only-source.xml"/>
-<xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.kumkova-v6ops-nat64-wkp-1918.xml"/>
+<xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-v6ops-nat64-wkp-1918.xml"/>
 
 </references>
 </references>
@@ -1105,7 +1105,7 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <section anchor="Acknowledgements" numbered="false">
 <name>Acknowledgements</name>
 <t>
-Thanks to Mohamed Boucadair, Brian Carpenter, Stuart Cheshire, Joe Clarke, Lorenzo Colitti, Jeremy Duncan, David Farmer, Sorah Fukumori, Götz Görisch, Warren Kumari, Jordi Palet, Tom Petch, Michael Richardson, Arie Vayner, Matsuzaki Yoshinobu for the discussions, the feedback, and all contribution.
+Thanks to Mohamed Boucadair, Brian Carpenter, Stuart Cheshire, Joe Clarke, Lorenzo Colitti, Jeremy Duncan, David Farmer, Sorah Fukumori, Götz Görisch, Warren Kumari, Jordi Palet, Tom Petch, Michael Richardson, Philipp Tiesel, Arie Vayner, Matsuzaki Yoshinobu for the discussions, the feedback, and all contribution.
 </t>
 </section>
 
