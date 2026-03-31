@@ -997,6 +997,19 @@ If the network doesn't provide the NAT64 prefix in RAs or the endpoint doesn't s
 </t>
 </section>
 
+<section anchor="Virtual Private Network Policy">
+<name>Virtual Private Network Policy</name>
+<t>
+Some VPN clients are configured either by default or by policy to disable the IPv6 stack on a host as part of the VPN profile configuration. This can lead to connectivity issues for IPv6-only hosts in an IPv6-mostly network, as the host would not be able to obtain an IPv4 address via DHCPv4 Option 108 and would not have IPv6 connectivity due to the VPN configuration. This issue may be prevalent in corporate environments where VPN usage is common or required and may be configured to disable IPv6 for security reasons, due to lack of support for IPv6 within the corporate network, or because of lack of knowledge about IPv6 among the IT staff. 
+Since a host that honors DHCPv4 option 108 will disable IPv4, and a VPN policy may disable IPv6, configuring VPN policy in this way may lead to a portion of a remote user base being unable to connect to the corporate network when the user is outside of the corporate network and connected to an IPv6-mostly network. 
+Administrators should be aware of this potential issue and consider it when planning the rollout of IPv6-mostly network, especially in environments where VPN usage is common.
+</t>
+<t>
+Where feasible, administrators SHOULD NOT configure VPN profiles to disable IPv6 and SHOULD configure remote resources to support IPv6 wherever possible to ensure connectivity for users connecting from IPv6-mostly networks.  
+</t>
+
+</section>
+
 </section>
 </section>
 
@@ -1109,7 +1122,7 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <section anchor="Acknowledgements" numbered="false">
 <name>Acknowledgements</name>
 <t>
-Thanks to Mohamed Boucadair, Brian Carpenter, Stuart Cheshire, Joe Clarke, Lorenzo Colitti, Jeremy Duncan, David Farmer, Sorah Fukumori, Götz Görisch, Warren Kumari, Eliot Lear, Jordi Palet, Tom Petch, Michael Richardson, Philipp Tiesel, Arie Vayner, XiPeng Xiao, Matsuzaki Yoshinobu for the discussions, the feedback, and all contribution.
+Thanks to Mohamed Boucadair, Brian Carpenter, Stuart Cheshire, Tim Chown, Joe Clarke, Lorenzo Colitti, Tom Costello, Jeremy Duncan, David Farmer, Sorah Fukumori, Götz Görisch, Warren Kumari, Eliot Lear, Jordi Palet, Tom Petch, Michael Richardson, Philipp Tiesel, Arie Vayner, XiPeng Xiao, Matsuzaki Yoshinobu for the discussions, the feedback, and all contribution.
 </t>
 </section>
 
