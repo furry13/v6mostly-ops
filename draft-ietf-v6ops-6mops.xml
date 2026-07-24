@@ -1011,7 +1011,7 @@ If the network doesn't provide the NAT64 prefix in RAs or the endpoint doesn't s
 </t>
 </section>
 
-<section anchor="Virtual Private Network Policy">
+<section anchor="vpn">
 <name>Virtual Private Network Policy</name>
 <t>
 VPN clients and policies have been observed to interfere with IPv6 connectivity
