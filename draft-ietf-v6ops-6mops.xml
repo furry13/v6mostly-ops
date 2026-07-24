@@ -143,10 +143,19 @@ This document reuses most of Terminology Section from <xref target="RFC8925"/>
 .
     </t>
 <t>
+IPv6-mostly network: A network segment on which IPv6-only and IPv4-enabled
+endpoints coexist, and where the network provides IPv4 connectivity on demand
+(e.g., via DHCPv4 Option 108, <xref target="RFC8925"/>) only to the endpoints
+that require it, while IPv6-capable endpoints operate in IPv6-only mode,
+using NAT64 (<xref target="RFC6146"/>) or 464XLAT (<xref target="RFC6877"/>)
+to reach IPv4-only destinations.
+</t>
+    <t>
 CLAT: a customer-side translator (CLAT) as specified in <xref target="RFC6877"/> and  <xref target="I-D.ietf-v6ops-claton"/>.
 </t>
     <t>
-Endpoint: A device connected to a network and considered a host from the operator's perspective. However, some endpoint can also extend the network to other physical or logical systems, thereby assuming routing functions. Examples include:
+Endpoint: A device connected to a network and considered a host from the operator's perspective. 
+Examples include:
     </t>
 
     <ul>
@@ -290,8 +299,6 @@ Consequently, this approach is recommended only as an interim or stopgap solutio
   <section>
 
     <name>Access to IPv4-only Destinations</name>
-    <t>
-    </t>
 
     <section>
 
@@ -419,8 +426,6 @@ Option 108 without CLAT MAY be enabled if the administrator aims to identify IPv
         </t>
       </li>
     </ul>
-    <t>
-    </t>
   </section>
 
   <section anchor="pref64">
@@ -619,7 +624,7 @@ Flexible, Incremental Transition: IPv6-mostly allows for gradual migration on a 
 <section anchor="rollout">
 <name>Incremental Rollout Considerations</name>
 <t>
-  Migrating endpoints to IPv6-only fundamentally changes network dynamics by removing the IPv4 safety net. This includes the masking effect of traditional Happy Eyeballs algorithm <xref target="RFC6555" />. IPv6 connectivity issues become far more prominent, including those previously hidden within dual-stack environments. Operators should be prepared to discover and troubleshoot issues in both endpoints and network infrastructure, even if the dual-stack network appeared problem-free.
+  Migrating endpoints to IPv6-only fundamentally changes network dynamics by removing the IPv4 safety net. This includes the masking effect of traditional Happy Eyeballs algorithm <xref target="RFC8305" />. IPv6 connectivity issues become far more prominent, including those previously hidden within dual-stack environments. Operators should be prepared to discover and troubleshoot issues in both endpoints and network infrastructure, even if the dual-stack network appeared problem-free.
 </t>
 <t>
 Some rollout considerations are discussed in the following sections.
@@ -717,7 +722,7 @@ Administrators are advised to monitor this load and adjust the Option 108 value 
 <section anchor="slaac">
 <name>Address Assignment Policy</name>
 <t>
-As outlined in Section 6.3 of <xref target="RFC6877"/>, CLAT requires either a dedicated IPv6 prefix or, if unavailable, a dedicated IPv6 address. Currently (2025), all implementations use SLAAC for CLAT address acquisition. Therefore, to enable CLAT functionality within IPv6-mostly network segments, first-hop routers MUST be configured to advertise a Prefix Information Option (PIO, <xref target="RFC4861"/>) containing a globally routable SLAAC-suitable prefix with the 'Autonomous Address-Configuration' (A) flag set to one.
+As outlined in Section 6.3 of <xref target="RFC6877"/>, CLAT requires either a dedicated IPv6 prefix or, if unavailable, a dedicated IPv6 address. At the time of this writing, all implementations use SLAAC for CLAT address acquisition. Therefore, to enable CLAT functionality within IPv6-mostly network segments, first-hop routers MUST be configured to advertise a Prefix Information Option (PIO, <xref target="RFC4861"/>) containing a globally routable SLAAC-suitable prefix with the 'Autonomous Address-Configuration' (A) flag set to one.
 </t>
 </section>
 
@@ -783,7 +788,12 @@ Administrators controlling endpoints SHOULD ensure those endpoints have IPv6 ena
 <section anchor="ext">
 <name>Network Extension</name>
 <t>
-IPv4's NAT44 allows endpoints to extend connectivity to downstream systems without upstream network awareness or permission.
+IPv4's NAT44 allows endpoints to extend connectivity to downstream systems without upstream network awareness or permission. Note that "endpoint" describes a role rather than a fixed device category:
+some endpoints also extend network connectivity to other physical or logical
+systems, thereby additionally acting as routers. Examples include personal
+computers running virtual machines or containers that route traffic to them,
+and mobile phones with tethering enabled that act as a router for tethered
+devices, potentially without the operator's knowledge or consent.
 This creates challenges in IPv6-mostly deployments where endpoints lack IPv4 addresses:
 
 </t>
@@ -992,7 +1002,11 @@ Administrators need to  be aware of the potential for CLAT failures when endpoin
 </t>
 
 <t>
-Similarly, some VPN clients are known to overrride the DNS configuration on the endpoints, preventing those devices from discovering the NAT64 prefix via <xref target="RFC7050"/> mechanism.
+Similarly, some VPN clients are known to alter DNS resolution behavior on the
+endpoint — for example by inserting their own resolver ahead of the
+network-provided one, or by suppressing AAAA responses even when native IPv6
+connectivity remains available — preventing those devices from discovering
+the NAT64 prefix via the <xref target="RFC7050"/> mechanism.
 If the network doesn't provide the NAT64 prefix in RAs or the endpoint doesn't support <xref target="RFC8781"/>, the endpoint might not be able to discover the NAT64 prefix and therefore would fail to enable CLAT.
 </t>
 </section>
@@ -1000,14 +1014,35 @@ If the network doesn't provide the NAT64 prefix in RAs or the endpoint doesn't s
 <section anchor="Virtual Private Network Policy">
 <name>Virtual Private Network Policy</name>
 <t>
-Some VPN clients are configured either by default or by policy to disable the IPv6 stack on a host as part of the VPN profile configuration. This can lead to connectivity issues for IPv6-only hosts in an IPv6-mostly network, as the host would not be able to obtain an IPv4 address via DHCPv4 Option 108 and would not have IPv6 connectivity due to the VPN configuration. This issue may be prevalent in corporate environments where VPN usage is common or required and may be configured to disable IPv6 for security reasons, due to lack of support for IPv6 within the corporate network, or because of lack of knowledge about IPv6 among the IT staff. 
-Since a host that honors DHCPv4 option 108 will disable IPv4, and a VPN policy may disable IPv6, configuring VPN policy in this way may lead to a portion of a remote user base being unable to connect to the corporate network when the user is outside of the corporate network and connected to an IPv6-mostly network. 
-Administrators should be aware of this potential issue and consider it when planning the rollout of IPv6-mostly network, especially in environments where VPN usage is common.
+VPN clients and policies have been observed to interfere with IPv6 connectivity
+for endpoints in an IPv6-mostly network through several distinct mechanisms.
+Administrators and operators should be aware of each individually, since detection and
+remediation differ acccross the problem space. The following list is not exhaustive, but represents the most commonly observed behaviors:
 </t>
+<ul>
+<li><t>Disabling the IPv6 protocol stack on the host entirely, as part of the
+VPN profile, as described above.</t></li>
+<li><t>Suppressing AAAA responses or otherwise causing name resolution to
+return only IPv4 addresses while the IPv6 interface and underlying
+connectivity remain fully functional. This can be notably harder to detect than a completely
+disabled IPv6 address family since IPv6 appears operational at the interface level.</t></li>
+<li><t>Installing a blackhole or null route for the IPv6 default route while
+leaving the IPv6 stack enabled. </t></li>
+<li><t>Applying host-based or network firewall rules that block IPv6 traffic
+while the VPN is active. This can be difficult to both detect and remediate as changes to local
+security tooling may be administratively restricted.</t></li>
+</ul>
 <t>
-Where feasible, administrators SHOULD NOT configure VPN profiles to disable IPv6 and SHOULD configure remote resources to support IPv6 wherever possible to ensure connectivity for users connecting from IPv6-mostly networks.  
+The specific behavior depends heavily on how the VPN client integrates with
+the host's network stack: some VPNs present a logical interface and rely on
+the host's own routing table to select tunneled versus local traffic, while
+others intercept traffic at a lower layer and enforce policy directly. This
+document does not attempt to enumerate behavior across specific VPN products
+or operating systems; administrators should verify actual behavior in their
+own environment rather than assume IPv6 is either fully passed or fully
+blocked. See <xref target="customDNS"/> for a related discussion of DNS-level
+interference with NAT64 prefix discovery.
 </t>
-
 </section>
 
 </section>
@@ -1074,7 +1109,6 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.2119.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6105.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6146.xml"/>
-<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6555.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6877.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7050.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8200.xml"/>
