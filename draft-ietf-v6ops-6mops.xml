@@ -562,7 +562,7 @@ As discussed in <xref target="p2p"/> coexistence of IPv6-only and IPv4-only host
 <t>
 In IPv6-mostly networks, IPv4 addresses are assigned exclusively to endpoints that require them for operation.
 This approach reduces IPv4 address utilization within network segments compared to traditional dual-stack deployments.
-The proportion of devices operating in IPv6-only mode — and the resulting decrease in IPv4 consumption — is dependent on the specific endpoint footprint and may vary across different network environments.
+The proportion of devices operating in IPv6-only mode - and the resulting decrease in IPv4 consumption - is dependent on the specific endpoint footprint and may vary across different network environments.
 Furthermore, the number of devices requiring IPv4 is expected to decrease over time as more operating systems implement support for CLAT, PREF64, and DHCPv4 option 108.
 </t>
 
@@ -574,7 +574,9 @@ While this benefit may be negligible for smaller networks, it is significant for
 
 <t>
 Additionally, while migrating from dual-stack to IPv6-mostly reduces IPv4 consumption, existing networks require renumbering to downsize the IPv4 netblocks assigned to those segments.
-For new deployments, however, administrators can leverage the benefits of IPv6-mostly without renumbering by provisioning smaller netblocks from the outset.
+For new deployments, however, administrators can leverage the benefits
+of IPv6-mostly without renumbering by provisioning smaller netblocks
+from the outset.
 </t>
 
 </section>
@@ -1003,9 +1005,9 @@ Administrators need to  be aware of the potential for CLAT failures when endpoin
 
 <t>
 Similarly, some VPN clients are known to alter DNS resolution behavior on the
-endpoint — for example by inserting their own resolver ahead of the
+endpoint - for example by inserting their own resolver ahead of the
 network-provided one, or by suppressing AAAA responses even when native IPv6
-connectivity remains available — preventing those devices from discovering
+connectivity remains available - preventing those devices from discovering
 the NAT64 prefix via the <xref target="RFC7050"/> mechanism.
 If the network doesn't provide the NAT64 prefix in RAs or the endpoint doesn't support <xref target="RFC8781"/>, the endpoint might not be able to discover the NAT64 prefix and therefore would fail to enable CLAT.
 </t>
