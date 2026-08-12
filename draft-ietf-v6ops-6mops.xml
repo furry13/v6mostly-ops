@@ -13,10 +13,10 @@
 <!-- If further character entities are required then they should be added to the DOCTYPE above.
      Use of an external entity file is not recommended. -->
 
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="info" docName="draft-ietf-v6ops-6mops-08" ipr="trust200902" obsoletes="" submissionType="IETF" xml:lang="en" version="3">
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="info" docName="draft-ietf-v6ops-6mops-09" ipr="trust200902" obsoletes="" submissionType="IETF" xml:lang="en" version="3">
   <front>
     <title abbrev="6mops">IPv6-mostly Networks: Deployment and Operations Considerations</title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-v6ops-6mops-08"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-v6ops-6mops-09"/>
     <author fullname="Nick Buraglio" initials="N" surname="Buraglio">
       <organization>Energy Sciences Network</organization>
       <address>
@@ -392,12 +392,12 @@ Another benefit of the WKP or LUP is that if the client received both non-synthe
 Additionally, using WKP lets the operator use public DNS64 services, which rely on the WKP for address translation.
 </t>
 <t>
-Currently Section 3.1 of <xref target="RFC6052"/> forbids IPv4/IPv6 translators from using the WKP for non-global IPv4 addresses (like <xref target="RFC1918"/> addresses).
-<xref target="I-D.ietf-v6ops-nat64-wkp-1918"/> discusses the NAT64 prefix selection considerations and proposes updates to Section 3.1 of <xref target="RFC6052"/>, so translators are allowed to use the WKP for non-global IPv4 addresses.
+Currently Section 3.1 of <xref target="RFC6052"/> forbids IPv4/IPv6 translators from using the WKP for private <xref target="RFC1918"/> and shared <xref target="RFC6598"/> IPv4 addresses.
+<xref target="I-D.ietf-v6ops-nat64-wkp-1918"/> discusses the NAT64 prefix selection considerations and proposes updates to Section 3.1 of <xref target="RFC6052"/>, so translators are allowed to use the WKP for those types of non-global IPv4 addresses.
 </t>
 
 <t>
-If internal IPv4-only destinations use non-global addresses and IPv6-only devices need to reach them, the operator should ensure that their NAT64 devices are compliant with the changes proposed in <xref target="I-D.ietf-v6ops-nat64-wkp-1918"/>.
+If internal IPv4-only destinations use <xref target="RFC1918"/> or <xref target="RFC6598"/> IPv4 addresses  and IPv6-only devices need to reach them, the operator should ensure that their NAT64 devices are compliant with the changes proposed in <xref target="I-D.ietf-v6ops-nat64-wkp-1918"/>.
 Alternatively, the operator might utilize a network-specific NAT64 prefix.
 </t>
 
@@ -445,6 +445,7 @@ The network administrator SHOULD configure the first-hop routers to include PREF
 <name>Signalling DNS and DNS64 to Hosts</name>
 <t>
 To provide IPv6-only endpoints with DNS recursive server addresses, the administrator MUST configure the network to include the DNS servers IPv6 addresses into RA option, as per <xref target="RFC8106"/>.
+(While the DNS server addresses can also be provided via DHCPv6 <xref target="RFC9915"/>, there is no guarantee that all IPv6-only endpoints have a DHCPv6 client enabled).
 </t>
 <t>
 Traditionally, DNS64 (with NAT64) is used to enable IPv6-only endpoints to access IPv4-only destinations.
@@ -910,6 +911,8 @@ In such networks, the administrator SHOULD configure the link-local addresses of
 As the basic IPv6 header is 20 bytes longer than the IPv4 header, translating from IPv4 to IPv6 can result in packets exceeding the path MTU on the IPv6 side.
 In that case NAT64 creates IPv6 packets with the Fragment Header (see Section 4 of <xref target="RFC7915"/> for more details).
 As per  <xref target="RFC7915"/> , by default the translator fragments IPv4 packets so that they fit in 1280-byte IPv6 packets. It means that all IPv4 packets larger than 1260 bytes are fragmented (or dropped if the DF bit is set).
+While the translator is expected to send an ICMPv4 "Fragmentation Needed" error message back to the host when dropping such packets (see Section 4.1 of <xref target="RFC7915"/>),
+generating ICMP messages is often rate-limited and therefore can not be considered reliable.
 </t>
 <t>
  Administrators SHOULD maximize the path MTU on the IPv6 side (from the translator to IPv6-only hosts) to minimize fragmentation. NAT64 devices SHOULD be configured to use the actual path MTU on the IPv6 side when fragmenting IPv4 packets.
@@ -1133,6 +1136,7 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6145.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6147.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6535.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6598.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6762.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6724.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6888.xml"/>
@@ -1147,6 +1151,7 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9663.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9762.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9872.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9915.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-v6ops-claton.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.link-6man-gulla.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-v6ops-icmpext-xlat-v6only-source.xml"/>
