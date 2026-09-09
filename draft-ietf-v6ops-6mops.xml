@@ -745,7 +745,7 @@ Fragment Header (Section 4.5 of <xref target="RFC8200"/>). <xref target="frag"/>
 </li>
 <li>
 <t>
-ESP Header, which is used for IPSec traffic, such as VPN and Wi-Fi Calling. If, however, establishing IPSec tunnels is explicitly prohibited by the network security policies, ESP and AH extension headers need to be dropped, as well as IKE <xref target="RFC4306"/>.
+ESP Header, which is used for IPSec traffic, such as VPN and Wi-Fi Calling, unless establishing IPsec tunnels is not desirable.
 </t>
 </li>
 </ul>
@@ -1132,7 +1132,6 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <references>
 <name>Informative References</name>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.1918.xml"/>
-<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4306.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4443.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4787.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4861.xml"/>
