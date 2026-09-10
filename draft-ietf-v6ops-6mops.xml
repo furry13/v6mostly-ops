@@ -13,10 +13,10 @@
 <!-- If further character entities are required then they should be added to the DOCTYPE above.
      Use of an external entity file is not recommended. -->
 
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="info" docName="draft-ietf-v6ops-6mops-09" ipr="trust200902" obsoletes="" submissionType="IETF" xml:lang="en" version="3">
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="info" docName="draft-ietf-v6ops-6mops-10" ipr="trust200902" obsoletes="" submissionType="IETF" xml:lang="en" version="3">
   <front>
     <title abbrev="6mops">IPv6-mostly Networks: Deployment and Operations Considerations</title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-v6ops-6mops-09"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-v6ops-6mops-10"/>
     <author fullname="Nick Buraglio" initials="N" surname="Buraglio">
       <organization>Energy Sciences Network</organization>
       <address>
@@ -735,7 +735,7 @@ As outlined in Section 6.3 of <xref target="RFC6877"/>, CLAT requires either a d
 Being an IPv6-specific concept, IPv6 extension headers are often neglected or even explictly prohibited by security policies in dual-stack networks. The issues caused by blocking extension headers might be masked by the presense of Happy Eyeballs but become highly visible when there is no IPv4 to fallback to.
 </t>
 <t>
-The network SHOULD permit at least the following extension headers:
+The network security policy SHOULD permit at least the following extension headers:
 </t>
 <ul>
 <li>
@@ -745,10 +745,14 @@ Fragment Header (Section 4.5 of <xref target="RFC8200"/>). <xref target="frag"/>
 </li>
 <li>
 <t>
-ESP Header, which is used for IPSec traffic, such as VPN and Wi-Fi Calling.
+ESP Header, which is used for IPSec traffic, such as VPN and Wi-Fi Calling, unless establishing IPsec tunnels is not desirable.
 </t>
 </li>
 </ul>
+
+<t>
+Network and security administrators should consider recommendations from Section 2.1 of <xref target="RFC7045"/>, as well as <xref target="RFC9673"/> when developing the security policies for other IPv6 extension headers.
+</t>
 </section>
 
 <section anchor="p2p">
@@ -922,7 +926,7 @@ Another common case of IPv6 fragmentation is the use of protocols like DNS and R
 Network security policies MUST allow IPv6 fragments for permitted UDP traffic (e.g., DNS, RADIUS) where single-datagram responses are required. Allowing IPv6 fragments for permitted TCP traffic is RECOMMENDED unless the network infrastructure reliably performs TCP MSS clamping.
 </t>
 <t>
-To ensure reliable Path MTU Discovery (PMTUD, <xref target="RFC8201"/>), network security policies SHOULD permit the passage of ICMPv6 Type 2 (Packet Too Big, <xref target="RFC4443"/>) messages to and from all IPv6-enabled devices. 
+To ensure reliable Path MTU Discovery (PMTUD, <xref target="RFC8201"/>), Section 4.3.1 of <xref target="RFC4890"/> requires that network security policies MUST permit the passage of ICMPv6 Type 2 (Packet Too Big, <xref target="RFC4443"/>) messages to and from all IPv6-enabled devices. 
 This recommendation is fundamentally no different from the established practice in IPv4 networks, where ICMP Type 3 Code 4 (Fragmentation Needed and DF set) messages are essential for PMTUD. 
 </t>
 
@@ -1121,7 +1125,6 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8174.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8781.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8925.xml"/>
-<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9099.xml"/>
 <!-- The recommended and simplest way to include a well known reference -->
 
 </references>
@@ -1132,6 +1135,7 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4443.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4787.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4861.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4890.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6052.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6145.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6147.xml"/>
@@ -1140,6 +1144,7 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6762.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6724.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6888.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7045.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7755.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7915.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8201.xml"/>
@@ -1147,8 +1152,10 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8273.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8305.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8880.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9099.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9568.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9663.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9673.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9762.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9872.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9915.xml"/>
