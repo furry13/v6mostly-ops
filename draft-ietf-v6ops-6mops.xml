@@ -309,7 +309,7 @@ NAT64 functionality can be deployed on dedicated devices or by enabling it on de
 Consolidating NAT44 and NAT64 functionality on the same set of devices offers significant reductions in the cost and complexity of an IPv6-mostly deployment.
 </t>
 <t>
-If NAT44 equipment supports NAT64 fuction, the deployment of dedicated NAT64 devices warrants careful consideration of various factors, including, but not limited to:
+If NAT44 equipment supports NAT64 function, the deployment of dedicated NAT64 devices warrants careful consideration of various factors, including, but not limited to:
 </t>
 <ul>
 <li>
@@ -493,7 +493,7 @@ IPv6-only devices without CLAT (unless those endpoints are guaranteed never to n
   On the other hand, using DNS64 bypasses CLAT for IPv6-capable applications communicating with IPv4-only destinations, making the communication slightly more efficient.
 Additionally, it encourages dual-stack endpoints to utilize the IPv6 and NAT64 path to reach IPv4-only destinations.
 This operational pattern is useful for identifying IPv6-related issues and IPv4 dependencies at an earlier stage of the IPv6-mostly migration.
-For that reason administrators might find it beneficial to run DNS64 even if it is not strictly necessary, provided the the above mentioned drawbacks are adressed.
+For that reason administrators might find it beneficial to run DNS64 even if it is not strictly necessary, provided the above mentioned drawbacks are addressed.
 </t>
 </section>
 
@@ -656,7 +656,7 @@ This process facilitates the identification of related issues and expedites issu
 </ul>
 
 <t>
-In some scenarios (see <xref target="nov6"/>) the administrator MAY keep a dual-stack network as a last resort fallback mechanism but SHOULD prevent users from connecting to it accidentially (e.g., it should be a hidden SSID with authentication enabled).
+In some scenarios (see <xref target="nov6"/>) the administrator MAY keep a dual-stack network as a last resort fallback mechanism but SHOULD prevent users from connecting to it accidentally (e.g., it should be a hidden SSID with authentication enabled).
 For recurring temporary networks, for instance deployed on regular events such as a conference, operators may consider changing the last resort fallback network SSID between each event to help prevent inadvertent or long-term use of legacy resources, preventing devices which have the fallback SSID saved in their configuration from reconnecting automatically during the next event.
 </t>
 </section>
@@ -860,7 +860,7 @@ CLAT address (in IPv6-mostly/IPv6-only networks)
 
 <t>
 Endpoints with containers, namespaces, or ND proxy functions may have even more addresses. This poses challenges for network infrastructure devices (SAVI switches, wireless access points, etc.) that map MAC addresses to IPv6 addresses, often with limits to prevent resource exhaustion or DoS attacks.
-When the number of IPs per MAC limit is exceeded, infastructure devices behavior varies across implementations, leading to inconsistent connectivity loss and other unexpected behavior: while some systems drop new addresses, others delete older entries, causing previously functional addresses to lose connectivity.
+When the number of IPs per MAC limit is exceeded, infrastructure devices behavior varies across implementations, leading to inconsistent connectivity loss and other unexpected behavior: while some systems drop new addresses, others delete older entries, causing previously functional addresses to lose connectivity.
 In all those cases endpoints and applications don't receive explicit signalling about the address becoming unusable.
 </t>
 
@@ -892,8 +892,8 @@ Allocating prefixes to endpoints via DHCPv6-PD (<xref target="RFC9663"/>) allows
 Operators of large-scale IPv6-mostly networks might benefit from using DHCPv6 prefix delegation for IPv6-only and IPv6-enabled endpoints.
 In that case the administrator also need to ensure that the first-hop routers set the P-flag <xref target="RFC9762"/> in RAs.
 
-However, the deployment model described in <xref target="RFC9663"/> might not yet be supported by all endpoints and network infrastrcuture devices.
-The network administrator SHOULD ensure that the deployed network infastructure devices allow sufficient number of IPv6 addresses to be mapped to a client's MAC and SHOULD monitor for events, indicating that the limit has been reached (such as syslog messages, etc.).
+However, the deployment model described in <xref target="RFC9663"/> might not yet be supported by all endpoints and network infrastructure devices.
+The network administrator SHOULD ensure that the deployed network infrastructure devices allow sufficient number of IPv6 addresses to be mapped to a client's MAC and SHOULD monitor for events, indicating that the limit has been reached (such as syslog messages, etc.).
 </t>
 
 </section>
@@ -1026,7 +1026,7 @@ If the network doesn't provide the NAT64 prefix in RAs or the endpoint doesn't s
 VPN clients and policies have been observed to interfere with IPv6 connectivity
 for endpoints in an IPv6-mostly network through several distinct mechanisms.
 Administrators and operators should be aware of each individually, since detection and
-remediation differ acccross the problem space. The following list is not exhaustive, but represents the most commonly observed behaviors:
+remediation differ across the problem space. The following list is not exhaustive, but represents the most commonly observed behaviors:
 </t>
 <ul>
 <li><t>Disabling the IPv6 protocol stack on the host entirely, as part of the
