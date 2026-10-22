@@ -261,7 +261,7 @@ Examples include but are not limited to:
     <name>IPv6-only and IPv4-enabled Endpoints Coexistence</name>
     <t>
 One effective way to restrict IPv4 addresses solely to devices that require them is to enable support for the IPv6-only Preferred Option for DHCPv4 (Option 108, <xref target="RFC8925"/>) on the network's DHCP infrastructure.
-As most IPv6-only capable devices supports Option 108 in their DHCPv4 clients, enabling Option 108 on the server side would allow those devices to cease requesting IPv4 addresses.
+As many modern IPv6-only capable devices support Option 108 in their DHCPv4 clients, enabling Option 108 on the server side would allow those devices to cease requesting IPv4 addresses.
     </t>
     <t>
 Certain devices, such as resource-constrained embedded systems, may operate in IPv6-only mode without specific adjustments if their communication is limited to IPv6-enabled destinations. Since these systems often lack Option 108 support, administrators may need alternative methods to prevent IPv4 address assignment.
@@ -397,7 +397,7 @@ Currently Section 3.1 of <xref target="RFC6052"/> forbids IPv4/IPv6 translators 
 </t>
 
 <t>
-If internal IPv4-only destinations use <xref target="RFC1918"/> or <xref target="RFC6598"/> IPv4 addresses  and IPv6-only devices need to reach them, the operator should ensure that their NAT64 devices are compliant with the changes proposed in <xref target="I-D.ietf-v6ops-nat64-wkp-1918"/>.
+If internal IPv4-only destinations use <xref target="RFC1918"/> or <xref target="RFC6598"/> IPv4 addresses  and IPv6-only devices need to reach them, the operator should ensure that their NAT64 devices are capable of supporting use of the WKP for <xref target="RFC1918"/> and <xref target="RFC6598"/> IPv4 addresses.
 Alternatively, the operator might utilize a network-specific NAT64 prefix.
 </t>
 
@@ -444,8 +444,8 @@ The network administrator SHOULD configure the first-hop routers to include PREF
 <section anchor="dns64">
 <name>Signalling DNS and DNS64 to Hosts</name>
 <t>
-To provide IPv6-only endpoints with DNS recursive server addresses, the administrator MUST configure the network to include the DNS servers IPv6 addresses into RA option, as per <xref target="RFC8106"/>.
-(While the DNS server addresses can also be provided via DHCPv6 <xref target="RFC9915"/>, there is no guarantee that all IPv6-only endpoints have a DHCPv6 client enabled).
+To provide IPv6-only endpoints with DNS recursive server addresses, the administrator SHOULD configure the network to include the DNS servers IPv6 addresses into RA option, as per <xref target="RFC8106"/>.
+If encrypted DNS is required, an alternative method of DNS server address discovery (e.g., via DHCPv6 <xref target="RFC9915"/>) can be used. While the DNS server addresses can also be provided via DHCPv6 <xref target="RFC9915"/>, there is no guarantee that all IPv6-only endpoints have a DHCPv6 client enabled.
 </t>
 <t>
 Traditionally, DNS64 (with NAT64) is used to enable IPv6-only endpoints to access IPv4-only destinations.
@@ -555,7 +555,7 @@ As the availability of IPv6-enabled resources continues to increase, the volume 
 </t>
 
 <t>
-As discussed in <xref target="p2p"/> coexistence of IPv6-only and IPv4-only hosts on the same link might present challenges for on-link service discovery and on-link peer2peer communications. It might be consider a disadvantge of IPv6-mostly model for networks where on-link communication between IPv4-only and IPv6-only devices is desirable.
+As discussed in <xref target="p2p"/> coexistence of IPv6-only and IPv4-only hosts on the same link might present challenges for on-link service discovery and on-link peer2peer communications. It might be consider a disadvantage of IPv6-mostly model for networks where on-link communication between IPv4-only and IPv6-only devices is desirable.
 </t>
 
 <section anchor="save_v4">
@@ -636,7 +636,7 @@ Some rollout considerations are discussed in the following sections.
 <name>Opt-In and Opt-Out Modes</name>
 
 <t>
-Before user-facing deployment, the administrator SHOULD consider a dedicated IPv6-mostly proof-of-concept network for early adopters. While this temporarily sacrifices some IPv6-mostly benefits (<xref target="vsv6only"/>
+Before user-facing deployment, the administrator should consider a dedicated IPv6-mostly proof-of-concept network for early adopters. While this temporarily sacrifices some IPv6-mostly benefits (<xref target="vsv6only"/>
 ), it provides valuable operational experience and early issue detection.
 In a nutshell, the recommended approach contains two phases:
 </t>
@@ -732,7 +732,7 @@ As outlined in Section 6.3 of <xref target="RFC6877"/>, CLAT requires either a d
 <section anchor="eh">
 <name>Extension Headers</name>
 <t>
-Being an IPv6-specific concept, IPv6 extension headers are often neglected or even explictly prohibited by security policies in dual-stack networks. The issues caused by blocking extension headers might be masked by the presense of Happy Eyeballs but become highly visible when there is no IPv4 to fallback to.
+Being an IPv6-specific concept, IPv6 extension headers are often neglected or even explicitly prohibited by security policies in dual-stack networks. The issues caused by blocking extension headers might be masked by the presence of Happy Eyeballs but become highly visible when there is no IPv4 to fallback to.
 </t>
 <t>
 The network security policy SHOULD permit at least the following extension headers:
@@ -751,7 +751,7 @@ ESP Header, which is used for IPSec traffic, such as VPN and Wi-Fi Calling, unle
 </ul>
 
 <t>
-Network and security administrators should consider recommendations from Section 2.1 of <xref target="RFC7045"/>, as well as <xref target="RFC9673"/> when developing the security policies for other IPv6 extension headers.
+Network and security administrators SHOULD consider recommendations from Section 2.1 of <xref target="RFC7045"/>, as well as <xref target="RFC9673"/> when developing the security policies for other IPv6 extension headers.
 </t>
 </section>
 
@@ -942,8 +942,8 @@ Such packets are known as atomic fragments.
 However, <xref target="RFC7915"/> obsoleted <xref target="RFC6145"/> and deprecated the algorithm that generates these IPv6 atomic fragments.
 It has been observed that certain <xref target="RFC7915"/> non-compliant PLAT implementations continue to generate IPv6 atomic fragments.
 This behavior causes unintended connectivity issues, particularly on endpoints where firewalls are enabled.
-Administrators should verify that the PLAT devices do not generate atomic fragments by default.
-If atomic fragments are generated, the administrator should configure the PLAT devices to disable atomic fragments generation, provided a configuration mechanism is available.
+Administrators SHOULD verify that the PLAT devices do not generate atomic fragments by default.
+If atomic fragments are generated, the administrator SHOULD configure the PLAT devices to disable atomic fragments generation, provided a configuration mechanism is available.
 </t>
 </section>
 
@@ -954,14 +954,14 @@ If atomic fragments are generated, the administrator should configure the PLAT d
 <name>IPv4 UDP Packets with Zero Checksum</name>
 <t>
 Translating IPv4 UDP packet with zero checksum to IPv6 requires the translator to calculate the checksum and therefore has performance implication.
-As per Secton 4.5 of <xref target="RFC7915"/>, translators are allowed to drop IPv4 UDP packet with zero checksum.
+As per Section 4.5 of <xref target="RFC7915"/>, translators are allowed to drop IPv4 UDP packet with zero checksum.
 Additionally, Section 1.2 of <xref target="RFC7915"/> says:
 "Fragmented IPv4 UDP packets that do not contain a UDP checksum (i.e., the UDP checksum field is zero) are not of significant use on the Internet, and in general will not be translated by the IP/ICMP translator ... However, when the translator is configured to forward the packet without a UDP checksum, the fragmented IPv4 UDP packets will be translated."
 </t>
 <t>
 It has been observed that some systems (such as 3GPP ePDG, Evolved Packet Data Gateway) might generate IPv4 UDP packets with zero checksum.
 Those packets could be dropped by the PLAT devices, impacting WiFi calling on IPv6-only endpoints connecting to those ePDGs.
-As Secton 4.5 of <xref target="RFC7915"/> recommends that the translators have a configuration knob to calculate an IPv6 checksum and forward the packet instead of dropping it, the administrator should consider enabling that option if such an issue is encountered.
+As Section 4.5 of <xref target="RFC7915"/> recommends that the translators have a configuration knob to calculate an IPv6 checksum and forward the packet instead of dropping it, the administrator SHOULD consider enabling that option if such an issue is encountered.
 </t>
 </section>
 
@@ -1033,8 +1033,17 @@ remediation differ across the problem space. The following list is not exhaustiv
 VPN profile, as described above.</t></li>
 <li><t>Suppressing AAAA responses or otherwise causing name resolution to
 return only IPv4 addresses while the IPv6 interface and underlying
-connectivity remain fully functional. This can be notably harder to detect than a completely
-disabled IPv6 address family since IPv6 appears operational at the interface level.</t></li>
+connectivity remain fully functional. This suppression can occur at
+different layers: the VPN may configure the OS name resolution stack
+to omit AAAA queries entirely, or may intercept name resolution results
+and strip AF_INET6 results before returning them to applications -- in
+some cases even when the DNS server itself is IPv6-capable and would
+return AAAA records if queried directly. The effect is identical from
+the application's perspective: getaddrinfo() returns only IPv4 results,
+IPv6 goes unused, and the host behaves as if it were on an IPv4-only
+network. This is notably harder to detect than a completely disabled
+IPv6 stack, since the IPv6 interface, routing table, and DNS server
+may all appear functional when inspected independently.</t></li>
 <li><t>Installing a blackhole or null route for the IPv6 default route while
 leaving the IPv6 stack enabled. </t></li>
 <li><t>Applying host-based or network firewall rules that block IPv6 traffic
@@ -1051,6 +1060,23 @@ or operating systems; administrators should verify actual behavior in their
 own environment rather than assume IPv6 is either fully passed or fully
 blocked. See <xref target="customDNS"/> for a related discussion of DNS-level
 interference with NAT64 prefix discovery.
+</t>
+<t>
+VPN operators and administrators whose profiles do not carry IPv6
+traffic should avoid applying blanket IPv6 suppression at the client.
+A split-tunnel VPN that routes only specific IPv4 prefixes over the
+tunnel has no inherent requirement to restrict IPv6 on the client
+device: local IPv6 connectivity is independent of the tunnel's IPv4
+traffic policy. Applying a "deny all IPv6" policy -- whether via
+protocol stack disablement, a default route blackhole, or host-level
+firewall rules -- will break endpoints on IPv6-mostly networks even
+when the VPN itself has no IPv6 requirements and the client's IPv6
+traffic would not traverse the tunnel under any policy.
+Where the VPN platform provides a configuration option to exclude IPv6
+from the tunnel without suppressing it on the local stack, operators
+should prefer that option. Where no such option exists, operators
+should verify and document the actual effect on local IPv6 connectivity
+so that clients can be warned before connecting to IPv6-mostly networks.
 </t>
 </section>
 
