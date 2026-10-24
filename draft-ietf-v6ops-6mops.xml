@@ -141,19 +141,11 @@ This document discusses the requirements, recommendations, and challenges associ
 Terminology
     </name>
     <t>
-This document reuses most of Terminology Section from <xref target="RFC8925"/>
-.
+This document reuses terms defined in Section 1.2 of <xref target="RFC8925"/>.
+In addition, the document makes use of the following terms:
     </t>
-<t>
-IPv6-mostly network: A network segment on which IPv6-only and IPv4-enabled
-endpoints coexist, and where the network provides IPv4 connectivity on demand
-(e.g., via DHCPv4 Option 108, <xref target="RFC8925"/>) only to the endpoints
-that require it, while IPv6-capable endpoints operate in IPv6-only mode,
-using NAT64 (<xref target="RFC6146"/>) or 464XLAT (<xref target="RFC6877"/>)
-to reach IPv4-only destinations.
-</t>
     <t>
-CLAT: a customer-side translator (CLAT) as specified in <xref target="RFC6877"/> and  <xref target="I-D.ietf-v6ops-claton"/>.
+CLAT: a customer-side translator (CLAT) as specified in <xref target="RFC6877"/>.
 </t>
     <t>
 Endpoint: A device connected to a network and considered a host from the operator's perspective. 
@@ -173,16 +165,16 @@ Mobile phone with tethering enabled: Acts as a host on the Wi-Fi network, but al
       </li>
     </ul>
 <t>
-NAT44: Network Address Translation from IPv4 to IPv4.
+NAT44: Network Address Translation from IPv4 to IPv4, <xref target="RFC3022"/>.
 </t>
 <t>
-Native IPv4 connectivity: IPv4 connectivity or default gateway provided by the network without using any form of translation mechanisms (such as 464XLAT, <xref target="RFC6877"/>).
+Native IPv4 connectivity: IPv4 connectivity provided by the network without using any form of translation mechanisms (such as 464XLAT, <xref target="RFC6877"/>).
 </t>
     <t>
-Network segment: a link (VLAN, a broadcast domain etc) where hosts share the same IP subnet.
+Network segment: a link (Virtual LAN, a broadcast domain, etc.) where hosts share the same IP subnet.
     </t>
 <t>
-PREF64: (or NAT64 prefix): An IPv6 prefix used for IPv6 address synthesis and for network addresses and protocols translation from IPv6 clients to IPv4 destinations, <xref target="RFC6146"/>.
+PREF64 (or NAT64 prefix): An IPv6 prefix used for IPv6 address synthesis <xref target="RFC6052"/> and for network addresses and protocols translation from IPv6 clients to IPv4 destinations <xref target="RFC6146"/>.
 
 </t>
 
@@ -1164,6 +1156,7 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 
 <references>
 <name>Informative References</name>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.3022.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4787.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4890.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6052.xml"/>
