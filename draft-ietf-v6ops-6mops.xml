@@ -718,7 +718,7 @@ As outlined in Section 6.3 of <xref target="RFC6877"/>, CLAT requires either a d
 <section anchor="eh">
 <name>Extension Headers</name>
 <t>
-Being an IPv6-specific concept, IPv6 extension headers are often neglected or even explicitly prohibited by security policies in dual-stack networks. The issues caused by blocking extension headers might be masked by the presence of Happy Eyeballs but become highly visible when there is no IPv4 to fallback to.
+IPv6 extension headers are often neglected or even explicitly prohibited by security policies in dual-stack networks. The issues caused by blocking extension headers might be masked by the presence of Happy Eyeballs but become highly visible when there is no IPv4 to fallback to.
 </t>
 <t>
 The network security policy SHOULD permit at least the following extension headers:
@@ -726,7 +726,7 @@ The network security policy SHOULD permit at least the following extension heade
 <ul>
 <li>
 <t>
-Fragment Header (Section 4.5 of <xref target="RFC8200"/>). <xref target="frag"/> discusses the fragmentation in more details.
+Fragment Header (Section 4.5 of <xref target="RFC8200"/>). Blocking packets with Fragment header means dropping fragmented packets, leading to degraded user experience. <xref target="frag"/> discusses the fragmentation scenarios in more detail.
 </t>
 </li>
 <li>
@@ -737,19 +737,19 @@ ESP Header, which is used for IPSec traffic, such as VPN and Wi-Fi Calling, unle
 </ul>
 
 <t>
-Network and security administrators SHOULD consider recommendations from Section 2.1 of <xref target="RFC7045"/>, as well as <xref target="RFC9673"/> when developing the security policies for other IPv6 extension headers.
+Operators SHOULD consider recommendations from Section 2.1 of <xref target="RFC7045"/>, as well as <xref target="RFC9673"/> when developing the security policies for other IPv6 extension headers.
 </t>
 </section>
 
 <section anchor="p2p">
 <name>On-link Communication and Service Discovery</name>
 <t>
-Shared link is often used for automatic discovery of neighboring devices and their services by means of different protocols like Multicast DNS <xref target="RFC6762" />. Many devices and/or services are built on an assumption that devices on the same link also share the same set of address families or at least they have one common address family shared between all of them.</t>
+Endpoints connected to shared link can automatically discover neighboring devices and their services by means of different protocols like Multicast DNS <xref target="RFC6762" />. Many devices and/or services are built on an assumption that devices on the same link also share the same set of address families or at least they have one common address family shared between all of them.</t>
     <t>In IPv6-mostly, this assumption is not valid as there might be both IPv4-only and IPv6-only devices on the same link. As per <xref target="RFC6762" section="20"/>, this means that the link has two unrelated ".local." zones, one for each address family. Discovery of devices across different address families is impossible, unless some sort of relay is deployed on the link.</t>
 
 <t>
 This problem, however, is limited to networks where client-to-client on-link communications are desired and permitted by security policies.
-For networks where client isolation is enabled (it's often a case for enterprise networks and public WiFi), this issue is not a concern.
+For networks where client isolation is enabled (it is often a case for enterprise networks and public Wi-Fi), this issue is not a concern.
 If on-link peer2peer communication is required, the operator needs to ensure all participating devices are either dual-stack or IPv6-mostly.
 </t>
 </section>
@@ -757,23 +757,24 @@ If on-link peer2peer communication is required, the operator needs to ensure all
 <section anchor="issues">
 <name>Typical Issues</name>
 <t>
-IPv6-mostly networks expose hidden issues by removing the IPv4 safety net. While implementation bugs vary greatly and are beyond the scope of this document, this section focus on common problems caused by configuration, topology, or design choices.
+IPv6-mostly networks expose hidden issues by removing the IPv4 safety net. While implementation bugs vary greatly and are beyond the scope of this document, this section focuses on common problems caused by configuration, topology, or design choices.
 It is important to emphasize that these issues frequently pre-exist in dual-stack environments but remain undetected due to IPv4 fallback mechanisms.
 
-The problems described herein may not be applicable to every IPv6-mostly deployment. However, operators are advised to verify that these issues are not present within their infrastructure prior to initiating an IPv6-mostly migration or deployment.
+The problems described herein may not be applicable to every IPv6-mostly deployment. However, operators are advised to verify that these issues are not present within their infrastructure prior to initiating an IPv6-mostly deployment.
 
 </t>
 
 <section anchor="nov6">
-<name>Hosts with Disabled or Disfunctional IPv6</name>
+<name>Endpoints with Disabled or Disfunctional IPv6</name>
 <t>
 Historically, tech support often advised disabling IPv6 as a quick workaround, leading to devices with disabled IPv6.
-Similarly, corporate IT may have disabled or filtered IPv6 under the assumption that it's not widely used.
+Similarly, corporate IT may have disabled or filtered IPv6 under the assumption that it is not widely used.
 Such endpoints requesting Option 108 will fail to connect in an IPv6-mostly network, as they won't receive IPv4 addresses and IPv6 is disabled.
 </t>
 
 <t>
 Administrators controlling endpoints SHOULD ensure those endpoints have IPv6 enabled and operational before transitioning the network to IPv6-mostly mode. This includes verifying protocol enablement as well as validation of any central or discreetly managed host based firewalls that could potentially interfere with proper IPv6 function that may be masked by the presence of IPv4, and therefore exposed with its removal.
+Absent such checks, the connectivity may not be provided as intended.
 </t>
 
 </section>
@@ -781,7 +782,7 @@ Administrators controlling endpoints SHOULD ensure those endpoints have IPv6 ena
 <section anchor="ext">
 <name>Network Extension</name>
 <t>
-IPv4's NAT44 allows endpoints to extend connectivity to downstream systems without upstream network awareness or permission. Note that "endpoint" describes a role rather than a fixed device category:
+Endpoints can perform NAT44 function to extend connectivity to downstream systems without upstream network awareness or permission. Note that "endpoint" describes a role rather than a fixed device category:
 some endpoints also extend network connectivity to other physical or logical
 systems, thereby additionally acting as routers. Examples include personal
 computers running virtual machines or containers that route traffic to them,
@@ -796,20 +797,20 @@ Solutions and trade-offs:
 <ul>
 <li>
 <t>
-Using DHCPv6-PD to allocate prefixes to endpoints (<xref target="RFC9663"/>).
+Using DHCPv6-PD to allocate prefixes to endpoints <xref target="RFC9663"/>.
 Provides downstream systems with IPv6 addresses and native connectivity.
 </t>
 </li>
 <li>
 <t>
-Enabling the CLAT function on the endpoint. This scenario is similar to the Wireline Network Architecture described in Section 4.1 of <xref target="RFC6877"/>.
-The downstream systems would receive IPv4 addresses and their IPv4 traffic would be translated to IPv6 by the endpoint. However this approach leads to the downstream systems using IPv4 only and not benefiting from end-to-end IPv6 connectivity. 
-To enable IPv6 benefits, combine this with IPv6 Prefix Delegation as discussed above.
+Enabling the CLAT function on the endpoint: this scenario is similar to the Wireline Network Architecture described in Section 4.1 of <xref target="RFC6877"/>.
+The downstream systems would receive IPv4 addresses and their IPv4 traffic would be translated to IPv6 by the endpoint. However, this approach leads to the downstream systems using IPv4 only and not benefiting from end-to-end IPv6 connectivity. 
+To enable IPv6 benefits, combine this with IPv6 Prefix Delegation as listed above.
 </t>
 </li>
 <li>
 <t>
-Bridging and ND Proxy: The endpoint bridges IPv6 traffic and masks downstream devices behind its MAC address.
+Bridging and Neighbor Discovery (ND, <xref target="RFC4861"/>) Proxy: The endpoint bridges IPv6 traffic and masks downstream devices behind its MAC address.
 This can lead to scalability issues (<xref target="multip"/>) due to the single MAC being mapped to many IPv6 addresses.
 </t>
 </li>
@@ -819,7 +820,7 @@ This can lead to scalability issues (<xref target="multip"/>) due to the single 
 <section anchor="multip">
 <name>Multiple Addresses per Device</name>
 <t>
-Unlike IPv4, where endpoints typically have a single IPv4 address per interface, IPv6 endpoints inherently use multiple addresses:
+Unlike IPv4, where endpoints typically have a single IPv4 address per interface, IPv6 endpoints inherently use multiple addresses, such as:
 </t>
 <ul>
 <li>
@@ -845,8 +846,8 @@ CLAT address (in IPv6-mostly/IPv6-only networks)
 </ul>
 
 <t>
-Endpoints with containers, namespaces, or ND proxy functions may have even more addresses. This poses challenges for network infrastructure devices (SAVI switches, wireless access points, etc.) that map MAC addresses to IPv6 addresses, often with limits to prevent resource exhaustion or DoS attacks.
-When the number of IPs per MAC limit is exceeded, infrastructure devices behavior varies across implementations, leading to inconsistent connectivity loss and other unexpected behavior: while some systems drop new addresses, others delete older entries, causing previously functional addresses to lose connectivity.
+Endpoints running virtual systems (such as containers, namespaces, etc.) or performing ND Proxy functions to extend the network connectivity downstread to physycal or virtual systems may have even more addresses. This poses challenges for network infrastructure devices (switches with Source Address Validation Improvement enabled, wireless access points, etc.) that map MAC addresses to IPv6 addresses, often with limits to prevent resource exhaustion or denial-of-service (DoS) attacks.
+When the number of IPv6 addresses per MAC limit is exceeded, infrastructure devices behavior varies across implementations, leading to inconsistent connectivity loss and other unexpected behavior: while some systems drop new addresses, others delete older entries, causing previously functional addresses to lose connectivity.
 In all those cases endpoints and applications don't receive explicit signalling about the address becoming unusable.
 </t>
 
@@ -874,12 +875,13 @@ Some traffic flows (e.g., belonging to IPv4-only applications) would be using IP
 <t>
 </t>
 <t>
-Allocating prefixes to endpoints via DHCPv6-PD (<xref target="RFC9663"/>) allows to eliminate the issue and to address the corresponding scalability concerns.
+Allocating prefixes to endpoints via DHCPv6-PD <xref target="RFC9663"/> allows to eliminate the issue and to address the corresponding scalability concerns.
 Operators of large-scale IPv6-mostly networks might benefit from using DHCPv6 prefix delegation for IPv6-only and IPv6-enabled endpoints.
-In that case the administrator also need to ensure that the first-hop routers set the P-flag <xref target="RFC9762"/> in RAs.
+In that case the operator also needs to ensure that the first-hop routers set the P-flag <xref target="RFC9762"/> in RAs.
 
-However, the deployment model described in <xref target="RFC9663"/> might not yet be supported by all endpoints and network infrastructure devices.
-The operator SHOULD ensure that the deployed network infrastructure devices allow sufficient number of IPv6 addresses to be mapped to a client's MAC and SHOULD monitor for events, indicating that the limit has been reached (such as syslog messages, etc.).
+
+However, the deployment model described in <xref target="RFC9663"/> might not be supported by all endpoints and network infrastructure devices.
+The operator SHOULD ensure that the deployed network infrastructure devices allow sufficient number of IPv6 addresses to be mapped to a client's MAC and SHOULD monitor for events, indicating that the limit has been reached (such as syslog <xref target="RFC5424"/> messages, etc.).
 </t>
 
 </section>
@@ -890,7 +892,9 @@ The operator SHOULD ensure that the deployed network infrastructure devices allo
 Networks employing dynamic VLAN assignment (e.g., based on 802.1x or MAC-based authentication) can cause endpoints to move between VLANs and IPv6 subnets.
 As client operating systems do not always handle changes in link-layer state (e.g., VLAN changes) correctly, this mobility often leads to inconsistent IP stack behavior on operating systems, resulting in the persistence of old subnet addresses and potential connectivity issues due to incorrect source address selection. 
 
-In such networks, the administrator SHOULD configure the link-local addresses of the first-hop routers (such as link-local addresses assigned to router interfaces or the corresponding VRRPv3 (Virtual Router Redundancy Protocol, <xref target="RFC9568"/>) virtual link-local IP address) to be unique within the mobility domain (the set of links the host can move between). For example, if there are two VLANs using subnets 2001:db8:1:a::/64 and 2001:db8:1:b::/64, the administrator might configure the virtual router link-local addresses as 'fe80::2001:db8:1:a' and 'fe80::2001:db8:1:b', respectively. <xref target="I-D.link-6man-gulla"/> provides further analysis and discusses this approach in more detail.
+In such networks, the administrator SHOULD configure the link-local addresses of the first-hop routers (such as link-local addresses assigned to router interfaces or the corresponding Virtual Router Redundancy Protocol (VRRPv3, <xref target="RFC9568"/>) virtual link-local IP address) to be unique within the mobility domain (the set of links the host can move between). For example, if there are two VLANs using subnets 2001:db8:1:a::/64 and 2001:db8:1:b::/64, the administrator might configure the virtual router link-local addresses as 'fe80::2001:db8:1:a' and 'fe80::2001:db8:1:b', respectively.
+
+<xref target="I-D.link-6man-gulla"/> provides further analysis and discusses this approach in more detail.
 
 </t>
 </section>
@@ -899,17 +903,18 @@ In such networks, the administrator SHOULD configure the link-local addresses of
 <name>Fragmentation</name>
 <t>
 As the basic IPv6 header is 20 bytes longer than the IPv4 header, translating from IPv4 to IPv6 can result in packets exceeding the path MTU on the IPv6 side.
-In that case NAT64 creates IPv6 packets with the Fragment Header (see Section 4 of <xref target="RFC7915"/> for more details).
-As per  <xref target="RFC7915"/> , by default the translator fragments IPv4 packets so that they fit in 1280-byte IPv6 packets. It means that all IPv4 packets larger than 1260 bytes are fragmented (or dropped if the DF bit is set).
+In such a case NAT64 creates IPv6 packets with the Fragment Header (see Section 4 of <xref target="RFC7915"/> for more details).
+As per  <xref target="RFC7915"/>, by default the translator fragments IPv4 packets so that they fit in 1280-byte IPv6 packets. It means that all IPv4 packets larger than 1260 bytes are fragmented (or dropped if the DF bit is set).
 While the translator is expected to send an ICMPv4 "Fragmentation Needed" error message back to the host when dropping such packets (see Section 4.1 of <xref target="RFC7915"/>),
-generating ICMP messages is often rate-limited and therefore can not be considered reliable.
+generating ICMP messages is often rate-limited and, therefore, can not be considered reliable.
 </t>
 <t>
  Administrators SHOULD maximize the path MTU on the IPv6 side (from the translator to IPv6-only hosts) to minimize fragmentation. NAT64 devices SHOULD be configured to use the actual path MTU on the IPv6 side when fragmenting IPv4 packets.
 </t>
+
 <t>
 Another common case of IPv6 fragmentation is the use of protocols like DNS and RADIUS, where the server response needs to be sent as a single UDP datagram. 
-Network security policies MUST allow IPv6 fragments for permitted UDP traffic (e.g., DNS, RADIUS) where single-datagram responses are required. Allowing IPv6 fragments for permitted TCP traffic is RECOMMENDED unless the network infrastructure reliably performs TCP MSS clamping.
+Network security policies MUST allow IPv6 fragments for permitted UDP traffic (e.g., DNS or RADIUS) where single-datagram responses are required. Allowing IPv6 fragments for permitted TCP traffic is RECOMMENDED unless the network infrastructure reliably performs TCP MSS clamping.
 </t>
 <t>
 To ensure reliable Path MTU Discovery (PMTUD, <xref target="RFC8201"/>), Section 4.3.1 of <xref target="RFC4890"/> requires that network security policies MUST permit the passage of ICMPv6 Type 2 (Packet Too Big, <xref target="RFC4443"/>) messages to and from all IPv6-enabled devices. 
@@ -926,10 +931,10 @@ This recommendation is fundamentally no different from the established practice 
 Section 4 of <xref target="RFC6145"/> specified that an IPv4 packet without the Don't Fragment (DF) bit set, when translated to IPv6, should include an IPv6 Fragment Header.
 Such packets are known as atomic fragments.
 However, <xref target="RFC7915"/> obsoleted <xref target="RFC6145"/> and deprecated the algorithm that generates these IPv6 atomic fragments.
-It has been observed that certain <xref target="RFC7915"/> non-compliant PLAT implementations continue to generate IPv6 atomic fragments.
+It has been observed that certain <xref target="RFC7915"/> non-compliant NAT64 implementations continue to generate IPv6 atomic fragments.
 This behavior causes unintended connectivity issues, particularly on endpoints where firewalls are enabled.
-Administrators SHOULD verify that the PLAT devices do not generate atomic fragments by default.
-If atomic fragments are generated, the administrator SHOULD configure the PLAT devices to disable atomic fragments generation, provided a configuration mechanism is available.
+Administrators SHOULD verify that the NAT64 devices do not generate atomic fragments by default.
+If atomic fragments are generated, the administrator SHOULD configure the NAT64 devices to disable atomic fragments generation, provided a configuration mechanism is available.
 </t>
 </section>
 
@@ -945,8 +950,8 @@ Additionally, Section 1.2 of <xref target="RFC7915"/> says:
 "Fragmented IPv4 UDP packets that do not contain a UDP checksum (i.e., the UDP checksum field is zero) are not of significant use on the Internet, and in general will not be translated by the IP/ICMP translator ... However, when the translator is configured to forward the packet without a UDP checksum, the fragmented IPv4 UDP packets will be translated."
 </t>
 <t>
-It has been observed that some systems (such as 3GPP ePDG, Evolved Packet Data Gateway) might generate IPv4 UDP packets with zero checksum.
-Those packets could be dropped by the PLAT devices, impacting WiFi calling on IPv6-only endpoints connecting to those ePDGs.
+It has been observed that some systems, such as 3GPP, Evolved Packet Data Gateway (ePDG), might generate IPv4 UDP packets with zero checksum.
+Those packets could be dropped by the NAT64 devices, impacting WiFi calling on IPv6-only endpoints connecting to those ePDGs.
 As Section 4.5 of <xref target="RFC7915"/> recommends that the translators have a configuration knob to calculate an IPv6 checksum and forward the packet instead of dropping it, the administrator SHOULD consider enabling that option if such an issue is encountered.
 </t>
 </section>
@@ -970,7 +975,7 @@ Path MTU Discovery Issues: Potential disruptions in the PMTU discovery process.
 </ul>
 
 <t>
-<xref target="I-D.ietf-v6ops-icmpext-xlat-v6only-source"/> proposes a solution for signalling the actual non-synthesized IPv6 source address while translating ICMPv6 error messages.
+<xref target="I-D.ietf-v6ops-icmpext-xlat-v6only-source"/> defines a solution for signalling the actual non-synthesized IPv6 source address while translating ICMPv6 error messages.
 </t>
 </section>
 
@@ -987,12 +992,12 @@ To facilitate a smooth migration to IPv6-mostly, operators are advised to update
 <section anchor="customDNS">
 <name>Custom DNS Configuration on Endpoints</name>
 <t>
-In IPv6-mostly networks without PREF64 in RAs, hosts rely on DNS64 (<xref target="RFC7050"/> to discover the NAT64 prefix for CLAT operation.
-<xref target="RFC8880"/> requires that queries for AAAA resource records of "ipv4only.arpa." MUST be sent to the recursive resolvers provided by the network, not to the resolvers configured manually, local recursive resolvers etc.
-However some implementations do not comply with <xref target="RFC8880"/> and, when configured with custom DNS resolvers (e.g., public or corporate DNS) may bypass the network-provided DNS64, preventing NAT64 prefix discovery and hindering CLAT functionality.
+In IPv6-mostly networks without PREF64 in RAs, hosts rely on DNS64 <xref target="RFC7050"/> to discover the NAT64 prefix for CLAT operation.
+<xref target="RFC8880"/> requires that queries for AAAA resource records of "ipv4only.arpa." "MUST be sent to the DNS recursive resolver address(es) the client learned via the configuration machinery for that specific client interface", not to the resolvers configured manually or local recursive resolvers.
+However, some implementations do not comply with <xref target="RFC8880"/> and, when configured with custom DNS resolvers (e.g., public or corporate DNS) may bypass the network-provided DNS64, preventing NAT64 prefix discovery and hindering CLAT functionality.
 </t>
 <t>
-Where feasible, administrators SHOULD include PREF64 in RAs within IPv6-mostly networks to minimize reliance on DNS64.
+As discussed in <xref target="RFC9872"/>, operators SHOULD, whenever feasible, include PREF64 in RAs within IPv6-mostly networks to minimize reliance on DNS64.
 Administrators need to  be aware of the potential for CLAT failures when endpoints use custom resolvers in environments lacking PREF64.
 </t>
 
@@ -1007,7 +1012,7 @@ If the network doesn't provide the NAT64 prefix in RAs or the endpoint doesn't s
 </section>
 
 <section anchor="vpn">
-<name>Virtual Private Network Policy</name>
+<name>Virtual Private Network (VPN) Policy</name>
 <t>
 VPN clients and policies have been observed to interfere with IPv6 connectivity
 for endpoints in an IPv6-mostly network through several distinct mechanisms.
@@ -1152,6 +1157,7 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.3580.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4787.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4890.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.5424.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6052.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6145.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6147.xml"/>
