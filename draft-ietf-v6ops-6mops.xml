@@ -74,6 +74,7 @@
       <t>
 This document discusses a deployment scenario called "an IPv6-mostly network", when IPv6-only and IPv4-enabled endpoints coexist on the same network (e.g. local area network (LAN) etc).
 This approach enables incremental transition from dual-stack to IPv6-only networks by allowing IPv6-capable devices to remain IPv6-only while the network is seamlessly supplying IPv4 addresses to those devices that require them.
+This document discusses the requirements, recommendations, and challenges associated with deploying IPv6-mostly networks in enterprise and public Wi-Fi environments.
       </t>
 
     </abstract>
@@ -86,18 +87,19 @@ This approach enables incremental transition from dual-stack to IPv6-only networ
       <name>Introduction</name>
       <t>
 Most network operators initially deploy IPv6 alongside their existing IPv4 infrastructure, as the dual-stack approach is seen as a necessary transition phase, allowing operators to gain experience with IPv6 while minimizing disruption.
-Pure IPv6-only networks, where endpoints are not assigned IPv4 addresses and access to IPv4 destination is provided via some form of address family translation (such as NAT64 <xref target="RFC6146"/>) remain uncommon outside of the mobile carrier space.
+IPv6-only networks, where endpoints are not assigned IPv4 addresses and access to IPv4 destinations is provided via some form of address family translation (such as NAT64 <xref target="I-D.ietf-v6ops-rfc6146-bis"/>) remain uncommon outside of the mobile operators.
       </t>
 
       <t>
 However, dual-stack networks do not address the core problem driving IPv6 adoption: IPv4 address exhaustion.
-They still require the same amount of IPv4 resources as IPv4-only networks.
-Even worse, this dual-stack approach has been demonstrated to be a long-term crutch, frequently masking problems that would otherwise be exposed and remedied as normal operational workflows.
+Such networks still require the same amount of IPv4 addresses as IPv4-only networks.
+Even worse, the dual-stack approach has been demonstrated to be a long-term crutch, frequently masking problems that would otherwise be exposed and remedied as normal operational workflows.
 </t>
 <t>
-The solution is to stop assigning IPv4 addresses to endpoints, or, in other words, to start deploying IPv6-only networks.
-To ensure that IPv6-only endpoints can communicate with IPv4-only ones, IPv6-only networks provides translation services, such as NAT64 <xref target="RFC6146"/> and SIIT <xref target="RFC7755"/>.
-However, even with those translation mechanisms in place, many systems and applications retain deep IPv4 dependencies, requiring both IPv4 address assignment to the host and the network to provide IPv4 routing functionality.
+The solution to IPv4 address space exhaustion is to stop assigning IPv4 addresses to endpoints, or, in other words, to start deploying IPv6-only networks.
+To ensure that IPv6-only endpoints can communicate with IPv4-only ones, IPv6-only networks provide translation services, such as NAT64 <xref target="RFC6146"/> and SIIT <xref target="RFC7755"/>.
+(Encapsulation-based transition mechanisms such as DS-Lite <xref target="RFC6333"/> and MAP-E <xref target="RFC7597"/> are commonly used to transport IPv4 packets over IPv6-only infrastructure in service provider networks, and are not suityable for providing end-to-end connectivity between IPv6-only and IPv4-only endpoints).
+However, even with those translation mechanisms in place, many systems and applications retain deep IPv4 dependencies, requiring both IPv4 address assignment to the host and the network to provide IPv4 forwarding service.
 </t>
 
       <t>
@@ -107,19 +109,19 @@ As a result, a chicken-and-egg problem arises: IPv6-only networks seem impractic
 
       <t>
 To enable a gradual transition from dual-stack to IPv6-only, operators need to identify which devices can function in IPv6-only mode and which cannot.
-This still leaves the challenge of how to provide IPv4 addresses only to devices which can not operate without them.
+This still leaves the challenge of how to provide IPv4 addresses only to devices that can not operate without them.
 Creating separate network segments for each type of devices introduces complexity and scalability issues - a major hurdle to IPv6-only adoption.
       </t>
 
       <t>
-A more desirable approach is to deploy an "IPv6-mostly" network that provides IPv4 on demand only to devices which require IPv4 to operate correctly.
-This allows IPv6-capable devices to remain IPv6-only while the network is seamlessly supplying IPv4 to those that require it.
-An IPv6-mostly network allows endpoints to operate at the highest level of their network stack evolution, on demand, while still allowing for legacy compatibility. 
+A more desirable approach is to deploy an "IPv6-mostly" network that provides IPv4 addresses on demand only to devices that require IPv4 to operate correctly.
+This allows IPv6-capable devices to remain IPv6-only while the network is seamlessly supplying IPv4 addresses (and connectivity) to those that require it.
+An IPv6-mostly network allows endpoints to operate at the highest level of their network stack evolution, on demand, while still allowing for legacy IPv4 compatibility. 
 
       </t>
 
       <t>
-This document explores the requirements, recommendations, and challenges associated with deploying IPv6-mostly networks in enterprise and public Wi-Fi environments. While the principles discussed may be applicable to other network types, this document's focus remains on these specific use cases.
+This document discusses the requirements, recommendations, and challenges associated with deploying IPv6-mostly networks in enterprise and public Wi-Fi environments. While the principles discussed may be applicable to other network types, this document's focus remains on these specific use cases.
       </t>
     </section>
 
@@ -1155,6 +1157,7 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8781.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8925.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9463.xml"/>
+<xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-v6ops-rfc6146-bis.xml"/>
 <!-- The recommended and simplest way to include a well known reference -->
 
 </references>
@@ -1166,12 +1169,14 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6052.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6145.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6147.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6333.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6535.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6598.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6762.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6724.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6888.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7045.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7597.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7755.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7915.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8201.xml"/>
