@@ -485,7 +485,7 @@ IPv6-only devices without CLAT (unless those endpoints are guaranteed never to n
   On the other hand, using DNS64 bypasses CLAT for IPv6-capable applications communicating with IPv4-only destinations, making the communication slightly more efficient.
 Additionally, it encourages dual-stack endpoints to utilize the IPv6 and NAT64 path to reach IPv4-only destinations.
 This operational pattern is useful for identifying IPv6-related issues and IPv4 dependencies at an earlier stage of the IPv6-mostly migration.
-For that reason administrators might find it beneficial to run DNS64 even if it is not strictly necessary, provided the above mentioned drawbacks are addressed.
+For that reason, administrators might find it beneficial to run DNS64 even if it is not strictly necessary, provided the above mentioned drawbacks are addressed.
 </t>
 </section>
 
@@ -499,13 +499,13 @@ For that reason administrators might find it beneficial to run DNS64 even if it 
 <section anchor="vsds">
 <name>IPv6-only Compared to Dual-Stack</name>
 <t>
-IPv6-mostly networks offer significant advantages over traditional dual-stack models where endpoints have both IPv4 and IPv6 addresses:
+IPv6-mostly networks offer significant advantages over conventional dual-stack models where endpoints have both IPv4 and IPv6 addresses:
 </t>
 <ul>
 <li>
 <t>
 The deployment of dual-stack networks does not fundamentally resolve the core issue of IPv4 address exhaustion.
-The IPv6-mostly approach, however, offers a mechanism to significantly reduce the IPv4 address space allocated to endpoints and reclaim existing IPv4 space.
+The IPv6-mostly approach, however, offers a mechanism to reduce the IPv4 address space allocated to endpoints and reclaim existing IPv4 address space.
 <xref target="save_v4"/> discusses this aspect in more details.
 </t>
 </li>
@@ -517,59 +517,59 @@ While IPv6-mostly deployments do not inherently resolve the IPv4 address exhaust
 </li>
 <li>
 <t>
-Reduced Dependency on DHCP: As more devices operate seamlessly in IPv6-only mode, the criticality of DHCPv4 service diminishes significantly. This allows operators to scale down DHCPv4 infrastructure or, in some cases, even operate it with less stringent service level objectives (SLOs), optimizing costs and resource allocation.
+Reduced Dependency on DHCP: As more devices operate seamlessly in IPv6-only mode, the criticality of DHCPv4 service diminishes significantly. This allows operators to scale down DHCPv4 infrastructure or, in some cases, even operate it with less stringent Service Level Objectives (SLOs), optimizing costs and resource allocation.
 </t>
 </li>
 <li>
 <t>
-Simplified troubleshooting due to reduced impact of Happy Eyeballs <xref target="RFC8305"/>: when both the client and the server are dual-stack, communication can happen either over IPv6 or over IPv4 and the protocol choice can change over time.
-This may obscure network issues or make them intermittent, complicating the troubleshooting.
-In IPv6-mostly network IPv6-only hosts are much less affected by such an issue.
-Although modern versions of Happy Eyeballs algorithm support falling back to IPv4 even in case of IPv6-only network, the delay before switching to IPv4 is so long that the fallback does not happen during regular operations.
-It should be noted, however, that when an IPv6-only client communicates with an IPv4-only destination, the traffic may traverse CLAT or be sent as IPv6 towards the NAT64, depending on how the specific application is written.
+Simplified troubleshooting due to reduced impact of Happy Eyeballs <xref target="RFC8305"/>: when both the client and the server are dual-stack, communication can happen either over IPv6 or over IPv4, and the protocol choice can change over time.
+This may hide network issues or make them intermittent, complicating the troubleshooting.
+In IPv6-mostly networks IPv6-only hosts are much less affected by such an issue.
+Although Happy Eyeballs algorithm supports falling back to IPv4 even in case of IPv6-only network, the delay before switching to IPv4 is so long that the fallback does not happen during regular operations.
+It should be noted, however, that when an IPv6-only host communicates with an IPv4-only destination, the traffic may traverse CLAT or be sent as IPv6 towards the NAT64, as that behaviour is application-dependent.
 </t>
 </li>
 </ul>
 
 <t>
-The introduction of NAT64 within the IPv6-mostly model may appear as a drawback, as it inherits many of the limitations associated with NAT44, such as translating flows from different hosts to the same public IPv4 address, or scalability challenges caused by stateful operation.
-However, it's important to recognize that most IPv4-only or dual-stack networks already rely on NAT44 due to IPv4 address scarcity.
-For these networks, transitioning to an IPv6-mostly architecture would simply require enabling NAT64 functionality on existing NAT44 devices.
+The introduction of NAT64 within the IPv6-mostly model may appear as a drawback, as it inherits many of the limitations associated with NAT44, such as translating flows from different hosts to the same public IPv4 address, or scalability challenges caused by stateful operation <xref target="RFC6269"/>.
+However, it is important to recognize that most IPv4-only or dual-stack networks already rely on NAT44 due to IPv4 address scarcity.
+For these networks, transitioning to an IPv6-mostly architecture would simply require enabling NAT64 function on existing NAT44 devices.
 </t>
 <t>
-In a dual-stack network, flows originating from IPv6-only capable endpoints to IPv4-only destinations are, in most cases, translated by NAT44.
+In a dual-stack network using private IPv4 addresses, flows originating from IPv6-only-capable endpoints to IPv4-only destinations are usually translated by a NAT44 function.
 Within an IPv6-mostly environment, this role is fulfilled by NAT64.
 Consequently, the overall load on the NAT infrastructure remains effectively unchanged, with NAT64 essentially replacing NAT44 for a subset of traffic flows.
 </t>
 <t>
-It is also worth emphasizing that NAT64 is employed solely for facilitating access to IPv4 resources.
+It is also worth emphasizing that NAT64 is employed solely for facilitating access to IPv4-only resources.
 As the availability of IPv6-enabled resources continues to increase, the volume of traffic traversing NAT64 is expected to diminish proportionally.
 </t>
 
 <t>
-As discussed in <xref target="p2p"/> coexistence of IPv6-only and IPv4-only hosts on the same link might present challenges for on-link service discovery and on-link peer2peer communications. It might be consider a disadvantage of IPv6-mostly model for networks where on-link communication between IPv4-only and IPv6-only devices is desirable.
+As discussed in <xref target="p2p"/> coexistence of IPv6-only and IPv4-only hosts on the same link might present challenges for on-link service discovery and on-link peer2peer communications.
+It might be consideried a disadvantage of the IPv6-mostly model for networks where on-link communication between IPv4-only and IPv6-only devices is desirable.
 </t>
 
 <section anchor="save_v4">
-<name>Reducing IPv4 Consumption and Mitigating IPv4 Exhaustion</name>
+<name>Reducing IPv4 Address Consumption and Mitigating IPv4 Address Exhaustion</name>
 <t>
 In IPv6-mostly networks, IPv4 addresses are assigned exclusively to endpoints that require them for operation.
-This approach reduces IPv4 address utilization within network segments compared to traditional dual-stack deployments.
+This approach reduces IPv4 address utilization within network segments compared to conventional dual-stack deployments.
 The proportion of devices operating in IPv6-only mode - and the resulting decrease in IPv4 consumption - is dependent on the specific endpoint footprint and may vary across different network environments.
-Furthermore, the number of devices requiring IPv4 is expected to decrease over time as more operating systems implement support for CLAT, PREF64, and DHCPv4 option 108.
+Furthermore, the number of devices requiring IPv4 is expected to decrease over time as more OSes implement support for CLAT, PREF64 discovery in RAs, and DHCPv4 option 108.
 </t>
 
 <t>
-In IPv6-mostly deployments, the reduction in public IPv4 consumption is only realized if the network assigns public IPv4 addresses directly to endpoints.
+In IPv6-mostly deployments, the reduction of public IPv4 address consumption is only realized if the network assigns public IPv4 addresses directly to endpoints.
 For networks utilizing <xref target="RFC1918"/> addressing, the IPv6-mostly approach facilitates the conservation of private address space.
-While this benefit may be negligible for smaller networks, it is significant for large-scale enterprises and datacenters that face private address exhaustion and seek to avoid the complexity of deploying multiple layers of NAT.
+While this benefit may be negligible for smaller networks, it is significant for large-scale enterprises and datacenters that face private address exhaustion and seek to avoid the complexity of deploying multiple layers of NAT or other mechanisms to handle overlapping IPv4 address space.
 </t>
 
 <t>
-Additionally, while migrating from dual-stack to IPv6-mostly reduces IPv4 consumption, existing networks require renumbering to downsize the IPv4 netblocks assigned to those segments.
+Additionally, while migrating from dual-stack to IPv6-mostly reduces IPv4 addresses consumption, existing networks require renumbering to downsize the IPv4 prefixes assigned to those segments.
 For new deployments, however, administrators can leverage the benefits
-of IPv6-mostly without renumbering by provisioning smaller netblocks
-from the outset.
+of IPv6-mostly without renumbering by provisioning smaller prefixes from the outset.
 </t>
 
 </section>
@@ -578,8 +578,8 @@ from the outset.
 <section anchor="vsv6only">
 <name>IPv6-mostly Compared to a Dedicated IPv6-only Network</name>
 <t>
-Traditional IPv6-only adoption involves separate networks alongside dual-stack ones.
-IPv6-mostly approach offers significant improvements, such as:
+Conventional IPv6-only adoption involves separate networks alongside dual-stack ones.
+IPv6-mostly approach offers a number of improvements, such as:
 </t>
 
 <ul>
@@ -595,7 +595,7 @@ Operational Simplicity: Managing one network segment for all clients (regardless
 </li>
 <li>
 <t>
-Optimized IPv4 Consumption: User-selected dual-stack networks often lead to unnecessary IPv4 use, as users often connect IPv6-only capable devices to a dual-stack network. IPv6-mostly network allocates IPv4 addresses 
+Optimized IPv4 address Consumption: User-selected dual-stack networks often lead to unnecessary IPv4 use, as users often connect IPv6-only capable devices to a dual-stack network. IPv6-mostly network allocates IPv4 addresses 
 only when devices don't advertise IPv6-only capability (DHCPv4 Option 108).
 </t>
 </li>
@@ -606,7 +606,7 @@ Improved Problem Visibility: User-selected fallback to dual-stack networks can m
 </li>
 <li>
 <t>
-Flexible, Incremental Transition: IPv6-mostly allows for gradual migration on a per-segment or even on per-device basis. Devices become IPv6-only only when deemed fully compatible with that mode.
+Flexible, Incremental Transition: IPv6-mostly allows for gradual migration on a per-segment or even on per-device basis (see <xref target="incr"/> for more details). Devices become IPv6-only only when deemed fully compatible with that mode.
 </t>
 </li>
 </ul>
@@ -1161,6 +1161,7 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6052.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6145.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6147.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6269.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6333.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6535.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6598.xml"/>
