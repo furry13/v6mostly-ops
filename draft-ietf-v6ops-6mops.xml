@@ -97,7 +97,7 @@ Even worse, the dual-stack approach has been demonstrated to be a long-term crut
 </t>
 <t>
 The solution to IPv4 address space exhaustion is to stop assigning IPv4 addresses to endpoints, or, in other words, to start deploying IPv6-only networks.
-To ensure that IPv6-only endpoints can communicate with IPv4-only ones, IPv6-only networks provide translation services, such as NAT64 <xref target="RFC6146"/> and SIIT <xref target="RFC7755"/>.
+To ensure that IPv6-only endpoints can communicate with IPv4-only ones, IPv6-only networks provide translation services, such as NAT64 <xref target="I-D.ietf-v6ops-rfc6146-bis"/> and SIIT <xref target="RFC7755"/>.
 (Encapsulation-based transition mechanisms such as DS-Lite <xref target="RFC6333"/> and MAP-E <xref target="RFC7597"/> are commonly used to transport IPv4 packets over IPv6-only infrastructure in service provider networks, and are not suityable for providing end-to-end connectivity between IPv6-only and IPv4-only endpoints).
 However, even with those translation mechanisms in place, many systems and applications retain deep IPv4 dependencies, requiring both IPv4 address assignment to the host and the network to provide IPv4 forwarding service.
 </t>
@@ -174,7 +174,7 @@ Native IPv4 connectivity: IPv4 connectivity provided by the network without usin
 Network segment: a link (Virtual LAN, a broadcast domain, etc.) where hosts share the same IP subnet.
     </t>
 <t>
-PREF64 (or NAT64 prefix): An IPv6 prefix used for IPv6 address synthesis <xref target="RFC6052"/> and for network addresses and protocols translation from IPv6 clients to IPv4 destinations <xref target="RFC6146"/>.
+PREF64 (or NAT64 prefix): An IPv6 prefix used for IPv6 address synthesis <xref target="RFC6052"/> and for network addresses and protocols translation from IPv6 clients to IPv4 destinations <xref target="I-D.ietf-v6ops-rfc6146-bis"/>.
 
 </t>
 
@@ -188,7 +188,7 @@ In a nutshell, an IPv6-mostly network is very similar to a dual-stack one with t
     <ul>
       <li>
         <t>
-The network provides NAT64 <xref target="RFC6146"/> functions, enabling IPv6-only clients to communicate with IPv4-only destinations.
+The network provides NAT64 <xref target="I-D.ietf-v6ops-rfc6146-bis"/> functions, enabling IPv6-only clients to communicate with IPv4-only destinations.
         </t>
 <ul>
 <li>
@@ -1049,7 +1049,11 @@ others intercept traffic at a lower layer and enforce policy directly. This
 document does not attempt to enumerate behavior across specific VPN products
 or operating systems; administrators should verify actual behavior in their
 own environment rather than assume IPv6 is either fully passed or fully
-blocked. See <xref target="customDNS"/> for a related discussion of DNS-level
+blocked. 
+</t>
+
+<t>
+See <xref target="customDNS"/> for a related discussion of DNS-level
 interference with NAT64 prefix discovery.
 </t>
 <t>
@@ -1078,8 +1082,8 @@ so that clients can be warned before connecting to IPv6-mostly networks.
 <!-- All drafts are required to have a security considerations section. See RFC 3552 for a guide. -->
 <name>Security Considerations</name>
 <t>
-The proposed deployment scenario inherits security considerations of IPv6 (see <xref target="RFC9099"/>).
-As IPv6-only device can not fall back to IPv4 if IPv6 connectivity is not available or impacted by a malicious actor, any attack affecting IPv6 connectivity would have much more drastic outcome, comparing to dual-stack networks.
+The IPv6-mostly deployment scenario inherits security considerations of IPv6 (see <xref target="RFC9099"/>).
+As IPv6-only devices can not fall back to IPv4 if IPv6 connectivity is not available or impacted by a malicious actor, any attack affecting IPv6 connectivity would have much more drastic outcome, compared to dual-stack networks.
 </t>
 <t>
 By signalling a rogue NAT64 prefix to a host, a malicious actor can:
@@ -1092,12 +1096,12 @@ cause a DoS attack, if the network does not provide NAT64 functions (for that pr
 </li>
 <li>
 <t>
-implement MitM attack by intercepting traffic to the rogue prefix.
+implement on-path attacks by intercepting traffic to the rogue prefix.
 </t>
 </li>
 </ul>
 <t>
-To countermeasure this attack vector, the operator SHOULD configure  the first-hop routers to include PREF64 information in Router Advertisements as per <xref target="RFC8781"/> and ensure that layer 2 security measures such as RA-Guard (<xref target="RFC6105"/>) are in place.
+To countermeasure this attack vector, the operator SHOULD configure  the first-hop routers to include PREF64 information in Router Advertisements as per <xref target="RFC8781"/> and ensure that Layer 2 security measures such as RA-Guard (<xref target="RFC6105"/>) are in place.
 Section 7 of <xref target="RFC8781"/> discusses this topic in more details.
 Additionally, <xref target="I-D.ietf-v6ops-claton"/> discusses security implications of enabling CLAT if native IPv4 connectivity is available and recommends disabling CLAT in that case.
 </t>
@@ -1136,6 +1140,7 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.2119.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4443.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4861.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6052.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6105.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6146.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6877.xml"/>
@@ -1158,7 +1163,6 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4787.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4890.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.5424.xml"/>
-<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6052.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6145.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6147.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6269.xml"/>
