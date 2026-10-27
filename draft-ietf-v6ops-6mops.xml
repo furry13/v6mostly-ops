@@ -99,7 +99,7 @@ Even worse, the dual-stack approach has been demonstrated to be a long-term crut
 The solution to IPv4 address space exhaustion is to stop assigning IPv4 addresses to endpoints, or, in other words, to start deploying IPv6-only networks.
 To ensure that IPv6-only endpoints can communicate with IPv4-only ones, IPv6-only networks provide translation services, such as NAT64 <xref target="I-D.ietf-v6ops-rfc6146-bis"/> and SIIT <xref target="RFC7755"/>.
 (Encapsulation-based transition mechanisms such as DS-Lite <xref target="RFC6333"/> and MAP-E <xref target="RFC7597"/> are commonly used to transport IPv4 packets over IPv6-only infrastructure in service provider networks, and are not suityable for providing end-to-end connectivity between IPv6-only and IPv4-only endpoints).
-However, even with those translation mechanisms in place, many systems and applications retain deep IPv4 dependencies, requiring both IPv4 address assignment to the host and the network to provide IPv4 forwarding service.
+However, even with those translation mechanisms in place, many systems and applications retain deep IPv4 dependencies, requiring an assigned IPv4 address for the host and IPv4 forwarding on the local link.
 </t>
 
       <t>
