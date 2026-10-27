@@ -537,7 +537,7 @@ However, it is important to recognize that most IPv4-only or dual-stack networks
 For these networks, transitioning to an IPv6-mostly architecture would simply require enabling NAT64 function on existing NAT44 devices.
 </t>
 <t>
-In a dual-stack network using private IPv4 addresses, flows originating from IPv6-only-capable endpoints to IPv4-only destinations are usually translated by a NAT44 function.
+In a dual-stack network using private IPv4 addresses, flows originating from IPv6-only-capable endpoints to IPv4-only external destinations are usually translated by a NAT44 function.
 Within an IPv6-mostly environment, this role is fulfilled by NAT64.
 Consequently, the overall load on the NAT infrastructure remains effectively unchanged, with NAT64 essentially replacing NAT44 for a subset of traffic flows.
 </t>
@@ -846,7 +846,7 @@ CLAT address (in IPv6-mostly/IPv6-only networks)
 </ul>
 
 <t>
-Endpoints running virtual systems (such as containers, namespaces, etc.) or performing ND Proxy functions to extend the network connectivity downstread to physycal or virtual systems may have even more addresses. This poses challenges for network infrastructure devices (switches with Source Address Validation Improvement enabled, wireless access points, etc.) that map MAC addresses to IPv6 addresses, often with limits to prevent resource exhaustion or denial-of-service (DoS) attacks.
+Endpoints running virtual systems (such as containers, namespaces, etc.) or performing ND Proxy <xref target="RFC4389"/> functions to extend the network connectivity downstread to physycal or virtual systems may have even more addresses. This poses challenges for network infrastructure devices (switches with Source Address Validation Improvement enabled, wireless access points, etc.) that map MAC addresses to IPv6 addresses, often with limits to prevent resource exhaustion or denial-of-service (DoS) attacks.
 When the number of IPv6 addresses per MAC limit is exceeded, infrastructure devices behavior varies across implementations, leading to inconsistent connectivity loss and other unexpected behavior: while some systems drop new addresses, others delete older entries, causing previously functional addresses to lose connectivity.
 In all those cases endpoints and applications don't receive explicit signalling about the address becoming unusable.
 </t>
@@ -1160,6 +1160,7 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <name>Informative References</name>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.3022.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.3580.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4389.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4787.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4890.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.5424.xml"/>
