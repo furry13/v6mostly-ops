@@ -13,10 +13,10 @@
 <!-- If further character entities are required then they should be added to the DOCTYPE above.
      Use of an external entity file is not recommended. -->
 
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="info" docName="draft-ietf-v6ops-6mops-11" ipr="trust200902" obsoletes="" submissionType="IETF" xml:lang="en" version="3">
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="info" docName="draft-ietf-v6ops-6mops-12" ipr="trust200902" obsoletes="" submissionType="IETF" xml:lang="en" version="3">
   <front>
     <title abbrev="6mops">IPv6-mostly Networks: Deployment and Operations Considerations</title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-v6ops-6mops-11"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-v6ops-6mops-12"/>
     <author fullname="Nick Buraglio" initials="N" surname="Buraglio">
       <organization>Energy Sciences Network</organization>
       <address>
@@ -72,7 +72,7 @@
 
     <abstract>
       <t>
-This document discusses a deployment scenario called "an IPv6-mostly network", when IPv6-only and IPv4-enabled endpoints coexist on the same network (e.g. local area network (LAN) etc).
+This document discusses a deployment scenario called "an IPv6-mostly network", when IPv6-only and IPv4-enabled endpoints coexist on the same network (e.g. local area network (LAN)).
 This approach enables incremental transition from dual-stack to IPv6-only networks by allowing IPv6-capable devices to remain IPv6-only while the network is seamlessly supplying IPv4 addresses to those devices that require them.
 This document discusses the requirements, recommendations, and challenges associated with deploying IPv6-mostly networks in enterprise and public Wi-Fi environments.
       </t>
@@ -147,6 +147,9 @@ In addition, the document makes use of the following terms:
     <t>
 CLAT: a customer-side translator (CLAT) as specified in <xref target="RFC6877"/>.
 </t>
+<t>
+DHCPv4: DHCP <xref target="RFC2131"/>.
+</t>
     <t>
 Endpoint: A device connected to a network and considered a host from the operator's perspective. 
 Examples include:
@@ -193,9 +196,9 @@ The network provides NAT64 <xref target="I-D.ietf-v6ops-rfc6146-bis"/> functions
 <ul>
 <li>
 <t>
-The network also provides the information about the NAT64 prefix (PREF64), for example, via Router Advertisements (RAs) <xref target="RFC8781"/>), via DNS64 (<xref target="RFC6147"/>, <xref target="RFC7050"/>), or both.
+The network also provides the information about the NAT64 prefix (PREF64), for example, via Router Advertisements (RAs) <xref target="RFC8781"/>, via DNS64 (<xref target="RFC6147"/>, <xref target="RFC7050"/>), or both.
 This is to ensure that clients and the network's NAT64 use the same PREF64 to translate between IPv6 and IPv4.
-<xref target="pref64"/> and <xref target="dns64"/> discuss those mechanisms in more detail.
+Sections <xref target="pref64" format="counter"/> and <xref target="dns64" format="counter"/> discuss those mechanisms in more detail.
 </t>
 </li>
 </ul>
@@ -219,7 +222,7 @@ IPv4-only endpoint: acquires an IPv4 address through DHCP4.
       </li>
       <li>
         <t>
-Dual-stack endpoint (not IPv6-only-capable): Configures IPv6 addresses using any supported protocol. Additionally, it obtains an IPv4 address via DHCP.
+Dual-stack endpoint (not IPv6-only-capable): Configures IPv6 addresses using any supported protocol. Additionally, it obtains an IPv4 address via DHCPv4.
         </t>
       </li>
       <li>
@@ -265,7 +268,7 @@ One approach is to block IPv4 traffic at the network attachment level (such as a
     <ul>
       <li>
         <t>
-Static Access List: Applying a static filter blocking al IPv4 packets to/from the endpoint, e.g. with a "deny ip any any" rule.
+Static Access List: Applying a static filter blocking al IPv4 packets to/from the endpoint, e.g., with a "deny ip any any" rule.
         </t>
       </li>
       <li>
@@ -342,7 +345,7 @@ In such a case it might be beneficial to deploy NAT64 functions closer to the en
 <section>
 <name>NAT64 IPv4 Address Pools Considerations</name>
 <t>
-If NAT64 and NAT44 are performed by the same devices, an operator needs to choose between allocating a dedicated IPv4 address pool for NAT64 or using the existing NAT44 IPv4 address pool for both.
+If NAT64 and NAT44 are performed by the same devices, an operator can either allocate a dedicated IPv4 address pool for NAT64 or, if the device supports such configuration, use the existing NAT44 IPv4 address pool for both.
 In general, using the same IPv4 address pool for both translation types has a number of advantages:
 </t>
 <ul>
@@ -381,7 +384,7 @@ Therefore the NAT64 SHOULD be configured so, whenever possible, the same externa
 <t>
 Operators can use either the Well-Known NAT64 Prefix (64:ff9b::/96, WKP) <xref target="RFC6052"/>, or they can choose a Network-Specific Prefix (NSP),  either from their own address space or from the Local-Use IPv4/IPv6 Translation Prefix (64:ff9b:1::/48, LUP, <xref target="RFC8215"/>).
 Using the WKP or LUP can make it simpler to set up packet filtering rules and troubleshoot the network, since traffic between IPv6-only hosts and IPv4-only destinations is easy to spot and tell apart from regular IPv6 traffic.
-Another benefit of the WKP or LUP is that if the client received both non-synthesized (native) and synthesized AAAA responses from DNS, the Rule 9 of the destination address selection algorithm (section 6 of <xref target="RFC6724"/>) would prefer the native IPv6 destination address over a synthesized one.
+Another benefit of the WKP or LUP is that if the client received both non-synthesized (native) and synthesized AAAA responses from DNS, the Rule 9 of the destination address selection algorithm (Section 6 of <xref target="RFC6724"/>) would prefer the native IPv6 destination address over a synthesized one.
 Additionally, using WKP lets the operator use public DNS64 services, which rely on the WKP for address translation.
 </t>
 <t>
@@ -517,7 +520,7 @@ While IPv6-mostly deployments do not inherently resolve the IPv4 address exhaust
 </li>
 <li>
 <t>
-Reduced Dependency on DHCP: As more devices operate seamlessly in IPv6-only mode, the criticality of DHCPv4 service diminishes significantly. This allows operators to scale down DHCPv4 infrastructure or, in some cases, even operate it with less stringent Service Level Objectives (SLOs), optimizing costs and resource allocation.
+Reduced Dependency on DHCPv4: As more devices operate seamlessly in IPv6-only mode, the criticality of DHCPv4 service diminishes significantly. This allows operators to scale down DHCPv4 infrastructure or, in some cases, even operate it with less stringent Service Level Objectives (SLOs), optimizing costs and resource allocation.
 </t>
 </li>
 <li>
@@ -620,7 +623,7 @@ Flexible, Incremental Transition: IPv6-mostly allows for gradual migration on a 
   Migrating endpoints to IPv6-only fundamentally changes network dynamics by removing the IPv4 safety net. This includes the masking effect of the Happy Eyeballs algorithm <xref target="RFC8305" />. IPv6 connectivity issues become far more prominent, including those previously hidden within dual-stack environments. Operators should be prepared to discover and troubleshoot issues in both endpoints and network infrastructure, even if the dual-stack network appeared problem-free.
 </t>
 <t>
-Some rollout considerations are discussed in the following sections.
+Some rollout considerations are discussed in the following subsections.
 </t>
 <section anchor="optin">
 <name>Opt-In and Opt-Out Modes</name>
@@ -655,7 +658,7 @@ For recurring temporary networks, for instance deployed on regular events such a
 <section anchor="incr">
 <name>Per-Device and Per-Subnet Incremental Rollout</name>
 <t>
-  Limited control over endpoint configuration necessitates a per-subnet rollout, incrementally enabling first PREF64 signalling and then Option 108 processing in DHCP.
+  Limited control over endpoint configuration necessitates a per-subnet rollout, incrementally enabling first PREF64 signalling and then Option 108 processing in DHCPv4.
 </t>
 <t>
 In most networks, all hosts on a given subnet receive the same RAs (unless mechanisms like per-client RA <xref target="RFC8273"/> are deployed), so signalling PREF64 via an RA option doesn't allow any per-endpoint opt out mechanism.
@@ -1138,12 +1141,14 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.1918.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.2119.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.2131.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4443.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.4861.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6052.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6105.xml"/>
-<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6146.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6598.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6877.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7045.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7050.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8200.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8106.xml"/>
@@ -1151,6 +1156,7 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8781.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8925.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9463.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9673.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-v6ops-rfc6146-bis.xml"/>
 <!-- The recommended and simplest way to include a well known reference -->
 
@@ -1169,11 +1175,9 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6269.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6333.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6535.xml"/>
-<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6598.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6762.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6724.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.6888.xml"/>
-<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7045.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7597.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7755.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.7915.xml"/>
@@ -1185,7 +1189,6 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9099.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9568.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9663.xml"/>
-<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9673.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9762.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9872.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9915.xml"/>
