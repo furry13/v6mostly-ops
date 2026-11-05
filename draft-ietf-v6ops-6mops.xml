@@ -98,7 +98,7 @@ Even worse, the dual-stack approach has been demonstrated to be a long-term crut
 <t>
 The solution to IPv4 address space exhaustion is to stop assigning IPv4 addresses to endpoints, or, in other words, to start deploying IPv6-only networks.
 To ensure that IPv6-only endpoints can communicate with IPv4-only ones, IPv6-only networks provide translation services, such as NAT64 <xref target="I-D.ietf-v6ops-rfc6146-bis"/> and SIIT <xref target="RFC7755"/>.
-(Encapsulation-based transition mechanisms such as DS-Lite <xref target="RFC6333"/> and MAP-E <xref target="RFC7597"/> are commonly used to transport IPv4 packets over IPv6-only infrastructure in service provider networks, and are not suityable for providing end-to-end connectivity between IPv6-only and IPv4-only endpoints).
+(Encapsulation-based transition mechanisms such as DS-Lite <xref target="RFC6333"/> and MAP-E <xref target="RFC7597"/> are commonly used to transport IPv4 packets over IPv6-only infrastructure in service provider networks, and are not suitable for providing end-to-end connectivity between IPv6-only and IPv4-only endpoints).
 However, even with those translation mechanisms in place, many systems and applications retain deep IPv4 dependencies, requiring an assigned IPv4 address for the host and IPv4 forwarding on the local link.
 </t>
 
@@ -236,7 +236,7 @@ IPv6-only-capable endpoint configures its IPv6 addresses and, while performing D
 An IPv6-mostly network segment can support a mix of IPv4-only, dual-stack, and IPv6-only endpoints. IPv6-only endpoints utilize a network-provided NAT64 to reach IPv4-only destinations.
   </t>
   <t>
-The following sections discuss those solution elements in more details.
+The following sections discuss those solution elements in more detail.
   </t>
 
   <section anchor="capable">
@@ -375,7 +375,7 @@ This change might impact the client's connectivity to that destination until the
 
 <t>
 In particular, webservers are known to use client IP addresses for various forms of identification, authorization, and session tracking.
-Therefore the NAT64 SHOULD be configured so, whenever possible, the same external IPv4 address is assigned to all concurrent sessions originating from the same IPv6 address of an internal host (a configuration often referred to as 'sticky' NAT). REQ-2 of <xref target="RFC4787"/> and <xref target="RFC6888"/> discusses this behaviour in more details.
+Therefore the NAT64 SHOULD be configured so, whenever possible, the same external IPv4 address is assigned to all concurrent sessions originating from the same IPv6 address of an internal host (a configuration often referred to as 'sticky' NAT). REQ-2 of <xref target="RFC4787"/> and <xref target="RFC6888"/> discusses this behaviour in more detail.
 </t>
 </section>
 
@@ -430,7 +430,7 @@ Option 108 without CLAT MAY be enabled if the administrator aims to identify IPv
 Hosts running 464XLAT, translating IPv4 address literal to IPv6 literals (Section 7.1 of <xref target="RFC8305"/>) or performing local DNS64 functions need to discover the NAT64 prefix.
 The operators SHOULD configure the first-hop routers to include PREF64 information in Router Advertisements per <xref target="RFC8781"/> even if the network provides DNS64 (so hosts can use DNS64-based prefix discovery, <xref target="RFC7050"/>).
 
-<xref target="RFC9872"/> discusses this recommendation in more details.
+<xref target="RFC9872"/> discusses this recommendation in more detail.
 
 </t>
 
@@ -455,7 +455,7 @@ DNSSEC Incompatibility: DNS64, when not performed by the endpoint itself, can in
 <li>
 <t>
 Custom Resolvers: Endpoints or applications configured with custom resolvers or running recursive resolvers locally can not benefit from the DNS64 provided by the network.
-Such systems would need to rely on CLAT or local address synthesis instead (<xref target="customDNS"/> discusses this scenario in more details).
+Such systems would need to rely on CLAT or local address synthesis instead (<xref target="customDNS"/> discusses this scenario in more detail).
 </t>
 </li>
 <li>
@@ -509,7 +509,7 @@ IPv6-mostly networks offer significant advantages over conventional dual-stack m
 <t>
 The deployment of dual-stack networks does not fundamentally resolve the core issue of IPv4 address exhaustion.
 The IPv6-mostly approach, however, offers a mechanism to reduce the IPv4 address space allocated to endpoints and reclaim existing IPv4 address space.
-<xref target="save_v4"/> discusses this aspect in more details.
+<xref target="save_v4"/> discusses this aspect in more detail.
 </t>
 </li>
 <li>
@@ -551,7 +551,7 @@ As the availability of IPv6-enabled resources continues to increase, the volume 
 
 <t>
 As discussed in <xref target="p2p"/> coexistence of IPv6-only and IPv4-only hosts on the same link might present challenges for on-link service discovery and on-link peer2peer communications.
-It might be consideried a disadvantage of the IPv6-mostly model for networks where on-link communication between IPv4-only and IPv6-only devices is desirable.
+It might be considered a disadvantage of the IPv6-mostly model for networks where on-link communication between IPv4-only and IPv6-only devices is desirable.
 </t>
 
 <section anchor="save_v4">
@@ -849,7 +849,7 @@ CLAT address (in IPv6-mostly/IPv6-only networks)
 </ul>
 
 <t>
-Endpoints running virtual systems (such as containers, namespaces, etc.) or performing ND Proxy <xref target="RFC4389"/> functions to extend the network connectivity downstread to physycal or virtual systems may have even more addresses. This poses challenges for network infrastructure devices (switches with Source Address Validation Improvement enabled, wireless access points, etc.) that map MAC addresses to IPv6 addresses, often with limits to prevent resource exhaustion or denial-of-service (DoS) attacks.
+Endpoints running virtual systems (such as containers, namespaces, etc.) or performing ND Proxy <xref target="RFC4389"/> functions to extend the network connectivity downstream to physycal or virtual systems may have even more addresses. This poses challenges for network infrastructure devices (switches with Source Address Validation Improvement enabled, wireless access points, etc.) that map MAC addresses to IPv6 addresses, often with limits to prevent resource exhaustion or denial-of-service (DoS) attacks.
 When the number of IPv6 addresses per MAC limit is exceeded, infrastructure devices behavior varies across implementations, leading to inconsistent connectivity loss and other unexpected behavior: while some systems drop new addresses, others delete older entries, causing previously functional addresses to lose connectivity.
 In all those cases endpoints and applications don't receive explicit signalling about the address becoming unusable.
 </t>
@@ -1105,7 +1105,7 @@ implement on-path attacks by intercepting traffic to the rogue prefix.
 </ul>
 <t>
 To countermeasure this attack vector, the operator SHOULD configure  the first-hop routers to include PREF64 information in Router Advertisements as per <xref target="RFC8781"/> and ensure that Layer 2 security measures such as RA-Guard (<xref target="RFC6105"/>) are in place.
-Section 7 of <xref target="RFC8781"/> discusses this topic in more details.
+Section 7 of <xref target="RFC8781"/> discusses this topic in more detail.
 Additionally, <xref target="I-D.ietf-v6ops-claton"/> discusses security implications of enabling CLAT if native IPv4 connectivity is available and recommends disabling CLAT in that case.
 </t>
 <t>
@@ -1203,7 +1203,7 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <section anchor="Acknowledgements" numbered="false">
 <name>Acknowledgements</name>
 <t>
-Thanks to Mohamed Boucadair, Brian Carpenter, Stuart Cheshire, Tim Chown, Joe Clarke, Lorenzo Colitti, Tom Costello, Jeremy Duncan, David Farmer, Sorah Fukumori, Goetz Goerisch, Warren Kumari, Eliot Lear, Jordi Palet, Tom Petch, Michael Richardson, Philipp Tiesel, Arie Vayner, XiPeng Xiao, Matsuzaki Yoshinobu for the discussions, the feedback, and all contribution.
+Thanks to Mohamed Boucadair, Brian Carpenter, Stuart Cheshire, Tim Chown, Joe Clarke, Lorenzo Colitti, Tom Costello, Jeremy Duncan, David Farmer, Sorah Fukumori, Goetz Goerisch, Warren Kumari, Eliot Lear, Jordi Palet, Tom Petch, Michael Richardson, Scott Rose, Philipp Tiesel, Arie Vayner, XiPeng Xiao, Matsuzaki Yoshinobu for the discussions, the feedback, and all contribution.
 </t>
 </section>
 
