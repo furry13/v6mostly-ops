@@ -196,7 +196,7 @@ The network provides NAT64 <xref target="I-D.ietf-v6ops-rfc6146-bis"/> functions
 <ul>
 <li>
 <t>
-The network also provides the information about the NAT64 prefix (PREF64), for example, via Router Advertisements (RAs) <xref target="RFC8781"/>, via DNS64 (<xref target="RFC6147"/>, <xref target="RFC7050"/>), or both.
+The network also provides information about the NAT64 prefix (PREF64), for example, via Router Advertisements (RAs) <xref target="RFC8781"/>, via DNS64 (<xref target="RFC6147"/>, <xref target="RFC7050"/>), or both.
 This is to ensure that clients and the network's NAT64 use the same PREF64 to translate between IPv6 and IPv4.
 Sections <xref target="pref64" format="counter"/> and <xref target="dns64" format="counter"/> discuss those mechanisms in more detail.
 </t>
@@ -222,12 +222,12 @@ IPv4-only endpoint: acquires an IPv4 address through DHCP4.
       </li>
       <li>
         <t>
-Dual-stack endpoint (not IPv6-only-capable): Configures IPv6 addresses using any supported protocol. Additionally, it obtains an IPv4 address via DHCPv4.
+Dual-stack endpoint: (not IPv6-only-capable): Configures IPv6 addresses using any supported protocol. Additionally, it obtains an IPv4 address via DHCPv4.
         </t>
       </li>
       <li>
         <t>
-IPv6-only-capable endpoint configures its IPv6 addresses and, while performing DHCPv4, includes Option 108 <xref target="RFC8925"/> into the Parameter Request List. The DHCPv4 server includes the Option 108 in the DHCPOFFER and, as per <xref target="RFC8925"/>, the endpoint forgoes requesting an IPv4 address, remaining in IPv6-only mode.
+IPv6-only-capable endpoint: configures its IPv6 addresses and, while performing DHCPv4, includes Option 108 <xref target="RFC8925"/> into the Parameter Request List. The DHCPv4 server includes the Option 108 in the DHCPOFFER and, as per <xref target="RFC8925"/>, the endpoint forgoes requesting an IPv4 address, remaining in IPv6-only mode.
       </t>
     </li>
   </ul>
@@ -268,7 +268,7 @@ One approach is to block IPv4 traffic at the network attachment level (such as a
     <ul>
       <li>
         <t>
-Static Access List: Applying a static filter blocking al IPv4 packets to/from the endpoint, e.g., with a "deny ip any any" rule.
+Static Access List: Applying a static filter blocking all IPv4 packets to/from the endpoint, e.g., with a "deny ip any any" rule.
         </t>
       </li>
       <li>
@@ -405,7 +405,7 @@ Alternatively, the operator might utilize a network-specific NAT64 prefix.
     <name>464XLAT</name>
     <t>
       Unless the usage of IPv4-only network sockets is prohibited or mitigated (e.g., by implementing translation mechanisms such as BIH <xref target="RFC6535"/>) in the Operating System (OS), enabling CLAT on endpoints is essential for seamless operation of IPv4-only applications in IPv6-only environments.
-      CLAT provides an IPv4 address and IPv4 default route, ensuring functionality even without assignment of anIPv4 address by the network. Without CLAT or similar compatibility layer inside the OS, IPv4-only applications would fail, negatively impacting user experience and increasing support overhead.
+      CLAT provides an IPv4 address and IPv4 default route, ensuring functionality even without assignment of an IPv4 address by the network. Without CLAT or a similar compatibility layer inside the OS, IPv4-only applications would fail, negatively impacting user experience and increasing support overhead.
     </t>
     <t>
 Recommendations for operators controlling the endpoints:
@@ -528,7 +528,7 @@ Reduced Dependency on DHCPv4: As more devices operate seamlessly in IPv6-only mo
 Simplified troubleshooting due to reduced impact of Happy Eyeballs <xref target="RFC8305"/>: when both the client and the server are dual-stack, communication can happen either over IPv6 or over IPv4, and the protocol choice can change over time.
 This may hide network issues or make them intermittent, complicating the troubleshooting.
 In IPv6-mostly networks IPv6-only hosts are much less affected by such an issue.
-Although Happy Eyeballs algorithm supports falling back to IPv4 even in case of IPv6-only network, the delay before switching to IPv4 is so long that the fallback does not happen during regular operations.
+Although the Happy Eyeballs algorithm supports falling back to IPv4 even in the case of an IPv6-only network, the delay before switching to IPv4 is so long that the fallback does not happen during regular operations.
 It should be noted, however, that when an IPv6-only host communicates with an IPv4-only destination, the traffic may traverse CLAT or be sent as IPv6 towards the NAT64, as that behaviour is application-dependent.
 </t>
 </li>
@@ -739,14 +739,14 @@ ESP Header, which is used for IPSec traffic, such as VPN and Wi-Fi Calling, unle
 </ul>
 
 <t>
-Operators SHOULD consider recommendations from Section 2.1 of <xref target="RFC7045"/>, as well as <xref target="RFC9673"/> when developing the security policies for other IPv6 extension headers.
+Operators SHOULD consider recommendations from Section 2.1 of <xref target="RFC7045"/>, as well as <xref target="RFC9673"/>, when developing the security policies for other IPv6 extension headers.
 </t>
 </section>
 
 <section anchor="p2p">
 <name>Peer-to-Peer Communication and Service Discovery</name>
 <t>
-Endpoints connected to shared link can automatically discover neighboring devices and their services by means of different protocols like Multicast DNS <xref target="RFC6762" />. Many devices and/or services are built on an assumption that devices on the same link also share the same set of address families or at least they have one common address family shared between all of them.</t>
+Endpoints connected to a shared link can automatically discover neighboring devices and their services by means of different protocols like Multicast DNS <xref target="RFC6762" />. Many devices and/or services are built on an assumption that devices on the same link also share the same set of address families or at least that they have one common address family shared among all of them.</t>
     <t>In IPv6-mostly, this assumption is not valid as there might be both IPv4-only and IPv6-only devices on the same link. As per <xref target="RFC6762" section="20"/>, this means that the link has two unrelated ".local." zones, one for each address family. Discovery of devices across different address families is impossible, unless some sort of relay is deployed on the link.</t>
 
 <t>
@@ -788,7 +788,7 @@ Such endpoints requesting Option 108 will fail to connect in an IPv6-mostly netw
 </t>
 
 <t>
-Administrators controlling endpoints need to ensure those endpoints have IPv6 enabled and operational before transitioning the network to IPv6-mostly mode. This includes verifying protocol enablement as well as validation of any central or discreetly managed host based firewalls that could potentially interfere with proper IPv6 function that may be masked by the presence of IPv4, and therefore exposed with its removal.
+Administrators controlling endpoints need to ensure those endpoints have IPv6 enabled and operational before transitioning the network to IPv6-mostly mode. This includes verifying protocol enablement as well as validation of any central or discretely managed host-based firewalls that could potentially interfere with proper IPv6 function that may be masked by the presence of IPv4, and therefore exposed with its removal.
 Absent such checks, the connectivity may not be provided as intended.
 </t>
 
@@ -862,7 +862,7 @@ CLAT address (in IPv6-mostly/IPv6-only networks)
 
 <t>
 Endpoints running virtual systems (such as containers, namespaces, etc.) or performing ND Proxy <xref target="RFC4389"/> functions to extend the network connectivity downstream to physycal or virtual systems may have even more addresses. This poses challenges for network infrastructure devices (switches with Source Address Validation Improvement enabled, wireless access points, etc.) that map MAC addresses to IPv6 addresses, often with limits to prevent resource exhaustion or denial-of-service (DoS) attacks.
-When the number of IPv6 addresses per MAC limit is exceeded, infrastructure devices behavior varies across implementations, leading to inconsistent connectivity loss and other unexpected behavior: while some systems drop new addresses, others delete older entries, causing previously functional addresses to lose connectivity.
+When the number of IPv6 addresses per MAC limit is exceeded, infrastructure device behavior varies across implementations, leading to inconsistent connectivity loss and other unexpected behavior: while some systems drop new addresses, others delete older entries, causing previously functional addresses to lose connectivity.
 In all those cases endpoints and applications don't receive explicit signalling about the address becoming unusable.
 </t>
 
@@ -896,7 +896,7 @@ In that case the operator also needs to ensure that the first-hop routers set th
 
 
 However, the deployment model described in <xref target="RFC9663"/> might not be supported by all endpoints and network infrastructure devices.
-The operator SHOULD ensure that the deployed network infrastructure devices allow sufficient number of IPv6 addresses to be mapped to a client's MAC and SHOULD monitor for events, indicating that the limit has been reached (such as syslog <xref target="RFC5424"/> messages, etc.).
+The operator SHOULD ensure that the deployed network infrastructure devices allow sufficient number of IPv6 addresses to be mapped to a client's MAC and SHOULD monitor for events indicating that the limit has been reached (such as syslog <xref target="RFC5424"/> messages, etc.).
 </t>
 
 </section>
@@ -959,13 +959,13 @@ If atomic fragments are generated, the administrator SHOULD configure the NAT64 
 <section anchor="udpzero">
 <name>IPv4 UDP Packets with Zero Checksum</name>
 <t>
-Translating IPv4 UDP packet with zero checksum to IPv6 requires the translator to calculate the checksum and therefore has performance implication.
-As per Section 4.5 of <xref target="RFC7915"/>, translators are allowed to drop IPv4 UDP packet with zero checksum.
+Translating an IPv4 UDP packet with zero checksum to IPv6 requires the translator to calculate the checksum and therefore has performance implications.
+As per Section 4.5 of <xref target="RFC7915"/>, translators are allowed to drop IPv4 UDP packets with zero checksum.
 Additionally, Section 1.2 of <xref target="RFC7915"/> says:
 "Fragmented IPv4 UDP packets that do not contain a UDP checksum (i.e., the UDP checksum field is zero) are not of significant use on the Internet, and in general will not be translated by the IP/ICMP translator ... However, when the translator is configured to forward the packet without a UDP checksum, the fragmented IPv4 UDP packets will be translated."
 </t>
 <t>
-It has been observed that some systems, such as 3GPP, Evolved Packet Data Gateway (ePDG), might generate IPv4 UDP packets with zero checksum.
+It has been observed that some systems, such as 3GPP Evolved Packet Data Gateway (ePDG), might generate IPv4 UDP packets with zero checksum.
 Those packets could be dropped by the NAT64 devices, impacting WiFi calling on IPv6-only endpoints connecting to those ePDGs.
 As Section 4.5 of <xref target="RFC7915"/> recommends that the translators have a configuration knob to calculate an IPv6 checksum and forward the packet instead of dropping it, the administrator SHOULD consider enabling that option if such an issue is encountered.
 </t>
