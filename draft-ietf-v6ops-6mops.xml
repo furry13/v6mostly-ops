@@ -366,7 +366,7 @@ Simplified capacity planning. The size of IPv4 address pool used for both NAT44 
 </li>
 <li>
 <t>
-Minimized user impact: it is not uncommon for client IP addresses to be used as a part of identification and authorization (e.g. access control lists) on the server side.
+Minimized user impact: it is not uncommon for client IP addresses to be used for network-layer access control on the server side.
 If the NAT44 address pool is already allowed by an ACL on a remote IPv4-only destination, then using a dedicated NAT64 address pool would change the client's public IPv4 address (the one the destination sees) when the client becomes IPv6-only and starts using NAT64.
 This change might impact the client's connectivity to that destination until the ACLs on the remote side are updated.
 </t>
@@ -374,7 +374,7 @@ This change might impact the client's connectivity to that destination until the
 </ul>
 
 <t>
-In particular, webservers are known to use client IP addresses for various forms of identification, authorization, and session tracking.
+In particular, webservers are known to use client IP addresses for various forms of identification, access control, and session tracking.
 Therefore the NAT64 SHOULD be configured so, whenever possible, the same external IPv4 address is assigned to all concurrent sessions originating from the same IPv6 address of an internal host (a configuration often referred to as 'sticky' NAT). REQ-2 of <xref target="RFC4787"/> and <xref target="RFC6888"/> discusses this behaviour in more detail.
 </t>
 </section>
