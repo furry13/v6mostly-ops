@@ -686,22 +686,25 @@ Note that some OSes (such as mobile phone OSes) enable DHCPv4 Option 108 support
 Such systems become IPv6-only when Option 108 is activated on the DHCPv4 server side for the given network segment.
 </t>
 <t>
-The following approach is RECOMMENDED:
+Before rollout, it is recommended to review the considerations in <xref target="ops"/> and to run a pilot to prevent issues such as ones described in <xref target="issues"/>. 
+</t>
+<t>
+The following rollout approach is RECOMMENDED:
 </t>
 <ul>
 <li>
 <t>
-PREF64 signalling: Enable PREF64 option for the router advertisement and/or DNS64 (see above). Especially if DNS64 is used, this might affect behaviour of some devices as the path via NAT64 would get generally preferred over native IPv4 path. Rollback at this stage affects the entire subnet.
+Step1: PREF64 signalling. Enable PREF64 option for the router advertisement and/or DNS64 (see above). Especially if DNS64 is used, this might affect behaviour of some devices as the path via NAT64 would get generally preferred over native IPv4 path. Rollback at this stage affects the entire subnet.
 </t>
 </li>
 <li>
 <t>
-DHCPv4 Server-Side Activation: Enable Option 108 processing. Some OSes automatically switch to IPv6-only. Rollback at this stage affects the entire subnet.
+Step2: DHCPv4 Server-Side Activation. Enable Option 108 processing. Some OSes automatically switch to IPv6-only. Rollback at this stage affects the entire subnet.
 </t>
 </li>
 <li>
 <t>
-Controlled Endpoint Activation: Enable Option 108 on managed endpoints with per-device rollback possible.
+Step3: Controlled Endpoint Activation. Enable Option 108 on managed endpoints with per-device rollback possible.
 </t>
 </li>
 </ul>
