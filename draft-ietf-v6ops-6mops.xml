@@ -951,7 +951,7 @@ generating ICMP messages is often rate-limited and, therefore, can not be consid
 
 <t>
 Another common case of IPv6 fragmentation is the use of protocols like DNS and RADIUS, where the server response needs to be sent as a single UDP datagram. 
-Network security policies MUST allow IPv6 fragments for permitted UDP traffic (e.g., DNS or RADIUS) where single-datagram responses are required. Allowing IPv6 fragments for permitted TCP traffic is RECOMMENDED unless the network infrastructure reliably performs TCP MSS clamping.
+Network security policies MUST allow IPv6 fragments for permitted UDP traffic (e.g., DNS or RADIUS) where single-datagram responses are required. Allowing IPv6 fragments for permitted TCP traffic is RECOMMENDED unless the network infrastructure reliably performs TCP Maximum Segment Size (MSS) clamping (rewriting the advertised MSS value by an intermediate router).
 </t>
 <t>
 To ensure reliable Path MTU Discovery (PMTUD, <xref target="RFC8201"/>), Section 4.3.1 of <xref target="RFC4890"/> requires that network security policies MUST permit the passage of ICMPv6 Type 2 (Packet Too Big, <xref target="RFC4443"/>) messages to and from all IPv6-enabled devices. 
