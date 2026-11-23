@@ -1012,7 +1012,7 @@ Path MTU Discovery Issues: Potential disruptions in the PMTU discovery process.
 </ul>
 
 <t>
-<xref target="I-D.ietf-v6ops-icmpext-xlat-v6only-source"/> defines a solution for signalling the actual non-synthesized IPv6 source address while translating ICMPv6 error messages.
+<xref target="I-D.ietf-v6ops-icmpext-xlat-v6only-source"/> introduces changes in CLAT behaviour to represent and preserve non-synthesized IPv6 addresses when translating ICMPv6 to ICMPv4.
 </t>
 </section>
 
