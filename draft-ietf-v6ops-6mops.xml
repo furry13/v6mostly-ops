@@ -710,6 +710,20 @@ Administrators are advised to monitor this load and adjust the Option 108 value 
 <section anchor="ops">
 <name>Operational Considerations</name>
 
+<section anchor="vis">
+<name>User Experience</name>
+<t>
+While deploying IPv6-mostly helps operators identify hidden network bugs, it can initially cause user-visible issues.
+In a traditional dual-stack network, Happy Eyeballs silently masks IPv6 failures by falling back to IPv4.
+Removing this safety net for IPv6-mostly endpoints exposes these hidden problems.
+While this temporary regression in user experience must be carefully managed under the principles of RFC 8890, it is often the only realistic way to get these latent issues reported and permanently fixed.
+</t>
+<t>
+In the long run, exposing these bugs is the least bad path to drive ecosystem-wide improvements.
+Once the newly visible problems are resolved, the overall user experience is significantly improved, resulting in a more robust, modern network that no longer relies on silentx and sometimes fragile fallbacks.
+</t>
+</section>
+
 <section anchor="slaac">
 <name>Address Assignment Policy</name>
 <t>
@@ -1199,6 +1213,7 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8273.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8305.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8880.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8890.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9099.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9260.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9568.xml"/>
