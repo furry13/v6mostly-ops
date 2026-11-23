@@ -834,13 +834,15 @@ Solutions and trade-offs:
 <t>
 Using DHCPv6-PD to allocate prefixes to endpoints <xref target="RFC9663"/>.
 Provides downstream systems with IPv6 addresses and native connectivity.
+This approach, however, requires downstream systems to support IPv6.
+To provide connectivity for IPv4-only downstream systems the endpoint needs to perform CLAT, as described below.
 </t>
 </li>
 <li>
 <t>
 Enabling the CLAT function on the endpoint: this scenario is similar to the Wireline Network Architecture described in Section 4.1 of <xref target="RFC6877"/>.
 The downstream systems would receive IPv4 addresses and their IPv4 traffic would be translated to IPv6 by the endpoint. However, this approach leads to the downstream systems using IPv4 only and not benefiting from end-to-end IPv6 connectivity. 
-To enable IPv6 benefits, combine this with IPv6 Prefix Delegation as listed above.
+To enable IPv6 benefits for IPv6-enabled downstream systems, combine this with IPv6 Prefix Delegation as listed above.
 </t>
 </li>
 <li>
