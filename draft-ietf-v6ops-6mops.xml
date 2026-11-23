@@ -682,7 +682,7 @@ In most networks, all hosts on a given subnet receive the same RAs (unless mecha
 <t>
 Some OSes allow the administrator to turn DHCPv4 Option 108 processing on or off.
 In these cases, if the endpoints are managed, per-device rollout may be possible.
-Note that some OSes enable DHCPv4 Option 108 support by default without providing configuration knobs to turn it off.
+Note that some OSes (such as mobile phone OSes) enable DHCPv4 Option 108 support by default without providing configuration knobs to turn it off.
 Such systems become IPv6-only when Option 108 is activated on the DHCPv4 server side for the given network segment.
 </t>
 <t>
