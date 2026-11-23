@@ -396,6 +396,7 @@ Section 3.1 of <xref target="RFC6052"/> forbids IPv4/IPv6 translators from using
 <t>
 If internal IPv4-only destinations use <xref target="RFC1918"/> or <xref target="RFC6598"/> IPv4 addresses  and IPv6-only devices need to reach them, the operator should ensure that their NAT64 functions are capable of supporting use of the WKP for <xref target="RFC1918"/> and <xref target="RFC6598"/> IPv4 addresses.
 Alternatively, the operator might utilize a network-specific NAT64 prefix.
+However, utilizing an NSP or the Local-Use prefix will typically prevent the use of a public DNS64 resolver in the vast majority of cases, as large scale public DNS64 resolvers use the WKP to maximize compatibility.
 </t>
 
 </section>
@@ -1186,6 +1187,7 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9463.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9673.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-v6ops-rfc6146-bis.xml"/>
+<xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-v6ops-nat64-wkp-1918.xml"/>
 <!-- The recommended and simplest way to include a well known reference -->
 
 </references>
@@ -1226,7 +1228,6 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-v6ops-claton.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.link-6man-gulla.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-v6ops-icmpext-xlat-v6only-source.xml"/>
-<xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-v6ops-nat64-wkp-1918.xml"/>
 
 </references>
 </references>
