@@ -867,7 +867,7 @@ Link-local address
 </li>
 <li>
 <t>
-Temporary address (default on endpoints for privacy)
+Temporary address <xref target="RFC8981"/> (default on endpoints for privacy)
 </t>
 </li>
 <li>
@@ -1154,6 +1154,9 @@ While transitioning to IPv6-mostly requires enabling fragmented traffic under th
 <t>
 This document does not introduce any new privacy considerations.
 IPv6-mostly networks have the same privacy considerations as other Dual-stacked or IPv6-only networks.
+However, as a network transitions to IPv6-mostly, the percentage of IPv6 traffic will gradually increase.
+For hosts using temporary address extensions <xref target="RFC8981"/>, this shift improves privacy, compared to assigning public IPv4 addresses to hosts.
+Consequently, as more traffic moves to IPv6, a larger portion of the network's data flows will benefit from these enhanced privacy protections.
 </t>
 </section>
 
@@ -1189,6 +1192,7 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8781.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8900.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8925.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8981.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9463.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9673.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-v6ops-rfc6146-bis.xml"/>
