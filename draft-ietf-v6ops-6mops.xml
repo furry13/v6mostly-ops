@@ -386,7 +386,7 @@ Operators can use either the Well-Known NAT64 Prefix (64:ff9b::/96, WKP) <xref t
 Using the WKP or LUP can make it simpler to set up packet filtering rules and troubleshoot the network, since traffic between IPv6-only hosts and IPv4-only destinations is easy to spot and tell apart from regular IPv6 traffic.
 Another benefit of the WKP or LUP is that if the client received both non-synthesized (native) and synthesized AAAA responses from DNS, the Rule 9 of the destination address selection algorithm (Section 6 of <xref target="RFC6724"/>) would prefer the native IPv6 destination address over a synthesized one.
 
-Additionally, as public DNS64 services rely on the WKP to synthesize addresses, using the WKP allows operators to offer public DNS64 services, and also lets users explicitly configure their devices with such services.
+Additionally, as public DNS64 services rely on the WKP to synthesize addresses, using the WKP allows network operators to utilize public DNS64 services, and also lets users explicitly configure their devices with such services.
 </t>
 <t>
 Section 3.1 of <xref target="RFC6052"/> forbids IPv4/IPv6 translators from using the WKP for private <xref target="RFC1918"/> and shared <xref target="RFC6598"/> IPv4 addresses.
