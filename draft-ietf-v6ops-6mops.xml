@@ -989,7 +989,7 @@ Additionally, Section 1.2 of <xref target="RFC7915"/> says:
 <t>
 It has been observed that some systems, such as 3GPP Evolved Packet Data Gateway (ePDG), might generate IPv4 UDP packets with zero checksum.
 Those packets could be dropped by the NAT64 devices, impacting WiFi calling on IPv6-only endpoints connecting to those ePDGs.
-As Section 4.5 of <xref target="RFC7915"/> recommends that the translators have a configuration knob to calculate an IPv6 checksum and forward the packet instead of dropping it, the administrator SHOULD consider enabling that option if such an issue is encountered.
+As Section 4.5 of <xref target="RFC7915"/> recommends that the translators have a configuration knob to calculate an IPv6 checksum and forward the packet instead of dropping it, the administrator SHOULD enable that option if such an issue is encountered.
 </t>
 </section>
 
@@ -1041,7 +1041,7 @@ Administrators need to  be aware of the potential for CLAT failures when endpoin
 <t>
 Similarly, some VPN clients are known to alter DNS resolution behavior on the
 endpoint (see <xref target="vpn"/> for details), preventing the endpoint from discovering the NAT64 prefix via the <xref target="RFC7050"/> mechanism.
-If the network doesn't provide the NAT64 prefix in RAs or the endpoint doesn't support <xref target="RFC8781"/>, the endpoint might not be able to discover the NAT64 prefix and therefore would fail to enable CLAT.
+If the network doesn't provide the NAT64 prefix in RAs or the endpoint doesn't support <xref target="RFC8781"/>, the endpoint might not be able to discover the NAT64 prefix and therefore would fail to enable CLAT, breaking connectivity for IPv4-only applications.
 </t>
 </section>
 
