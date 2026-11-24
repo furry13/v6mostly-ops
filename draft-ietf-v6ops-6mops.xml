@@ -1154,7 +1154,7 @@ While transitioning to IPv6-mostly requires enabling fragmented traffic under th
 <t>
 This document does not introduce any new privacy considerations.
 IPv6-mostly networks have the same privacy considerations as other Dual-stacked or IPv6-only networks.
-However, as a network transitions to IPv6-mostly, the percentage of IPv6 traffic will gradually increase.
+However, as a network transitions to IPv6-mostly, the percentage of IPv6 traffic will gradually increase within the network.
 For hosts using temporary address extensions <xref target="RFC8981"/>, this shift improves privacy, compared to assigning public IPv4 addresses to hosts.
 Consequently, as more traffic moves to IPv6, a larger portion of the network's data flows will benefit from these enhanced privacy protections.
 </t>
