@@ -96,7 +96,7 @@ Such networks still require the same amount of IPv4 addresses as IPv4-only netwo
 Even worse, the dual-stack approach has been demonstrated to be a long-term crutch, frequently masking problems that would otherwise be exposed and remedied as normal operational workflows.
 </t>
 <t>
-The solution to IPv4 address space exhaustion is to stop assigning IPv4 addresses to endpoints, or, in other words, to start deploying IPv6-only networks.
+The most obvious solution to IPv4 address space exhaustion is to stop assigning IPv4 addresses to endpoints, or, in other words, to start deploying IPv6-only networks.
 To ensure that IPv6-only endpoints can communicate with IPv4-only ones, IPv6-only networks provide translation services, such as NAT64 <xref target="I-D.ietf-v6ops-rfc6146-bis"/> and SIIT <xref target="RFC7755"/>.
 (Encapsulation-based transition mechanisms such as DS-Lite <xref target="RFC6333"/> and MAP-E <xref target="RFC7597"/> are commonly used to transport IPv4 packets over IPv6-only infrastructure in service provider networks, and are not suitable for providing end-to-end connectivity between IPv6-only and IPv4-only endpoints).
 However, even with those translation mechanisms in place, many systems and applications retain deep IPv4 dependencies, requiring an assigned IPv4 address for the host and IPv4 forwarding on the local link.
@@ -366,7 +366,7 @@ Simplified capacity planning. The size of IPv4 address pool used for both NAT44 
 </li>
 <li>
 <t>
-Minimized user impact: it is not uncommon for client IP addresses to be used as a part of identification and authorization (e.g. access control lists) on the server side.
+Minimized user impact: it is not uncommon for client IP addresses to be used for network-layer access control on the server side.
 If the NAT44 address pool is already allowed by an ACL on a remote IPv4-only destination, then using a dedicated NAT64 address pool would change the client's public IPv4 address (the one the destination sees) when the client becomes IPv6-only and starts using NAT64.
 This change might impact the client's connectivity to that destination until the ACLs on the remote side are updated.
 </t>
@@ -374,7 +374,7 @@ This change might impact the client's connectivity to that destination until the
 </ul>
 
 <t>
-In particular, webservers are known to use client IP addresses for various forms of identification, authorization, and session tracking.
+In particular, webservers are known to use client IP addresses for various forms of identification, access control, and session tracking.
 Therefore the NAT64 SHOULD be configured so, whenever possible, the same external IPv4 address is assigned to all concurrent sessions originating from the same IPv6 address of an internal host (a configuration often referred to as 'sticky' NAT). REQ-2 of <xref target="RFC4787"/> and <xref target="RFC6888"/> discusses this behaviour in more detail.
 </t>
 </section>
@@ -385,7 +385,8 @@ Therefore the NAT64 SHOULD be configured so, whenever possible, the same externa
 Operators can use either the Well-Known NAT64 Prefix (64:ff9b::/96, WKP) <xref target="RFC6052"/>, or they can choose a Network-Specific Prefix (NSP),  either from their own address space or from the Local-Use IPv4/IPv6 Translation Prefix (64:ff9b:1::/48, LUP, <xref target="RFC8215"/>).
 Using the WKP or LUP can make it simpler to set up packet filtering rules and troubleshoot the network, since traffic between IPv6-only hosts and IPv4-only destinations is easy to spot and tell apart from regular IPv6 traffic.
 Another benefit of the WKP or LUP is that if the client received both non-synthesized (native) and synthesized AAAA responses from DNS, the Rule 9 of the destination address selection algorithm (Section 6 of <xref target="RFC6724"/>) would prefer the native IPv6 destination address over a synthesized one.
-Additionally, using WKP lets the operator use public DNS64 services, which rely on the WKP for address translation.
+
+Additionally, as public DNS64 services rely on the WKP to synthesize addresses, using the WKP allows network operators to utilize public DNS64 services, and also lets users explicitly configure their devices with such services.
 </t>
 <t>
 Section 3.1 of <xref target="RFC6052"/> forbids IPv4/IPv6 translators from using the WKP for private <xref target="RFC1918"/> and shared <xref target="RFC6598"/> IPv4 addresses.
@@ -395,6 +396,7 @@ Section 3.1 of <xref target="RFC6052"/> forbids IPv4/IPv6 translators from using
 <t>
 If internal IPv4-only destinations use <xref target="RFC1918"/> or <xref target="RFC6598"/> IPv4 addresses  and IPv6-only devices need to reach them, the operator should ensure that their NAT64 functions are capable of supporting use of the WKP for <xref target="RFC1918"/> and <xref target="RFC6598"/> IPv4 addresses.
 Alternatively, the operator might utilize a network-specific NAT64 prefix.
+However, utilizing an NSP or the Local-Use prefix will typically prevent the use of a public DNS64 resolver in the vast majority of cases, as large scale public DNS64 resolvers use the WKP to maximize compatibility.
 </t>
 
 </section>
@@ -469,7 +471,7 @@ Existence of such applications is the main reason why transition to IPv6-only mu
 Those concerns make DNS64 a suboptimal and undesirable solution long-term.
 To eliminate the needs for DNS64, the network can signal PREF64 to endpoints (see <xref target="pref64"/>), and the endpoints need to use the obtained PREF64 for performing local address synthesis and for CLAT.
 It should be noted that not every application can benefit from local synthesis performed by the OS, as it would require the application to use DNS (not IPv4 address literals).
-Therefore DNS64 is only required to support the following cases:
+Therefore DNS64 is only required in order to support the following cases:
 </t>
 <ul>
 <li>
@@ -615,6 +617,20 @@ Flexible, Incremental Transition: IPv6-mostly allows for gradual migration on a 
 </ul>
 </section>
 
+<section anchor="vis">
+<name>User Experience</name>
+<t>
+While deploying IPv6-mostly helps operators identify hidden network bugs, it can initially cause user-visible issues.
+In a conventional dual-stack network, Happy Eyeballs silently masks IPv6 failures by falling back to IPv4.
+Removing this safety net for IPv6-mostly endpoints exposes these hidden problems.
+While this temporary regression in user experience must be carefully managed under the principles of <xref target="RFC8890"/>, it is often the only realistic way to get these latent issues reported and permanently fixed.
+</t>
+<t>
+In the long run, exposing these issues is the least bad path to drive ecosystem-wide improvements.
+Once the newly visible problems are resolved, the overall user experience is significantly improved, resulting in a more robust, modern network that no longer relies on silentx and sometimes fragile fallbacks.
+</t>
+</section>
+
 </section>
 
 <section anchor="rollout">
@@ -666,26 +682,29 @@ In most networks, all hosts on a given subnet receive the same RAs (unless mecha
 <t>
 Some OSes allow the administrator to turn DHCPv4 Option 108 processing on or off.
 In these cases, if the endpoints are managed, per-device rollout may be possible.
-Note that some OSes enable DHCPv4 Option 108 support by default without providing configuration knobs to turn it off.
+Note that some OSes (such as mobile phone OSes) enable DHCPv4 Option 108 support by default without providing configuration knobs to turn it off.
 Such systems become IPv6-only when Option 108 is activated on the DHCPv4 server side for the given network segment.
 </t>
 <t>
-The following approach is RECOMMENDED:
+Before rollout, it is recommended to review the considerations in <xref target="ops"/> and to run a pilot to prevent issues such as ones described in <xref target="issues"/>. 
+</t>
+<t>
+The following rollout approach is RECOMMENDED:
 </t>
 <ul>
 <li>
 <t>
-PREF64 signalling: Enable PREF64 option for the router advertisement and/or DNS64 (see above). Especially if DNS64 is used, this might affect behaviour of some devices as the path via NAT64 would get generally preferred over native IPv4 path. Rollback at this stage affects the entire subnet.
+Step1: PREF64 signalling. Enable PREF64 option for the router advertisement and/or DNS64 (see above). Especially if DNS64 is used, this might affect behaviour of some devices as the path via NAT64 would get generally preferred over native IPv4 path. Rollback at this stage affects the entire subnet.
 </t>
 </li>
 <li>
 <t>
-DHCPv4 Server-Side Activation: Enable Option 108 processing. Some OSes automatically switch to IPv6-only. Rollback at this stage affects the entire subnet.
+Step2: DHCPv4 Server-Side Activation. Enable Option 108 processing. Some OSes automatically switch to IPv6-only. Rollback at this stage affects the entire subnet.
 </t>
 </li>
 <li>
 <t>
-Controlled Endpoint Activation: Enable Option 108 on managed endpoints with per-device rollback possible.
+Step3: Controlled Endpoint Activation. Enable Option 108 on managed endpoints with per-device rollback possible.
 </t>
 </li>
 </ul>
@@ -709,6 +728,7 @@ Administrators are advised to monitor this load and adjust the Option 108 value 
 
 <section anchor="ops">
 <name>Operational Considerations</name>
+
 
 <section anchor="slaac">
 <name>Address Assignment Policy</name>
@@ -814,13 +834,15 @@ Solutions and trade-offs:
 <t>
 Using DHCPv6-PD to allocate prefixes to endpoints <xref target="RFC9663"/>.
 Provides downstream systems with IPv6 addresses and native connectivity.
+This approach, however, requires downstream systems to support IPv6.
+To provide connectivity for IPv4-only downstream systems the endpoint needs to perform CLAT, as described below.
 </t>
 </li>
 <li>
 <t>
 Enabling the CLAT function on the endpoint: this scenario is similar to the Wireline Network Architecture described in Section 4.1 of <xref target="RFC6877"/>.
 The downstream systems would receive IPv4 addresses and their IPv4 traffic would be translated to IPv6 by the endpoint. However, this approach leads to the downstream systems using IPv4 only and not benefiting from end-to-end IPv6 connectivity. 
-To enable IPv6 benefits, combine this with IPv6 Prefix Delegation as listed above.
+To enable IPv6 benefits for IPv6-enabled downstream systems, combine this with IPv6 Prefix Delegation as listed above.
 </t>
 </li>
 <li>
@@ -845,7 +867,7 @@ Link-local address
 </li>
 <li>
 <t>
-Temporary address (default on endpoints for privacy)
+Temporary address <xref target="RFC8981"/> (default on endpoints for privacy)
 </t>
 </li>
 <li>
@@ -929,7 +951,7 @@ generating ICMP messages is often rate-limited and, therefore, can not be consid
 
 <t>
 Another common case of IPv6 fragmentation is the use of protocols like DNS and RADIUS, where the server response needs to be sent as a single UDP datagram. 
-Network security policies MUST allow IPv6 fragments for permitted UDP traffic (e.g., DNS or RADIUS) where single-datagram responses are required. Allowing IPv6 fragments for permitted TCP traffic is RECOMMENDED unless the network infrastructure reliably performs TCP MSS clamping.
+Network security policies MUST allow IPv6 fragments for permitted UDP traffic (e.g., DNS or RADIUS) where single-datagram responses are required. Allowing IPv6 fragments for permitted TCP traffic is RECOMMENDED unless the network infrastructure reliably performs TCP Maximum Segment Size (MSS) clamping (rewriting the advertised MSS value by an intermediate node).
 </t>
 <t>
 To ensure reliable Path MTU Discovery (PMTUD, <xref target="RFC8201"/>), Section 4.3.1 of <xref target="RFC4890"/> requires that network security policies MUST permit the passage of ICMPv6 Type 2 (Packet Too Big, <xref target="RFC4443"/>) messages to and from all IPv6-enabled devices. 
@@ -967,7 +989,7 @@ Additionally, Section 1.2 of <xref target="RFC7915"/> says:
 <t>
 It has been observed that some systems, such as 3GPP Evolved Packet Data Gateway (ePDG), might generate IPv4 UDP packets with zero checksum.
 Those packets could be dropped by the NAT64 devices, impacting WiFi calling on IPv6-only endpoints connecting to those ePDGs.
-As Section 4.5 of <xref target="RFC7915"/> recommends that the translators have a configuration knob to calculate an IPv6 checksum and forward the packet instead of dropping it, the administrator SHOULD consider enabling that option if such an issue is encountered.
+As Section 4.5 of <xref target="RFC7915"/> recommends that the translators have a configuration knob to calculate an IPv6 checksum and forward the packet instead of dropping it, the administrator SHOULD enable that option if such an issue is encountered.
 </t>
 </section>
 
@@ -990,7 +1012,7 @@ Path MTU Discovery Issues: Potential disruptions in the PMTU discovery process.
 </ul>
 
 <t>
-<xref target="I-D.ietf-v6ops-icmpext-xlat-v6only-source"/> defines a solution for signalling the actual non-synthesized IPv6 source address while translating ICMPv6 error messages.
+<xref target="I-D.ietf-v6ops-icmpext-xlat-v6only-source"/> introduces changes in CLAT behaviour to represent and preserve non-synthesized IPv6 addresses when translating ICMPv6 to ICMPv4.
 </t>
 </section>
 
@@ -1019,7 +1041,7 @@ Administrators need to  be aware of the potential for CLAT failures when endpoin
 <t>
 Similarly, some VPN clients are known to alter DNS resolution behavior on the
 endpoint (see <xref target="vpn"/> for details), preventing the endpoint from discovering the NAT64 prefix via the <xref target="RFC7050"/> mechanism.
-If the network doesn't provide the NAT64 prefix in RAs or the endpoint doesn't support <xref target="RFC8781"/>, the endpoint might not be able to discover the NAT64 prefix and therefore would fail to enable CLAT.
+If the network doesn't provide the NAT64 prefix in RAs or the endpoint doesn't support <xref target="RFC8781"/>, the endpoint might not be able to discover the NAT64 prefix and therefore would fail to enable CLAT, breaking connectivity for IPv4-only applications.
 </t>
 </section>
 
@@ -1121,7 +1143,9 @@ Additionally, <xref target="I-D.ietf-v6ops-claton"/> discusses security implicat
 Security considerations of using DHCPv4 Option 108 are documented in Section 6 of <xref target="RFC8925"/>.
 </t>
 <t>
-
+<xref target="frag"/> discusses scenarios where operators may need to permit fragmented IPv6 packets, which introduces the risk of fragmentation-based attacks.
+While transitioning to IPv6-mostly requires enabling fragmented traffic under the same conditions as dual-stack (e.g., both require allowing fragmented packets to and from DNS and RADIUS servers), operators must remain aware of these security risks.
+<xref target="RFC8900"/> provides a more detailed discussion of fragmentation and its associated security considerations.
 </t>
 </section>
 
@@ -1130,6 +1154,9 @@ Security considerations of using DHCPv4 Option 108 are documented in Section 6 o
 <t>
 This document does not introduce any new privacy considerations.
 IPv6-mostly networks have the same privacy considerations as other Dual-stacked or IPv6-only networks.
+However, as a network transitions to IPv6-mostly, the percentage of IPv6 traffic will gradually increase within the network.
+For hosts using temporary address extensions <xref target="RFC8981"/>, this shift improves privacy, compared to assigning public IPv4 addresses to hosts.
+Consequently, as more traffic moves to IPv6, a larger portion of the network's data flows will benefit from these enhanced privacy protections.
 </t>
 </section>
 
@@ -1163,10 +1190,13 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8106.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8174.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8781.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8900.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8925.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8981.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9463.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9673.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-v6ops-rfc6146-bis.xml"/>
+<xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-v6ops-nat64-wkp-1918.xml"/>
 <!-- The recommended and simplest way to include a well known reference -->
 
 </references>
@@ -1196,6 +1226,7 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8273.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8305.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8880.xml"/>
+<xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.8890.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9099.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9260.xml"/>
 <xi:include href="https://www.rfc-editor.org/refs/bibxml/reference.RFC.9568.xml"/>
@@ -1206,7 +1237,6 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-v6ops-claton.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.link-6man-gulla.xml"/>
 <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-v6ops-icmpext-xlat-v6only-source.xml"/>
-<xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-v6ops-nat64-wkp-1918.xml"/>
 
 </references>
 </references>
@@ -1214,7 +1244,7 @@ IPv6-mostly networks have the same privacy considerations as other Dual-stacked 
 <section anchor="Acknowledgements" numbered="false">
 <name>Acknowledgements</name>
 <t>
-Thanks to Mohamed Boucadair, Brian Carpenter, Stuart Cheshire, Tim Chown, Joe Clarke, Lorenzo Colitti, Tom Costello, Jeremy Duncan, David Farmer, Sorah Fukumori, Goetz Goerisch, Warren Kumari, Eliot Lear, Jordi Palet, Tom Petch, Pete Resnick, Michael Richardson, Scott Rose, Philipp Tiesel, Arie Vayner, Magnus Westerlund, XiPeng Xiao, Matsuzaki Yoshinobu for the discussions, the feedback, and all contribution.
+Thanks to Mohamed Boucadair, Brian Carpenter, Stuart Cheshire, Tim Chown, Joe Clarke, Lorenzo Colitti, Tom Costello, Jeremy Duncan, David Farmer, Sorah Fukumori, Goetz Goerisch, Benjamin Kaduk, Warren Kumari, Eliot Lear, Jordi Palet, Tom Petch, Pete Resnick, Michael Richardson, Scott Rose, Philipp Tiesel, Arie Vayner, Magnus Westerlund, XiPeng Xiao, Matsuzaki Yoshinobu for the discussions, the feedback, and all contribution.
 </t>
 </section>
 
